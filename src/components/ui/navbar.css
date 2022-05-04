@@ -1,0 +1,58 @@
+.login-btn-primary{
+    background-color: #F5F5F7;
+    border: 1px solid #38ABBA;
+    border-radius:10px;
+
+}
+
+.dropdown-style{
+    background-color: #F5F5F7;
+    color: #5C6270;
+    font-size: 13px;
+    font-weight: 400;
+    padding-left:5px ;
+    width: 50px;
+
+}
+
+.text-color-grey{
+    color: #5C6270;
+    font-size: 17px;
+    font-weight: 300;
+    letter-spacing:0.01rem;
+}
+
+.logout-btn-primary{
+
+    background-color: #38ABBA;
+    border: 1px solid #414E52;
+    border-radius:10px;
+    color: #fff;
+    margin-left: 5%;
+}
+
+.nav-btn-secondary{
+
+    background-color: white;
+    border: 1px solid #38ABBA;
+    border-radius:10px;
+    color: #5C6270;
+    margin-left: 5%;
+}
+
+
+.border-bottom-line{
+    border-bottom: 1px solid #414E52;
+    background-color: #F5F5F7;
+
+}
+
+.link-decoration-dark{
+    text-decoration: none;
+    color:#414E52;
+}
+
+.link-decoration-white{
+    text-decoration: none;
+    color:#fff;
+}
