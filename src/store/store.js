@@ -4,9 +4,15 @@ import {configureStore, combineReducers} from '@reduxjs/toolkit';
 
 
 import { authReducer } from '../reducers/authReducer';
+import { commentsReducer } from '../reducers/commentsReducer';
+import { serviceReducer } from '../reducers/serviceReducer';
+import { workReducer } from '../reducers/workReducer';
 
 const reducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    comments: commentsReducer,
+    services: serviceReducer,
+    works: workReducer
 })
 
 

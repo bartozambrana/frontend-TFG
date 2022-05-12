@@ -5,6 +5,12 @@
 
 }
 
+.fix-bottom {
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+
 .list-none-style{
     list-style: none;
 }

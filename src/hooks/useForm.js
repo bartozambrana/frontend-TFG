@@ -8,9 +8,16 @@ export const useForm = (initialState = {}) => {
     const [values, setValues] = useState(initialState);
 
     const handleInputChange = (e) =>{
-        let value = e.target.value;
+
+        let value = '';
         if (e.target.type === 'checkbox')
             value = e.target.checked
+        else if(e.target.type === 'file')
+            value = e.target.files;
+        else
+            value = e.target.value;
+
+            
         setValues({
             ...values, //Solo cambian algunas propiedades y no todas, luego las mantenemos.
             [e.target.name]: value

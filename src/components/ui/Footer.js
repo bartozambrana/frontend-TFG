@@ -1,9 +1,13 @@
 
 import './footer.css';
+import { isMobile } from 'react-device-detect';
 
 export const Footer = () => {
+    let classVar = 'dark-footer mt-5';
+    if(!isMobile)
+        classVar = 'dark-footer fix-bottom mt-5'
     return (
-        <footer className="dark-footer">
+        <footer className={classVar}>
             <div className="container mt-3 p-4 ">
                 <div className="row d-flex justify-content-center text-center">
                     <div className="col-12 col-md-4">

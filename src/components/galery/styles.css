@@ -1,0 +1,17 @@
+.carouselItem img {
+    margin: 0 auto;
+    width: auto;
+  }
+
+  
+  .carousel .item {
+    max-height: 500px;
+  }
+  
+  .item img {
+      position: center;
+      size: cover;
+      min-height: 300px;
+
+  }
+

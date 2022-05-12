@@ -56,9 +56,6 @@ export const startRegister = (email,password,userName,type) => {
             Swal.fire('Error',body.errors[0].msg,'error');
         }
 
-        if(type){ 
-
-        }
     }
 }
 
