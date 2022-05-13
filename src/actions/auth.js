@@ -83,9 +83,7 @@ export const startChecking = () => {
             dispatch(login({
                 user : body.user
             }))
-        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
-            dispatch(startLogout());
-        }else
+        }else 
             dispatch(checkingFinish())
         
         
