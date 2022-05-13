@@ -21,7 +21,7 @@ export const AppRoutes = () => {
     const comments = useSelector(state => state.comments)
 
     useEffect(()=>{
-        if(state.checking)
+        //if(state.checking)
             dispatch(startChecking());
         
             
