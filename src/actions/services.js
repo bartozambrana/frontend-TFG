@@ -2,6 +2,7 @@
 import Swal from 'sweetalert2';
 
 import {types} from '../types/types';
+import { startLogout } from './auth';
 
 const url = process.env.REACT_APP_API_URL_DEV + '/services/';
 
@@ -18,9 +19,11 @@ export const getValidCategories = () => {
 
         if(body.success) {
             dispatch(setValidCategories(body.categories));
-        }else{
-            Swal.fire('Error','Reintente la operación','error');
-        }
+        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+            dispatch(startLogout());
+            Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+        }else
+            Swal.fire('Error',body.msg,'error');
     }
 }
 
@@ -50,7 +53,10 @@ export const addNewService = (serviceName,serviceInfo,serviceCategory,street,pos
         }else{
             if(body.errors)
                 Swal.fire('Error',body.errors[0].msg,'error');
-            else
+            else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+                dispatch(startLogout());
+                Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+            }else
                 Swal.fire('Error',body.msg,'error');
         }
     }
@@ -77,7 +83,11 @@ export const getServicesUser = () => {
 
         if(body.success){
             dispatch(setServicesUser(body.services));
-        }
+        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+            dispatch(startLogout());
+            Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+        }else
+            Swal.fire('Error',body.msg,'error');
     }
 }
 
@@ -102,9 +112,12 @@ export const getServiceById = (id) => {
         if(body.success){
             dispatch(setServiceById(body.service))
             dispatch({type: types.setServiceError, payload: false})
-        }else{
+        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+                dispatch(startLogout());
+                Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+        }else
             dispatch({type: types.setServiceError, payload: true})
-        }
+        
     }
 }
 
@@ -134,7 +147,10 @@ export const putService = (serviceCategory,serviceInfo,cityName,street,postalCod
         }else{
             if(body.errors)
                 Swal.fire('Error',body.errors[0].msg,'error');
-            else
+            else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+                dispatch(startLogout());
+                Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+            }else
                 Swal.fire('Error',body.msg,'error');
         }
     }

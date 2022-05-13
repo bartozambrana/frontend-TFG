@@ -64,25 +64,30 @@ export const startChecking = () => {
     return async(dispatch) => {
         const url = baseUrl + '/users'
 
-        console.log('StartCheking');
+        
         
         //Obtengo el token del localStrorage
         const token = localStorage.getItem('token') || '';
+
+        
 
         const resp = await fetch(url,{
             method:'GET',
             headers: {'token': token}
         })
 
+        
         const body = await resp.json();
         
         if(body.success){
             dispatch(login({
                 user : body.user
             }))
-        }else{
+        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+            dispatch(startLogout());
+        }else
             dispatch(checkingFinish())
-        }
+        
         
     }
 }

@@ -9,10 +9,10 @@ import { getValidCategories,putService } from '../../actions/services'
 
 
 
-export const ModalGestionDatos = ({idService}) => {
+export const ModalGestionDatos = ({idService,idModal}) => {
     const dispatch = useDispatch();
     const {user} = useSelector(state => state.auth);
-    const idModal = 'EditService' + user.uid;
+    
 
     //Obtenemos los servicio del usuario
     const {userServices,validCategories} = useSelector(state => state.services);

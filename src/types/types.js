@@ -16,6 +16,7 @@ export const types = {
     
     delComment: '[Comment] deetelComment',
     
+    setErrorComments: '[Comment] setErrorComments',
 
 
     //Appointments
@@ -59,6 +60,14 @@ export const types = {
     postWork: '[Works] postWork',
     delWork: '[Works] delWork',
     setError: '[Works] setError',
+
+    //Posts
+    getPosts: '[Posts] getPosts',
+    putPost: '[Posts] putPost',
+    postPost: '[Posts] postPost',
+    delPost: '[Posts] delPost',
+    setErrorPosts: '[Posts] setErrorPosts',
+
 
 
 }

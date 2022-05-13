@@ -2,7 +2,7 @@ import { types } from "../types/types";
 
 
 const initialState = {
-    uidPostsService:'',
+    uidServicePosts:'',
     postsLastService:[],
     postsErrorServer:false
 }
@@ -12,7 +12,7 @@ export const postReducer = (state=initialState,action) => {
         case types.getPosts:
             return {
                 ...state,
-                uidPostsService: action.payload.uid,
+                uidServicePosts: action.payload.uid,
                 postsLastService: action.payload.posts
             }
         case types.setErrorPosts:
@@ -36,7 +36,7 @@ export const postReducer = (state=initialState,action) => {
         case types.delPost:
             return {
                 ...state,
-                worksLastService: state.postsLastService.filter(post => post.uid !== action.payload)
+                postsLastService: state.postsLastService.filter(post => post.uid !== action.payload)
             }
         case types.logout:
             return initialState;

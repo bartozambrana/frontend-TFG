@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 import { types } from "../types/types";
+import { startLogout } from "./auth";
 
 
 const url = process.env.REACT_APP_API_URL_DEV + '/comments/';
@@ -20,7 +21,15 @@ export const getCommentsUser = () =>{
         if(body.success){
             dispatch(getttingCommentsUser(body.comments));
         }else{
-            Swal.fire('Error', 'Ha ocurrido un error','error');
+            // Notificación del error establecido
+            if(body.errors)
+                Swal.fire('Error',body.errors[0].msg,'error');
+            else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+                    dispatch(startLogout());
+                    Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+            }else
+                Swal.fire('Error',body.msg,'error');
+                
         }
     }
 }
@@ -47,12 +56,13 @@ export const updateCommentUser = (text,uid) => {
         })
 
         const body = await response.json();
-        if(body.success || true) {
-            console.log(body.comment);
+        if(body.success ) {
             dispatch(updatingComentUser(body.comment));
-        }else{
-            Swal.fire('Error', 'Intente la operación de nuevo','error');
-        }     
+        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+            dispatch(startLogout());
+            Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+        }else
+            Swal.fire('Error',body.msg,'error');     
 
     }
 }
@@ -79,9 +89,11 @@ export const deleteComment = (uid) => {
         if(body.success){
             dispatch(deletingComment(uid));
             Swal.fire('Exito', 'Comentario eliminado','success')
-        }else{
-            Swal.fire('Error','Reintente la operación si lo desea','error');
-        }
+        }else if(body.msg === 'token empty' || body.msg === 'token invalid'){
+            dispatch(startLogout());
+            Swal.fire('Error','Sesión caducada, inicie sesión','error');    
+        }else
+            Swal.fire('Error',body.msg,'error');  
     }
 }
 
@@ -89,5 +101,15 @@ const deletingComment = (uid) => {
     return {
         type: types.delComment,
         payload: uid
+    }
+}
+
+const setError = (bool,error) => {
+    return {
+        type: types.setErrorComments,
+        payload: {
+            bool,
+            error
+        }
     }
 }

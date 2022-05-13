@@ -36,6 +36,7 @@ export const serviceReducer = (state=initialState,action) => {
 
             return {
                 ...state,
+                loaded:false,
                 userServices: oldServices
             }
         case types.putService:

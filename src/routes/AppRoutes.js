@@ -10,28 +10,24 @@ import { DashBoardRouter } from "./DashBoardRouter";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import './preloader.css'
-import { getServicesUser } from "../actions/services";
+
 
 
 
 export const AppRoutes = () => {
     const dispatch = useDispatch();
     const state = useSelector(state => state.auth)
+    const services = useSelector(state => state.services)
+    const comments = useSelector(state => state.comments)
 
     useEffect(()=>{
         if(state.checking)
             dispatch(startChecking());
-        if(!state.checking && state.user){
-            if(state.user.type)
-                dispatch(getServicesUser());
-        }
+        
             
-    },[dispatch,state.checking,state.user]);
+    },[dispatch,state.checking]);
 
     
-
-    if(state.checking)
-        return (<div className='preloader'></div>)
 
     
     return (

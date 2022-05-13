@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import './service.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getServiceById } from '../../actions/services';
-import { ModalGestionDatos } from './ModalGestionDatos';
-import { ModalNewWork } from '../works/ModalNewWork';
-import { ModalNewPost } from '../posts/ModalNewPost';
+import { ActionsService } from './ActionsService';
+import { PostsList } from '../posts/PostsList';
 
 
 export const ServiceScreen = () => {
@@ -25,6 +24,15 @@ export const ServiceScreen = () => {
     }
     , [dispatch,visitedServices,idService,userServices,user.uid])
 
+
+    if( serviceErrorServer &&
+        (visitedServices.filter(s => (s.uid === idService)).length === 0)
+    )
+    {
+        return(<h1 className="error">El servicio buscado no existe</h1>)
+    }
+
+
     let service = '';
     let cityName = '';
     let street = '';
@@ -37,22 +45,21 @@ export const ServiceScreen = () => {
         street = encodeURIComponent(service.localization.street);
     }
 
-    if( serviceErrorServer &&
-        (visitedServices.filter(s => (s.uid === idService)).length === 0)
-    )
-    {
-        return(<h1 className="error">El servicio buscado no existe</h1>)
-    }
+    
         
 
     return (
-        <>
+        <main>
             <div className="container-front-image" >
                 <img src="https://res.cloudinary.com/tfgbartozambrana/image/upload/v1652179082/hair-gadc3cfa92_1280_vdd7ik.jpg" alt="Peluquería" />
                 <h1 className="caption">{service.serviceName}</h1>
             </div>
 
             <div className='container'>
+                {/* 
+                    Primera sección de la página.
+                    Descripción del servicio acciones que el usuario puede realizar y mapa de su localización 
+                */}
                 <div className='row shadow p-3 mt-3 mb-5 bg-body rounded'>
                     {/*Descripción del servicio*/}
                     <div className='col-md-4 col-12'>
@@ -60,62 +67,36 @@ export const ServiceScreen = () => {
                     </div>
 
                     <div className='col-md-2 col-12 justify-content-around d-flex flex-column'>
-                        
-                        
-                        
-                        {
-                            (user.uid === service.idUser ) ?
-                            (
-                                <>
-                                    <button 
-                                        className='btn btn-success mt-1 '
-                                    > Gestión de Citas</button>
-                                    
-                                    <button 
-                                        className='btn btn-outline-primary mt-1'
-                                        data-bs-toggle="modal"
-                                        data-bs-target={'#NewPost'+service.uid}   
-                                    >Añadir Post</button>
-                                    <ModalNewPost idModal={'NewPost'+service.uid} id={service.uid}/>
-
-                                    <button 
-                                        className='btn btn-outline-secondary mt-1'
-                                        data-bs-toggle="modal"
-                                        data-bs-target={"#NewWork"+service.uid}
-                                    >Añadir Trabajo </button>
-                                    <ModalNewWork idService={service.uid} idModal={'NewWork'+service.uid}/>
-                                    
-                                    <button 
-                                    className='btn btn-outline-danger mt-1'
-                                        data-bs-toggle="modal"
-                                        data-bs-target={'#EditService'+service.uid}
-                                    >Gestión de datos</button>
-                                    <ModalGestionDatos idService={service.uid}/>
-                                </>
-                                
-                            )
-                            :
-                            (
-                                <>
-                                    <button className='btn btn-success mt-1 '> Pide Cita </button>
-                                    <button className='btn btn-primary mt-1'> Sigueme </button>
-                                </>
-                            )
-                        }
-                        <button className='btn btn-secondary mt-1'><Link className='link-light' style={{textDecoration:'none'}}to={'/service/gallery/'+idService}>Galería</Link></button>
+                        <ActionsService idUserService={service.idUser} uidService={service.uid}/>
                     </div>
                     <div className='col-md-6 col-12 mt-1 '>
                         {/*
                             (loaded) &&
                             <iframe className='w-100' height='350' src={"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566588180814!2d-3.3161796837420376!3d38.06906157970678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6ef1a351173d7f%3A0xb007cd0c804e83c7!2s"
                             +service.localization.postalCode+'%20'+cityName+'%20'+street+"!5e0!3m2!1ses!2ses!4v1652178258048!5m2!1ses!2ses"} loading="lazy" referrerPolicy="no-referrer-when-downgrade" ></iframe>
-                    */}
+                        */}
                     MAPA
                     {cityName},{street}
                     </div>
                 </div>
+
+                {/* 
+                    Segunda sección de la página:
+                    Se compone de los posts del servicio y comentarios recibidos del msimo. 
+                */}
             </div>
-        </>
+            <div className='container  mt-3'>
+                <div className='row'>
+                    <div className='col-md-8 col-12'>
+                        <PostsList />
+                        
+                    </div>
+                    <div className='col-md-4 col-12'>
+                        dfafadsfsdfafdasfs
+                    </div>
+                </div>
+            </div>
+        </main>
 
     )
 }

@@ -117,7 +117,7 @@ export const postWork = (filesUpload,description,uid) => {
 
         if(body.success){
             dispatch(postingWork(body.work));
-            Swal.fire('Exito','Contenido actulizado','success');
+            Swal.fire('Exito','Trabajo añadido','success');
             dispatch(setError(false));
         }else{
             dispatch(setError(true));
@@ -134,7 +134,7 @@ export const deleteWork = (uidWork) => {
     return async(dispatch) => {
             
         Swal.fire({
-            title:'Subiendo el contenido ...',
+            title:'Eliminando el contenido ...',
             didOpen(){
                 Swal.showLoading()
             },

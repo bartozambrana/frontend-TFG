@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { HomeScreen } from '../components/home/HomeScreen'
 import { Routes, Route } from 'react-router-dom'
@@ -8,8 +8,22 @@ import { Footer } from '../components/ui/Footer'
 import { DatesScreen } from '../components/dates/DatesScreen'
 import { ServiceScreen } from '../components/services/ServiceScreen'
 import { GalleryScreen } from '../components/galery/GalleryScreen'
+import { useDispatch, useSelector } from 'react-redux'
+import { getServicesUser } from "../actions/services";
 export const DashBoardRouter = () => {
+	
+	const services = useSelector(state => state.services)
+	const dispatch = useDispatch()
+	const state = useSelector(state => state.auth)
 
+	useEffect(()=>{
+
+        if(!state.checking && !services.loaded)
+            dispatch(getServicesUser());
+    },[state.checking, services.loaded,dispatch]);
+
+    if(state.checking)
+        return (<div className='preloader'></div>)
 	return (
 		<>
 			<div style={{minHeight:'100vh'}}>
