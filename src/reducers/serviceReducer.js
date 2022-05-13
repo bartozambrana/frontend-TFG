@@ -5,7 +5,8 @@ const initialState = {
     userServices: [],
     loaded: false, //Para saber si hemos obtenido los comentarios
     validCategories:[],
-    visitedServices: []
+    visitedServices: [],
+    serviceErrorServer: false
 }
 
 export const serviceReducer = (state=initialState,action) => {
@@ -44,6 +45,11 @@ export const serviceReducer = (state=initialState,action) => {
                     s=> (s.uid === action.payload.uid) ? action.payload : s
                 )
             }
+        case types.setServiceError:
+                return {
+                    ...state,
+                    serviceErrorServer: action.payload
+                }
         case types.logout:
             return initialState;
             

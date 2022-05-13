@@ -98,12 +98,16 @@ export const getServiceById = (id) => {
         });
 
         const body = await response.json();
-        console.log(body.service);
+
         if(body.success){
             dispatch(setServiceById(body.service))
+            dispatch({type: types.setServiceError, payload: false})
+        }else{
+            dispatch({type: types.setServiceError, payload: true})
         }
     }
 }
+
 const setServiceById = (service) => {
     return {
         type : types.getServiceById,

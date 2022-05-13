@@ -5,34 +5,43 @@ import './service.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getServiceById } from '../../actions/services';
 import { ModalGestionDatos } from './ModalGestionDatos';
+import { ModalNewWork } from '../works/ModalNewWork';
+import { ModalNewPost } from '../posts/ModalNewPost';
 
 
 export const ServiceScreen = () => {
     const { idService } = useParams();
     const dispatch = useDispatch();
     const { user} = useSelector(state => state.auth)
-    const { visitedServices, userServices, loaded } = useSelector(state => state.services);
+    const { visitedServices, userServices, loaded, serviceErrorServer } = useSelector(state => state.services);
 
     
     useEffect(() => {
-
+        
         if ( !(userServices.filter(s => s.uid === idService).length === 1) &&
             (visitedServices.filter(s => (s.uid === idService)).length === 0))
             dispatch(getServiceById(idService))
 
     }
-    , [dispatch,visitedServices,idService,userServices,user.uid, loaded])
+    , [dispatch,visitedServices,idService,userServices,user.uid])
 
     let service = '';
     let cityName = '';
     let street = '';
     
-    if (loaded){
+    if ( loaded){
         service = visitedServices.find(s => s.uid === idService);
         if(!service)
             service = userServices.find(s => s.uid === idService); 
         cityName = encodeURIComponent(service.localization.cityName);
         street = encodeURIComponent(service.localization.street);
+    }
+
+    if( serviceErrorServer &&
+        (visitedServices.filter(s => (s.uid === idService)).length === 0)
+    )
+    {
+        return(<h1 className="error">El servicio buscado no existe</h1>)
     }
         
 
@@ -62,12 +71,24 @@ export const ServiceScreen = () => {
                                         className='btn btn-success mt-1 '
                                     > Gestión de Citas</button>
                                     
-                                    <button className='btn btn-outline-primary mt-1'>Añadir Post</button>
-                                    <button className='btn btn-outline-secondary mt-1'>Añadir Trabajo </button>
+                                    <button 
+                                        className='btn btn-outline-primary mt-1'
+                                        data-bs-toggle="modal"
+                                        data-bs-target={'#NewPost'+service.uid}   
+                                    >Añadir Post</button>
+                                    <ModalNewPost idModal={'NewPost'+service.uid} id={service.uid}/>
+
+                                    <button 
+                                        className='btn btn-outline-secondary mt-1'
+                                        data-bs-toggle="modal"
+                                        data-bs-target={"#NewWork"+service.uid}
+                                    >Añadir Trabajo </button>
+                                    <ModalNewWork idService={service.uid} idModal={'NewWork'+service.uid}/>
+                                    
                                     <button 
                                     className='btn btn-outline-danger mt-1'
                                         data-bs-toggle="modal"
-                                        data-bs-target={'#EditService'+user.uid}
+                                        data-bs-target={'#EditService'+service.uid}
                                     >Gestión de datos</button>
                                     <ModalGestionDatos idService={service.uid}/>
                                 </>

@@ -51,9 +51,13 @@ export const types = {
     
     delService: '[Services] delService',
 
+    setServiceError: '[Services] setServiceError',
+
     //Works
     getWorks: '[Works] getWorks',
     putWork: '[Works] putWork',
+    postWork: '[Works] postWork',
+    delWork: '[Works] delWork',
     setError: '[Works] setError',
 
 

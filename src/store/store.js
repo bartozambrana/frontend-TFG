@@ -7,12 +7,14 @@ import { authReducer } from '../reducers/authReducer';
 import { commentsReducer } from '../reducers/commentsReducer';
 import { serviceReducer } from '../reducers/serviceReducer';
 import { workReducer } from '../reducers/workReducer';
+import { postReducer } from '../reducers/postReducer';
 
 const reducer = combineReducers({
     auth: authReducer,
     comments: commentsReducer,
     services: serviceReducer,
-    works: workReducer
+    works: workReducer,
+    posts: postReducer
 })
 
 

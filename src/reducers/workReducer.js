@@ -27,6 +27,16 @@ export const workReducer = (state=initialState,action) => {
                     work => (work.uid === action.payload.uid) ? action.payload : work
                 )
             }
+        case types.postWork:
+            return {
+                ...state,
+                worksLastService: state.worksLastService.concat(action.payload)
+            }
+        case types.delWork:
+            return {
+                ...state,
+                worksLastService: state.worksLastService.filter(work => work.uid !== action.payload)
+            }
         case types.logout:
             return initialState;
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { ModalDeleteWork } from '../works/ModalDeleteWork';
 import { ModalEditWork } from '../works/ModalEditWork';
 
 
@@ -64,7 +65,8 @@ export const GalleryItem = ({ images, description, uid }) => {
                             <button className="btn" style={styleBtn} ><i className='fa fa-pencil-square-o ms-3' aria-hidden='true' data-bs-toggle="modal"
 						    data-bs-target={'#EditWork' + uid}></i></button>
                             <ModalEditWork uidWork={uid}/>
-                            <button className="btn" style={styleBtn} ><i className='fa fa-trash ms-3' aria-hidden='true'></i></button>
+                            <button className="btn" style={styleBtn} data-bs-toggle="modal" data-bs-target={'#DeleteWork' + uid} ><i className='fa fa-trash ms-3' aria-hidden='true' ></i></button>
+                            <ModalDeleteWork uidWork={uid} idModal={'DeleteWork' + uid}/>
                         </div>
                         
                     )

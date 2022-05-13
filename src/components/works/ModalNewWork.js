@@ -1,129 +1,86 @@
 
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
+
+import {  useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
+import { postWork } from '../../actions/works';
 
 
-import { useDispatch } from 'react-redux';
-// import { updateCommentUser } from '../../actions/comment';
 import { useForm } from '../../hooks/useForm';
-import { getValidCategories } from '../../actions/services';
-export const ModalNewWork = (idService) => {
+
+
+
+export const ModalNewWork = ({idService, idModal}) => {
     const dispatch = useDispatch();
-    const {user} = useSelector(state => state.auth);
-    const idModal = 'EditService' + user.uid;
+    
+	
 
-    //Obtenemos los servicio del usuario
-    const {userServices,validCategories} = useSelector(state => state.services);
-
-	useEffect(() => {
-		//Obtenemos las categorías válidas.
-        if(validCategories.length === 0)
-		    dispatch(getValidCategories())
-	}, [dispatch])
-
-    //Obtenemos los datos almacenados del servicio;
-    const service = userServices.find(s => (s.idUser === user.uid) && (s.uid === idService ));
+	//Establecemos los campos del formulario;
 	const [formValues, handleInputChange] = useForm({
-		serviceCategory: service.serviceCategory ,
-		serviceInfo: service.serviceInfo,
-		cityName: service.localization.cityName,
-		postalCode: service.localization.postalCode,
-		street: service.localization.street,
+		fileUploads: [],
+		description: ''
 	});
 
     //Establecemos los campos del formulario
-    const {serviceCategory, serviceInfo,cityName,postalCode,street} = formValues;
-
+    const {fileUploads,description} = formValues;
+	
     //Verificacion de los campos del formulario.
     const isFormValid = () => {
 		
-		if (serviceCategory.trim().length === 0) {
-			Swal.fire('Error', 'Categoria del servicio vacío', 'error');
+		if(description.trim().length === 0){
+			Swal.fire('Error', 'Descripción del trabajo no añadida','error');
 			return false;
-		} else if (serviceInfo.trim().length === 0) {
-			Swal.fire('Error', 'Información del servicio vacío', 'error');
-			return false;
-		}  else if (cityName.trim().length === 0) {
-			Swal.fire('Error', 'Nombre del servicio del servicio vacío', 'error');
-			return false;
-		} else if (street.trim().length === 0) {
-			Swal.fire('Error', 'Calle del servicio vacío', 'error');
-			return false;
-		} else if (postalCode.toString().length !== 5) {
-			Swal.fire('Error', 'El codigo postal tiene 5', 'error');
+		}else if(fileUploads.length === 0){
+			Swal.fire('Error', 'No ha añadido ninguna imagen del trabajo realizado');
 			return false;
 		}
+		
 		return true;
 	}
+
+	
+	const handleSubmit = (e)=>{
+		e.preventDefault();
+		if(isFormValid()){
+			dispatch(postWork(fileUploads,description,idService));
+		}
+	}
+
+
+
     return (
         <div className="modal fade" id={idModal} role="dialog" tabIndex="-1" aria-labelledby={idModal} aria-hidden="true">
 			<div className="modal-dialog modal-dialog-centered">
 				<div className="modal-content">
 					<div className="modal-header">
-						<h5 className="modal-title" id={idModal}>Modificación de datos del servicio.</h5>
+						<h5 className="modal-title" id={idModal}>Formulario de nuevo trabajo.</h5>
 						<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
 						</button>
 					</div>
 					<div className='modal-body'>
 						<form className="form-group" onSubmit={handleSubmit}>
-							<label className='form-control w-100 mt-3' style={{color: '#6c757d'}}>
-								Categoría del servicio:
-								<select className='form-select' style={{ border: '0' }} name='serviceCategory' value={serviceCategory} onChange={handleInputChange}>
-									{
-										validCategories.map((category) => <option value={category} key={category}>{category}</option>)
-									}
-								</select>
-							</label>
-
 							
-							<textarea
-								type='text'
-								placeholder='Información del servicio'
-								name='serviceInfo'
-								autoComplete='off'
-								className='form-control w-100 mt-2'
-								value={serviceInfo}
-								onChange={handleInputChange}
-							/>
-
-							
-							<label className='form-control w-100 mt-3' style={{color: '#6c757d'}}>
-								Código postal
-								<input
-									type='number'
-									name='postalCode'
-									placeholder='codigo postal'
-									className='w-100'
-									style={{border:0, borderTop:'1px solid 6c757d'}}
-									value={postalCode}
+							<label className='text-center mt-1 w-100' style={{color: '#6c757d'}}>
+								Descripción del trabajo:
+								<textarea
+									type='text'
+									placeholder='Añada una descripción del trabajo'
+									name='description'
+									autoComplete='off'
+									className='form-control w-100 mt-2'
+									value={description}
 									onChange={handleInputChange}
 								/>
 							</label>
+
+							<label className='text-center mt-1 w-100' style={{color: '#6c757d'}}>
+								Añada fotografías deseadas
+								<input className="form-control" type="file" name="fileUploads" placeholder='' files={fileUploads} onChange={handleInputChange} multiple/>
+							</label >
 							
 
-							<input
-								type='text'
-								placeholder='Direción'
-								name='street'
-								autoComplete='off'
-								className='form-control w-100 mt-2'
-								value={street}
-								onChange={handleInputChange}
-							/>
-
-							<input
-								type='text'
-								placeholder='Ciudad'
-								name='cityName'
-								autoComplete='off'
-								className='form-control w-100 mt-2'
-								value={cityName}
-								onChange={handleInputChange}
-							/>
-
+							
 							<button type='submit' className='btn btn-outline-primary mt-3' data-bs-dismiss='modal'>
-								Registrar servicio
+								Añadir el trabajo servicio
 							</button>
 
 

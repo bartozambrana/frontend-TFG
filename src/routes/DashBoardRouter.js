@@ -8,7 +8,6 @@ import { Footer } from '../components/ui/Footer'
 import { DatesScreen } from '../components/dates/DatesScreen'
 import { ServiceScreen } from '../components/services/ServiceScreen'
 import { GalleryScreen } from '../components/galery/GalleryScreen'
-
 export const DashBoardRouter = () => {
 
 	return (
