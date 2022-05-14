@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { useDispatch,useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getPosts } from "../../actions/posts";
+import { PostItem } from "./PostItem";
 
 export const PostsList = () => {
     //Ejecutador de las acciones.
@@ -21,10 +22,16 @@ export const PostsList = () => {
             dispatch(getPosts(idService))
         }
             
-    }, [dispatch,idService])
+    }, [dispatch,idService,uidServicePosts])
     
     
     return (
-        <div>PostsList</div>
+        <>
+            {
+                postsLastService.map(post => {
+                    return <PostItem key={post.uid} post={post} />
+                })
+            }
+        </>
     )
 }

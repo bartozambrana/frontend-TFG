@@ -3,23 +3,19 @@ import { types } from "../types/types";
 
 const initialState = {
     uidServicePosts:'',
-    postsLastService:[],
-    postsErrorServer:false
+    postsLastService:[]
 }
 
 export const postReducer = (state=initialState,action) => {
     switch(action.type) {
         case types.getPosts:
+            
             return {
                 ...state,
                 uidServicePosts: action.payload.uid,
                 postsLastService: action.payload.posts
             }
-        case types.setErrorPosts:
-            return {
-                ...state,
-                postsErrorServer: action.payload
-            }
+
         case types.putPost:
             return {
                 ...state,
@@ -28,10 +24,10 @@ export const postReducer = (state=initialState,action) => {
                 )
             }
         case types.postPost:
-            const newPosts = state.postsLastService.concat(action.payload);
+            
             return {
                 ...state,
-                postsLastService: newPosts
+                postsLastService: [action.payload, ...state.postsLastService]
             }
         case types.delPost:
             return {

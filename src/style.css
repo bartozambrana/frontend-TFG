@@ -1,3 +1,21 @@
 body{
     padding-right: 0px !important;
 }
+
+.img-resize {
+    width: 100%;
+    size: cover;
+    max-height: 500px;
+    
+}
+
+.btn-edit-del{
+    
+    background-color: transparent;
+    box-shadow: none;
+
+}
+
+.btn-edit-del::focus{
+    box-shadow: none;
+}

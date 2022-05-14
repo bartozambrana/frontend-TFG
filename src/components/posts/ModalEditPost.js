@@ -6,13 +6,13 @@ import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 
-
-
+import { putPost } from '../../actions/posts';
 import { useForm } from '../../hooks/useForm';
-import { postPost } from '../../actions/posts';
 
 
-export const ModalNewPost = ({ idService, idModal }) => {
+import '../../style.css';
+
+export const ModalEditPost = ({ post, idModal }) => {
 	const dispatch = useDispatch();
 
 	//Variable de estado de previsualización
@@ -24,8 +24,8 @@ export const ModalNewPost = ({ idService, idModal }) => {
 	//Establecemos los campos del formulario;
 	const [formValues, handleInputChange] = useForm({
 		fileUpload: [],
-		description: '',
-		caption: ''
+		description: post.description,
+		caption: post.caption
 	});
 
 	let classVar = '';
@@ -46,10 +46,7 @@ export const ModalNewPost = ({ idService, idModal }) => {
 		}else if (description.trim().length === 0) {
 			Swal.fire('Error', 'Descripción del trabajo no añadida', 'error');
 			return false;
-		} else if (fileUpload.length === 0) {
-			Swal.fire('Error', 'No ha añadido ninguna imagen del trabajo realizado');
-			return false;
-		}
+		} 
 
 		return true;
 	}
@@ -58,29 +55,31 @@ export const ModalNewPost = ({ idService, idModal }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (isFormValid()) {
-			dispatch(postPost(fileUpload,caption,description,idService));
+			dispatch(putPost(fileUpload,caption,description,post.uid));
 		}
 	}
 
 	const handlePreview = (e) => {
 		e.preventDefault();
-		console.log('Previsualizar: ',preview);
 
 		setPreview(!preview);
-		
-		
-		const file = fileUpload[0]
+	
+        if(fileUpload.length > 0) {
+            const file = fileUpload[0]
 
-		const reader = new FileReader();
-		//Cargamos el archivo para generar la url temporal
-		reader.readAsDataURL(file)
+            const reader = new FileReader();
+            //Cargamos el archivo para generar la url temporal
+            reader.readAsDataURL(file)
 
-		reader.onload = ()=>{
-			setSrc(reader.result);
-		}
+            reader.onload = ()=>{
+                setSrc(reader.result);
+            }
+        }else{
+            setSrc(post.photo);
+        }
+		
 		
 	}
-
 
 
 	return (
@@ -88,14 +87,17 @@ export const ModalNewPost = ({ idService, idModal }) => {
 			<div className={classVar}>
 				<div className="modal-content">
 					<div className="modal-header">
-						<h5 className="modal-title" id={idModal}>Formulario de un nuevo posts.</h5>
+						<h5 className="modal-title" id={idModal}>Formulario de modificación.</h5>
 						<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close">
 						</button>
 					</div>
 					<div className='modal-body'>
 						<form className="form-group" onSubmit={handleSubmit}>
-							<input type='text' autoComplete='off' name='caption' placeholder='Título' value={caption} onChange={handleInputChange} className='form-control'/>
-							<label className='text-center mt-1 w-100' style={{ color: '#6c757d' }}>
+                            <label className='text-center mt-1 w-100' style={{ color: '#6c757d' }}>
+                                    Título:
+                                <input type='text' autoComplete='off' name='caption' placeholder='Título' value={caption} onChange={handleInputChange} className='form-control'/>
+                            </label>
+                            <label className='text-center mt-1 w-100' style={{ color: '#6c757d' }}>
 								Descripción del trabajo:
 								<textarea
 									type='text'
@@ -107,32 +109,32 @@ export const ModalNewPost = ({ idService, idModal }) => {
 									onChange={handleInputChange}
 								/>
 							</label>
-
+                            <p className='alert alert-danger'>Añadir una nueva foto implica eliminar la imagen original</p>
 							<label className='text-center mt-1 w-100' style={{ color: '#6c757d' }}>
-								Añada fotografías deseadas
-								<input className="form-control" type="file" name="fileUpload" placeholder='' files={fileUpload} onChange={handleInputChange} />
+								Añada la fotografía deseada
+								<input className="form-control" type="file" name="fileUpload" files={fileUpload} onChange={handleInputChange} />
 							</label >
 
 							<button className='btn btn-outline-success mt-3 me-3' onClick={handlePreview} >Previsualizar</button>
 							{
 								(preview) &&
 								(
-									<div className='shadow p-3 bg-body rounded mt-1'>
-										<h3 className='text-center'>Visualización final</h3>
-										<div className='container'>
-											<img src={src} alt='preview post' className='w-100'/>
-										</div>
-										
-										<p className='text-center rounded' style={{color: 'white', backgroundColor: '#27A2B2'}}>{caption}</p>
-										<p>{description}</p>
-									</div>
+                                    <div className='rounded-bottom mb-3'>
+                                        <img className='img-resize' src={src} alt='PostPicture' />
+                                        <div className='shadow bg-body rounded '>
+                                            <p className='text-center rounded-bottom' style={{color: 'white', backgroundColor: '#27A2B2'}}>{caption}</p>
+                                            <p className='ms-2'>{description}</p>
+                                        
+                                        </div>
+                                    </div>
+
 								)
 							}
 							
 
 							
 							<button type='submit' className='btn btn-outline-primary mt-3' data-bs-dismiss='modal'>
-								Añadir el post
+								Modificar el post
 							</button>
 
 
@@ -142,7 +144,7 @@ export const ModalNewPost = ({ idService, idModal }) => {
 					</div>
 
 					<div className='modal-footer'>
-						<button type='button' className='btn btn-secondary' data-bs-dismiss='modal'>Cancelar</button>
+						<button type='button' className='btn btn-secondary' data-bs-dismiss='modal' >Cancelar</button>
 					</div>
 
 				</div>

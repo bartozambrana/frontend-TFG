@@ -17,18 +17,18 @@ import './preloader.css'
 export const AppRoutes = () => {
     const dispatch = useDispatch();
     const state = useSelector(state => state.auth)
-    const services = useSelector(state => state.services)
-    const comments = useSelector(state => state.comments)
+    
 
     useEffect(()=>{
         //if(state.checking)
             dispatch(startChecking());
         
             
-    },[dispatch,state.checking]);
+    },[dispatch]);
 
     
-
+    if(state.checking)
+        return (<div className='preloader'></div>)
     
     return (
         <BrowserRouter>

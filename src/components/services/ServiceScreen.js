@@ -6,23 +6,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getServiceById } from '../../actions/services';
 import { ActionsService } from './ActionsService';
 import { PostsList } from '../posts/PostsList';
+import { isMobile } from 'react-device-detect';
 
 
 export const ServiceScreen = () => {
     const { idService } = useParams();
     const dispatch = useDispatch();
-    const { user} = useSelector(state => state.auth)
     const { visitedServices, userServices, loaded, serviceErrorServer } = useSelector(state => state.services);
 
     
     useEffect(() => {
         
-        if ( !(userServices.filter(s => s.uid === idService).length === 1) &&
+        if ( !(userServices.filter(s => s.uid === idService).length === 1) && 
             (visitedServices.filter(s => (s.uid === idService)).length === 0))
             dispatch(getServiceById(idService))
 
     }
-    , [dispatch,visitedServices,idService,userServices,user.uid])
+    , [dispatch,visitedServices,idService,userServices])
 
 
     if( serviceErrorServer &&
@@ -37,13 +37,17 @@ export const ServiceScreen = () => {
     let cityName = '';
     let street = '';
     
-    if ( loaded){
+    if ( loaded && (userServices.length !== 0 || visitedServices.length !== 0)){
         service = visitedServices.find(s => s.uid === idService);
-        if(!service)
+        if(service===undefined)
             service = userServices.find(s => s.uid === idService); 
         cityName = encodeURIComponent(service.localization.cityName);
         street = encodeURIComponent(service.localization.street);
     }
+
+    let classVar = 'ms-2 me-2 mt-3'
+    if(!isMobile)
+        classVar = 'container mt-3'
 
     
         
@@ -85,7 +89,8 @@ export const ServiceScreen = () => {
                     Se compone de los posts del servicio y comentarios recibidos del msimo. 
                 */}
             </div>
-            <div className='container  mt-3'>
+
+            <div className={classVar}>
                 <div className='row'>
                     <div className='col-md-8 col-12'>
                         <PostsList />

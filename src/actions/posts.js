@@ -38,12 +38,8 @@ export const getPosts = (idService) => {
         // Exito en la respuesta
         if(body.success){
             // acción de guardar el post añadido
-            dispatch(gettingPosts(body.posts));
-            // Establecemos que no ha habido errores en cuanto al post
-            dispatch(setError(false));
+            dispatch(gettingPosts(body.posts,idService));
         }else{
-            // Establecemos que ha ocurrido un error en la petición
-            dispatch(setError(true));
             // Notificación del error establecido
             if(body.errors)
                 Swal.fire('Error',body.errors[0].msg,'error');
@@ -56,7 +52,7 @@ export const getPosts = (idService) => {
     }
 }
 
-const postPost = (fileUpload,caption,description,idService) =>{
+export const postPost = (fileUpload,caption,description,idService) =>{
     return async(dispatch) => {
 
         //Establecemos el FormData a enviar en petición
@@ -102,11 +98,7 @@ const postPost = (fileUpload,caption,description,idService) =>{
             dispatch(postingPost(body.post));
             // Notificación
             Swal.fire('Exito','Contenido actulizado','success');
-            // Establecemos que no ha habido errores en cuanto al post
-            dispatch(setError(false));
         }else{
-            // Establecemos que ha ocurrido un error en la petición
-            dispatch(setError(true));
             // Notificación del error establecido
             if(body.errors)
                 Swal.fire('Error',body.errors[0].msg,'error');
@@ -119,15 +111,17 @@ const postPost = (fileUpload,caption,description,idService) =>{
     }
 }
 
-const putPost = (fileUpload,caption,description,uidPost) =>{
+export const putPost = (fileUpload,caption,description,uidPost) =>{
     return async(dispatch) => {
 
         //Establecemos el FormData a enviar en petición
         const formData = new FormData();
-        formData.append('caption',caption)
-        formData.append('description', description);    
-        
-        if(formData.length !== 0)
+
+        if(caption.trim().length !== 0)
+            formData.append('caption',caption)
+        if(description.trim().length !== 0)
+            formData.append('description', description);    
+        if(fileUpload.length !== 0)
             formData.append('archivo', fileUpload[0],fileUpload[0].name);
         
 
@@ -167,11 +161,9 @@ const putPost = (fileUpload,caption,description,uidPost) =>{
             dispatch(puttingPost(body.post));
             // Notificación
             Swal.fire('Exito','Contenido actulizado','success');
-            // Establecemos que no ha habido errores en cuanto al post
-            dispatch(setError(false));
+
         }else{
-            // Establecemos que ha ocurrido un error en la petición
-            dispatch(setError(true));
+
             // Notificación del error establecido
             if(body.errors)
                 Swal.fire('Error',body.errors[0].msg,'error');
@@ -184,7 +176,7 @@ const putPost = (fileUpload,caption,description,uidPost) =>{
     }
 }
 
-const deletePost = (uidPost) =>{
+export const deletePost = (uidPost) =>{
     return async(dispatch) => {
         
         
@@ -221,14 +213,12 @@ const deletePost = (uidPost) =>{
         // Exito en la respuesta
         if(body.success){
             // acción de guardar el post añadido
-            dispatch(deletingPost(body.post));
+            dispatch(deletingPost(uidPost));
             // Notificación
             Swal.fire('Exito','Contenido eliminado','success');
-            // Establecemos que no ha habido errores en cuanto al post
-            dispatch(setError(false));
+
         }else{
-            // Establecemos que ha ocurrido un error en la petición
-            dispatch(setError(true));
+
             // Notificación del error establecido
             if(body.errors)
                 Swal.fire('Error',body.errors[0].msg,'error');
@@ -268,12 +258,5 @@ const deletingPost = (uidPost) => {
     return {
         type: types.delPost,
         payload: uidPost
-    }
-}
-
-const setError = (bool) =>{
-    return {
-        type: types.setErrorPosts,
-        payload: bool
     }
 }
