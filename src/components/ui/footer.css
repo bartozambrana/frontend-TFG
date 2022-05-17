@@ -1,16 +1,15 @@
-.dark-footer{
-    background-color: #414E52;
-    border-top: 2px solid #38ABBA;
-    color: #fff;
-
+.dark-footer {
+  background-color: #414e52;
+  border-top: 2px solid #38abba;
+  color: #fff;
 }
 
 .fix-bottom {
-    width: 100%;
-    position: relative;
-    bottom: 0;
+  width: 100%;
+  position: relative;
+  bottom: 0;
 }
 
-.list-none-style{
-    list-style: none;
+.list-none-style {
+  list-style: none;
 }

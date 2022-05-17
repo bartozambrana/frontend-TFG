@@ -1,73 +1,67 @@
-
 export const types = {
+  //Users
+  login: "[auth] login",
+  logout: "[auth] logout",
+  checkingFinish: "[auth] checking finish]",
+  putUser: "[auth] put user",
 
-    login: '[auth] login',
-    logout: '[auth] logout',
-    checkingFinish: '[auth] checking finish]',
+  //Comments
+  getCommentsUser: "[Comment] getCommentsUser",
+  getCommentsService: "[Comment] getCommentsService",
 
-    //Comments
-    getCommentsUser: '[Comment] getCommentsUser',
-    getCommentsService: '[Comment] getCommentsService',
+  putComment: "[Comment] putComment",
 
-    putComment: '[Comment] putComment',
-    
-    postComment: '[Comment] postComment',
-    postReply: '[Comment] postReply',
-    
-    delComment: '[Comment] deetelComment',
-    
-    setErrorComments: '[Comment] setErrorComments',
+  postComment: "[Comment] postComment",
+  postReply: "[Comment] postReply",
 
+  delComment: "[Comment] deetelComment",
 
-    //Appointments
-    getAllDatesUser: '[Appointments] getAllDatesUser',
-    getDatesService: '[Appointments] getDatesService',
-    getAsignedDates: '[Appointments] getAsignedDates',
-    getPDF: '[Appointments] getPDF',
+  setErrorComments: "[Comment] setErrorComments",
 
-    postDate: '[Appointments] postDate',
-    
-    putDate: '[Appointments] putDate',
-    putSelectDate: '[Appointments] putSelectDate',
-    putModifyDate: '[Appointments] putModifyDate',
-    putCancelDate: '[Appointments] putCancelDate',
-    
-    delDate: '[Appointments] delDate',
+  //Appointments
+  getAllDatesUser: "[Appointments] getAllDatesUser",
+  getDatesService: "[Appointments] getDatesService",
+  getAsignedDates: "[Appointments] getAsignedDates",
+  getPDF: "[Appointments] getPDF",
 
+  postDate: "[Appointments] postDate",
 
+  putDate: "[Appointments] putDate",
+  putSelectDate: "[Appointments] putSelectDate",
+  putModifyDate: "[Appointments] putModifyDate",
+  putCancelDate: "[Appointments] putCancelDate",
 
-    
-    //Services
-    getServicesUser : '[Services] getServicesUser',
-    getValidCategories: '[Services] getValidCategories',
-    getService: '[Services] getService',
-    getServicesByCategory: '[Services] getServicesByCategory',
-    getServicesByName: '[Services] getServicesByName',
-    getServiceById: '[Services] getServiceById',
-    
-    putService: '[Services] putService',
+  delDate: "[Appointments] delDate",
 
-    postService: '[Services] postService',
-    postFollow: '[Services] postFollow',
-    
-    delService: '[Services] delService',
+  //Services
+  getServicesUser: "[Services] getServicesUser",
+  getValidCategories: "[Services] getValidCategories",
+  getService: "[Services] getService",
+  getServicesByCategory: "[Services] getServicesByCategory",
+  getServicesByName: "[Services] getServicesByName",
+  getServiceById: "[Services] getServiceById",
+  getAvaliableCategories: "[Services] getAvaliableCategories",
 
-    setServiceError: '[Services] setServiceError',
+  putService: "[Services] putService",
 
-    //Works
-    getWorks: '[Works] getWorks',
-    putWork: '[Works] putWork',
-    postWork: '[Works] postWork',
-    delWork: '[Works] delWork',
-    setError: '[Works] setError',
+  postService: "[Services] postService",
+  postFollow: "[Services] postFollow",
 
-    //Posts
-    getPosts: '[Posts] getPosts',
-    putPost: '[Posts] putPost',
-    postPost: '[Posts] postPost',
-    delPost: '[Posts] delPost',
-    setErrorPosts: '[Posts] setErrorPosts',
+  delService: "[Services] delService",
 
+  setServiceError: "[Services] setServiceError",
 
+  //Works
+  getWorks: "[Works] getWorks",
+  putWork: "[Works] putWork",
+  postWork: "[Works] postWork",
+  delWork: "[Works] delWork",
+  setError: "[Works] setError",
 
-}
+  //Posts
+  getPosts: "[Posts] getPosts",
+  putPost: "[Posts] putPost",
+  postPost: "[Posts] postPost",
+  delPost: "[Posts] delPost",
+  setErrorPosts: "[Posts] setErrorPosts",
+};

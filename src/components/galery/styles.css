@@ -1,17 +1,14 @@
 .carouselItem img {
-    margin: 0 auto;
-    width: auto;
-  }
+  margin: 0 auto;
+  width: auto;
+}
 
-  
-  .carousel .item {
-    max-height: 500px;
-  }
-  
-  .item img {
-      position: center;
-      size: cover;
-      min-height: 300px;
+.carousel .item {
+  max-height: 500px;
+}
 
-  }
-
+.item img {
+  position: center;
+  size: cover;
+  min-height: 300px;
+}
