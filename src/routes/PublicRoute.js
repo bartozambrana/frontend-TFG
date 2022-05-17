@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 
 export const PublicRoute = ({ children }) => {
-  const state = useSelector((state) => state.auth);
+    const state = useSelector((state) => state.auth)
 
-  return !!state.user ? <Navigate to="/" /> : children;
-};
+    return state.user ? <Navigate to="/" /> : children
+}

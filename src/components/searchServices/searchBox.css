@@ -1,66 +1,65 @@
 .search-box {
-  max-width: 350px;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%);
-  background: #2c3441;
-  height: 40px;
-  border-radius: 40px;
-  padding: 0px;
+    max-width: 350px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    background: #414e52;
+    height: 40px;
+    border-radius: 40px;
+    padding: 0px;
 }
 
 .search-box:hover > .icon {
-  background: #536179;
+    background: #536179;
 }
 
 .icon:hover {
-  transform: rotate(360deg) scale(0.8);
-  color: #38abba;
+    transform: rotate(360deg) scale(0.8);
+    color: #38abba;
 }
 
 #input-search {
-  width: clamp(100px, 50%, 250px);
+    width: clamp(100px, 50%, 250px);
 
-  padding-left: 10px !important;
-  border: none;
-  outline: none;
-  padding: 0;
-  background: none;
-  font-size: 1.1rem;
-  transition: 0.5s ease;
-  line-height: 40px;
-  color: #fff;
+    padding-left: 10px !important;
+    border: none;
+    outline: none;
+    padding: 0;
+    background: none;
+    font-size: 1.1rem;
+    transition: 0.5s ease;
+    line-height: 40px;
+    color: #fff;
 }
 
 .icon {
-  color: #38abba;
-  float: right;
-  width: 40px;
-  font-size: 1.3rem;
-  height: 40px;
-  border-radius: 50%;
-  background: #2f3640;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.4s;
-  cursor: pointer;
-  text-decoration: none;
+    color: #38abba;
+    float: right;
+    width: 40px;
+    font-size: 1.3rem;
+    height: 40px;
+    border-radius: 50%;
+    background: #414e52;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .filters {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%);
-  background: #2c3441;
-  color: #38abba;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 50%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    background: #414e52;
+    color: #38abba;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .filters:hover {
-  color: #38abba;
+    color: #38abba;
 }
