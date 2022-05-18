@@ -6,7 +6,7 @@ export const ServiceItem = ({ service }) => {
     return (
         <div className="col">
             <Link
-                to={'/service/' + service._id}
+                to={'/service/' + service.uid}
                 className="link-no-decoration-black"
             >
                 <div className="card">
@@ -17,7 +17,7 @@ export const ServiceItem = ({ service }) => {
                     <div className="card-body">
                         <h5 className="card-title">{service.serviceName}</h5>
                         <p className="card-text">
-                            {service.serviceInfo} <br /> {service._id}
+                            {service.serviceInfo} <br /> {service.uid}
                         </p>
                         <p className="card-text">
                             <small className="text-muted">

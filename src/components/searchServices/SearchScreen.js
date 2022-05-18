@@ -21,7 +21,8 @@ export const SearchScreen = () => {
         //Cada vez que se visite la página se obtienen por si ha surgido alguna categoría.
         dispatch(getAvaliableCategories())
         //Obtenemos un listado de servicios si no se ha visitado nunca la página.
-        dispatch(getRandomServices({ amount: 2, initial: true }))
+        if (servicesList.length === 0)
+            dispatch(getRandomServices({ amount: 2, initial: true }))
     }, [dispatch])
 
     //Obtenemos las categorias disponibles.
@@ -93,8 +94,8 @@ export const SearchScreen = () => {
         //Obtenemos más servicios.
         let servicesServed = ''
         servicesList.forEach((element) => {
-            if (servicesServed === '') servicesServed = element._id
-            else servicesServed = servicesServed + ';' + element._id
+            if (servicesServed === '') servicesServed = element.uid
+            else servicesServed = servicesServed + ';' + element.uid
         })
         dispatch(getRandomServices({ amount: 2, servicesServed }))
     }
