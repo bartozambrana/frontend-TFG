@@ -15,11 +15,11 @@ export const SideBar = ({ id, handleFilters }) => {
         >
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title text-center" id={id + 'Label'}>
-                    Categorias disponibles
+                    Filtros
                 </h5>
                 <button
                     type="button"
-                    className="btn border-secondary text-reset"
+                    className="btn border-secondary text-reset "
                     data-bs-dismiss="offcanvas"
                     aria-label="Close"
                 >
@@ -33,22 +33,41 @@ export const SideBar = ({ id, handleFilters }) => {
                         Se están cargando las categorias
                     </div>
                 ) : (
-                    <ul className="list-group list-group-flush">
-                        {avaliableCategories &&
-                            avaliableCategories.map((c, idx) => {
-                                return (
-                                    <li key={c} className="list-group-item">
-                                        <input
-                                            className="form-check-input me-1 ms-1"
-                                            type="checkbox"
-                                            name={idx}
-                                            onChange={handleFilters}
-                                        />
-                                        {c}
-                                    </li>
-                                )
-                            })}
-                    </ul>
+                    <>
+                        <div>
+                            <h6 className="text-center">Categorías</h6>
+                            <ul className="list-group list-group-flush">
+                                {avaliableCategories &&
+                                    avaliableCategories.map((c, idx) => {
+                                        return (
+                                            <li
+                                                key={c}
+                                                className="list-group-item"
+                                            >
+                                                <input
+                                                    className="form-check-input me-1 ms-1"
+                                                    type="checkbox"
+                                                    name={idx}
+                                                    onChange={handleFilters}
+                                                />
+                                                {c}
+                                            </li>
+                                        )
+                                    })}
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h6 className="text-center">Población</h6>
+                            <input
+                                className="form-control"
+                                type="text"
+                                placeholder="Introduce su población ..."
+                                onChange={handleFilters}
+                                name="population"
+                            />
+                        </div>
+                    </>
                 )}
             </div>
         </aside>

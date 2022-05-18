@@ -20,7 +20,7 @@
 }
 
 #input-search {
-    width: clamp(100px, 50%, 250px);
+    width: clamp(100px, 85%, 350px);
 
     padding-left: 10px !important;
     border: none;
@@ -47,6 +47,7 @@
     transition: 0.4s;
     cursor: pointer;
     text-decoration: none;
+    border:0px;
 }
 
 .filters {
@@ -55,11 +56,20 @@
     left: 50%;
     transform: translate(-50%);
     background: #414e52;
-    color: #38abba;
+    color: #FFF;
     padding-left: 10px;
     padding-right: 10px;
 }
 
 .filters:hover {
     color: #38abba;
+}
+
+#see-more {
+    background-color: #414e52;
+    color: #fff;
+}
+
+#see-more:hover {
+    background-color: #596b70;
 }

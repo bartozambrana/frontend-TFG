@@ -6,6 +6,7 @@ import { commentsReducer } from '../reducers/commentsReducer'
 import { serviceReducer } from '../reducers/serviceReducer'
 import { workReducer } from '../reducers/workReducer'
 import { postReducer } from '../reducers/postReducer'
+import { browserReducer } from '../reducers/browserReducer'
 
 const reducer = combineReducers({
     auth: authReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
     services: serviceReducer,
     works: workReducer,
     posts: postReducer,
+    browser: browserReducer,
 })
 
 //const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;

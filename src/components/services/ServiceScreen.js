@@ -9,7 +9,9 @@ import { PostsList } from '../posts/PostsList'
 import { isMobile } from 'react-device-detect'
 
 export const ServiceScreen = () => {
+    //Identificador del servicio de la url
     const { idService } = useParams()
+
     const dispatch = useDispatch()
     const { visitedServices, userServices, loaded, serviceErrorServer } =
         useSelector((state) => state.services)
@@ -33,7 +35,11 @@ export const ServiceScreen = () => {
     let cityName = ''
     let street = ''
 
-    if (loaded && (userServices.length !== 0 || visitedServices.length !== 0)) {
+    if (
+        loaded &&
+        (visitedServices.filter((s) => s.uid === idService).length !== 0 ||
+            userServices.filter((s) => s.uid === idService).length === 1)
+    ) {
         service = visitedServices.find((s) => s.uid === idService)
         if (service === undefined)
             service = userServices.find((s) => s.uid === idService)

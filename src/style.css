@@ -20,3 +20,13 @@ body {
 .navbar__link {
     text-decoration: none;
 }
+
+.link-no-decoration-black{
+    text-decoration: none;
+    color: #000;
+}
+
+.link-no-decoration-black:hover{
+    text-decoration: none;
+    color: #000;
+}

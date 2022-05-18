@@ -3,47 +3,101 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { SideBar } from './SideBar'
 import { getAvaliableCategories } from '../../actions/services'
+import { useForm } from '../../hooks/useForm'
+import { getRandomServices, searchQuery } from '../../actions/browser'
 
 import './searchBox.css'
+import { ServicesList } from './ServicesList'
 
 export const SearchScreen = () => {
+    //Objeto del buscador para saver la lista de servicios servidos.
+    const { servicesList } = useSelector((state) => state.browser)
     //Lanzador de acciones.
     const dispatch = useDispatch()
 
     //Cargamos la lista de categorias disponibles para realizar el filtro deseado en la búsqueda.
+    //Cargamos una lista de servicios basándonos en un sistema random.
     useEffect(() => {
         //Cada vez que se visite la página se obtienen por si ha surgido alguna categoría.
         dispatch(getAvaliableCategories())
+        //Obtenemos un listado de servicios si no se ha visitado nunca la página.
+        dispatch(getRandomServices({ amount: 2, initial: true }))
     }, [dispatch])
 
     //Obtenemos las categorias disponibles.
     const { avaliableCategories } = useSelector((state) => state.services)
 
-    const [filters, setFilters] = useState(
-        [] //Nombre categoria, seleccionada
-    )
+    // filtros.
+    const [filters, setFilters] = useState({
+        population: '',
+        categories: [], //Nombre categoria, seleccionada
+    })
+
+    // para manejar la input del buscador.
+    const [formValues, handleInputChange] = useForm({ query: '' })
+    const { query } = formValues
 
     //Cargamos los filtros en la variable de estado para saber cuales han sido seleccionados.
     useEffect(() => {
-        setFilters([
-            ...avaliableCategories.map((category) => ({
-                category,
-                selected: false,
-            })),
-        ])
+        setFilters({
+            population: filters.population,
+            categories: [
+                ...avaliableCategories.map((category) => ({
+                    category,
+                    selected: false,
+                })),
+            ],
+        })
     }, [avaliableCategories])
 
     //Método de comunicación entre componente padre e hijo para establecer las categorías.
     const handleSelectCategory = (e) => {
         //Encontrar la categoría en el caso de ser tipo checkbox
+        let population = filters.population
+        let categoryList = filters.categories
+
+        if (e.target.name === 'population') population = e.target.value
+
         if (e.target.type === 'checkbox') {
-            const categoryList = filters
+            categoryList = filters.categories
             categoryList[e.target.name].selected = e.target.checked
-            setFilters([...categoryList])
         }
+
+        setFilters({
+            population,
+            categories: [...categoryList],
+        })
     }
 
-    //Obtenemos los servicios conforme vayan cambiando las categorias.
+    //Método encargado de realizar la búsqueda.
+    const handleSearch = () => {
+        let categories = ''
+        filters.categories.forEach((element) => {
+            if (element.selected && categories === '')
+                categories = element.category
+            else if (element.selected)
+                categories = categories + ';' + element.category
+        })
+
+        dispatch(
+            searchQuery(
+                categories,
+                filters.population.toLocaleLowerCase(),
+                query.toLocaleLowerCase()
+            )
+        )
+    }
+
+    //Método para obtener más servicios.
+    const handleServices = () => {
+        //Obtenemos más servicios.
+        let servicesServed = ''
+        servicesList.forEach((element) => {
+            if (servicesServed === '') servicesServed = element._id
+            else servicesServed = servicesServed + ';' + element._id
+        })
+        dispatch(getRandomServices({ amount: 2, servicesServed }))
+    }
 
     return (
         <main>
@@ -60,10 +114,14 @@ export const SearchScreen = () => {
                             type="text"
                             id="input-search"
                             placeholder="Buscar ..."
+                            name="query"
+                            value={query}
+                            autoComplete="off"
+                            onChange={handleInputChange}
                         />
-                        <a href="##" className="icon">
+                        <button className="icon" onClick={handleSearch}>
                             <i className="fa fa-search"></i>
-                        </a>
+                        </button>
                     </div>
                     <div className="col-12 mb-4">
                         <button
@@ -85,11 +143,29 @@ export const SearchScreen = () => {
             {/*List of services*/}
             <div className="container-fluid text-center">
                 <h1>Filtros seleccionados - prueba</h1>
-                {filters.map((f, idx) => (
-                    <p key={idx}>
-                        {f.category} - {f.selected ? 'true' : 'false'}
-                    </p>
-                ))}
+                <div>
+                    {filters.categories.map((f, idx) => (
+                        <p key={idx}>
+                            {f.category} - {f.selected ? 'true' : 'false'}
+                        </p>
+                    ))}
+                    <p>{filters.population}</p>
+                </div>
+
+                {/* Lista de servicios obtenidos por la consulta*/}
+                <ServicesList />
+
+                <button
+                    className="btn mt-3"
+                    id="see-more"
+                    onClick={handleServices}
+                >
+                    <i
+                        className="fa fa-chevron-circle-down"
+                        aria-hidden="true"
+                    ></i>{' '}
+                    Ver más
+                </button>
             </div>
         </main>
     )

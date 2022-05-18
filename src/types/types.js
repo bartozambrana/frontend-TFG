@@ -37,8 +37,7 @@ export const types = {
     getServicesUser: '[Services] getServicesUser',
     getValidCategories: '[Services] getValidCategories',
     getService: '[Services] getService',
-    getServicesByCategory: '[Services] getServicesByCategory',
-    getServicesByName: '[Services] getServicesByName',
+
     getServiceById: '[Services] getServiceById',
     getAvaliableCategories: '[Services] getAvaliableCategories',
 
@@ -64,4 +63,9 @@ export const types = {
     postPost: '[Posts] postPost',
     delPost: '[Posts] delPost',
     setErrorPosts: '[Posts] setErrorPosts',
+
+    //Browser
+    getServicesSearch: '[Browser] getServicesSearch',
+    setServices: '[Browser] setServices',
+    setInitialServices: '[Browser] setInitialServices',
 }
