@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom'
 import { ModalGestionDatos } from './ModalGestionDatos'
 import { ModalNewWork } from '../works/ModalNewWork'
 import { ModalNewPost } from '../posts/ModalNewPost'
+import { ModalNewDates } from '../dates/ModalNewDates'
+
+import '../../style.css'
+import { ModalEditDate } from '../dates/ModalEditDates'
 
 export const ActionsService = ({ idUserService, uidService }) => {
     const { user } = useSelector((state) => state.auth)
@@ -11,10 +15,49 @@ export const ActionsService = ({ idUserService, uidService }) => {
         <>
             {user.uid === idUserService ? (
                 <>
-                    <button className="btn btn-success mt-1 ">
-                        {' '}
-                        Gestión de Citas
-                    </button>
+                    <div className="dropdown ">
+                        <button
+                            className="btn dropdown-toggle btn-success mt-1 w-100"
+                            id="dropdown-dates-actions"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            {' '}
+                            Gestión de Citas
+                        </button>
+                        <ul
+                            className="dropdown-menu w-100 text-center"
+                            aria-labelledby="dropdown-dates-actions"
+                        >
+                            <li className="dropdown-item border-bottom">
+                                <a
+                                    href={'#NewDate' + uidService}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#NewDate' + uidService}
+                                    className="link-no-decoration-black"
+                                >
+                                    Añadir Cita
+                                </a>
+                            </li>
+                            <li className="dropdown-item border-bottom">
+                                <a
+                                    href={'#EditDate' + uidService}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#EditDate' + uidService}
+                                    className="link-no-decoration-black"
+                                >
+                                    Modificar Cita
+                                </a>
+                            </li>
+                            <li className="dropdown-item border-bottom">
+                                Cancelar Cita
+                            </li>
+                            <li className="dropdown-item border-bottom">
+                                Eliminar Cita
+                            </li>
+                        </ul>
+                    </div>
+
                     <button
                         className="btn btn-outline-primary mt-1"
                         data-bs-toggle="modal"
@@ -69,6 +112,14 @@ export const ActionsService = ({ idUserService, uidService }) => {
                     Galería
                 </Link>
             </button>
+            <ModalNewDates
+                uidService={uidService}
+                idModal={'NewDate' + uidService}
+            />
+            <ModalEditDate
+                uidService={uidService}
+                idModal={'EditDate' + uidService}
+            />
         </>
     )
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import { DateItem } from './DateItem'
 
 export const DatesScreen = () => {

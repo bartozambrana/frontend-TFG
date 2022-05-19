@@ -5,9 +5,9 @@ import { SideBar } from './SideBar'
 import { getAvaliableCategories } from '../../actions/services'
 import { useForm } from '../../hooks/useForm'
 import { getRandomServices, searchQuery } from '../../actions/browser'
+import { ServicesList } from './ServicesList'
 
 import './searchBox.css'
-import { ServicesList } from './ServicesList'
 
 export const SearchScreen = () => {
     //Objeto del buscador para saver la lista de servicios servidos.
@@ -143,16 +143,6 @@ export const SearchScreen = () => {
             </div>
             {/*List of services*/}
             <div className="container-fluid text-center">
-                <h1>Filtros seleccionados - prueba</h1>
-                <div>
-                    {filters.categories.map((f, idx) => (
-                        <p key={idx}>
-                            {f.category} - {f.selected ? 'true' : 'false'}
-                        </p>
-                    ))}
-                    <p>{filters.population}</p>
-                </div>
-
                 {/* Lista de servicios obtenidos por la consulta*/}
                 <ServicesList />
 

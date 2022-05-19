@@ -67,17 +67,17 @@ export const ServiceScreen = () => {
                 */}
                 <div className="row shadow p-3 mt-3 mb-5 bg-body rounded">
                     {/*Descripción del servicio*/}
-                    <div className="col-md-4 col-12">
+                    <div className="col-lg-4 col-md-12 col-12">
                         <p>{service.serviceInfo}</p>
                     </div>
 
-                    <div className="col-md-2 col-12 justify-content-around d-flex flex-column">
+                    <div className="col-lg-2 col-md-4 col-12 justify-content-around d-flex flex-column">
                         <ActionsService
                             idUserService={service.idUser}
                             uidService={service.uid}
                         />
                     </div>
-                    <div className="col-md-6 col-12 mt-1 ">
+                    <div className="col-lg-6 col-md-8 col-12 mt-1 ">
                         {/*
                             (loaded) &&
                             <iframe className='w-100' height='350' src={"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566588180814!2d-3.3161796837420376!3d38.06906157970678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6ef1a351173d7f%3A0xb007cd0c804e83c7!2s"
