@@ -7,6 +7,7 @@ import { serviceReducer } from '../reducers/serviceReducer'
 import { workReducer } from '../reducers/workReducer'
 import { postReducer } from '../reducers/postReducer'
 import { browserReducer } from '../reducers/browserReducer'
+import { dateReducer } from '../reducers/dateReducer'
 
 const reducer = combineReducers({
     auth: authReducer,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
     works: workReducer,
     posts: postReducer,
     browser: browserReducer,
+    appointments: dateReducer
 })
 
 //const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;

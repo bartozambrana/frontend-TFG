@@ -68,4 +68,8 @@ export const types = {
     getServicesSearch: '[Browser] getServicesSearch',
     setServices: '[Browser] setServices',
     setInitialServices: '[Browser] setInitialServices',
+
+    //Appointments
+    getUserAppointments: '[Appointments] getUserAppointments',
+    putUserCancelAppointment: '[Appointments] putUserCancelAppoint',
 }

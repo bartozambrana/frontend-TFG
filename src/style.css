@@ -21,17 +21,30 @@ body {
     text-decoration: none;
 }
 
-.link-no-decoration-black{
+.link-no-decoration-black {
     text-decoration: none;
     color: #000;
 }
 
-.link-no-decoration-black:hover{
+.link-no-decoration-black:hover {
     text-decoration: none;
     color: #000;
 }
 
-
-.react-datepicker-full-width{
+.react-datepicker-full-width {
     width: 100%;
+}
+
+.container-front-image img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.caption-image {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

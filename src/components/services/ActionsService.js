@@ -7,7 +7,9 @@ import { ModalNewPost } from '../posts/ModalNewPost'
 import { ModalNewDates } from '../dates/ModalNewDates'
 
 import '../../style.css'
-import { ModalEditDate } from '../dates/ModalEditDates'
+import { ModalEditDateOwner } from '../dates/ModalEditDateOwner'
+import { ModalCancelDateOwner } from '../dates/ModalCancelDateOwner'
+import { ModalDelDateOwner } from '../dates/ModalDelDateOwner'
 
 export const ActionsService = ({ idUserService, uidService }) => {
     const { user } = useSelector((state) => state.auth)
@@ -50,10 +52,24 @@ export const ActionsService = ({ idUserService, uidService }) => {
                                 </a>
                             </li>
                             <li className="dropdown-item border-bottom">
-                                Cancelar Cita
+                                <a 
+                                    href={'#CancelDate' + uidService}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#CancelDate' + uidService}
+                                    className="link-no-decoration-black"
+                                >
+                                    Cancelar Cita a Usuario.
+                                </a>
                             </li>
                             <li className="dropdown-item border-bottom">
-                                Eliminar Cita
+                                <a 
+                                    href={'#DelDate' + uidService}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#DelDate' + uidService}
+                                    className="link-no-decoration-black"
+                                >
+                                Eliminar una cita
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -116,9 +132,19 @@ export const ActionsService = ({ idUserService, uidService }) => {
                 uidService={uidService}
                 idModal={'NewDate' + uidService}
             />
-            <ModalEditDate
+            <ModalEditDateOwner
                 uidService={uidService}
                 idModal={'EditDate' + uidService}
+            />
+
+            <ModalCancelDateOwner 
+                uidService={uidService}
+                idModal={'CancelDate' + uidService}
+            />
+
+            <ModalDelDateOwner
+                uidService={uidService}
+                idModal={'DelDate' + uidService}
             />
         </>
     )

@@ -3,12 +3,14 @@ import { useDispatch } from 'react-redux'
 
 import { useForm } from '../../hooks/useForm'
 import { format } from 'date-fns'
-import Swal from 'sweetalert2'
+
 
 import '../../style.css'
-import { getDatesDay } from '../../actions/dates'
+import { getDatesDay, putDateService } from '../../actions/dates'
+import { swallError } from '../../helpers/SwalNotifications'
+import { hourToInt } from '../../helpers/hourToInt'
 
-export const ModalEditDate = ({ uidService, idModal }) => {
+export const ModalEditDateOwner = ({ uidService, idModal }) => {
     //Fecha Variable de esado para manejar la fecha.
     const [dateDay, setDateDay] = useState('')
     //Variable de estado para cargar el array de citas obtenidas.
@@ -28,43 +30,20 @@ export const ModalEditDate = ({ uidService, idModal }) => {
 
     const isFormValid = () => {
         if (dateDay.trim().length === 0) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha establecido la fecha',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
-            return false
-        } else if (initHour.trim().length === 0) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha establecido la hora de inicio',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
-            return false
-        } else if (endHour.trim().length === 0) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha establecido la hora de fin',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
+            swallError('No ha seleccionado una fecha');
             return false
         } else if (uidDate === 'Selecciona una cita' || uidDate === '') {
-            Swal.fire({
-                title: 'No ha seleccionado una cita',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
+            swallError('No ha seleccionado una cita.');
+            return false;
+        } else if (initHour.trim().length === 0) {
+            swallError('No ha introducido hora de cominezo');
+            return false
+        } else if (endHour.trim().length === 0) {
+            swallError('No ha introducido hora de finalización');
+            return false
+        } else if( hourToInt(initHour) >= hourToInt(endHour) ) {
+            swallError('La hora de comienzo no puede ser mayor o igual a la finalización')
+            return false;
         }
         return true
     }
@@ -73,7 +52,7 @@ export const ModalEditDate = ({ uidService, idModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (isFormValid()) {
-            //dispatch(postNewDate(dateDay, initHour, endHour, uidService))
+            dispatch(putDateService(uidDate,initHour,endHour));
         }
     }
 
@@ -96,7 +75,6 @@ export const ModalEditDate = ({ uidService, idModal }) => {
     //Obtenemos las citas trans introducir la fecha.
     useEffect(() => {
         if (dateDay) {
-            console.log('Solicitar fechas de un día del servicio: ', uidService)
             dispatch(getDatesDay(dateDay, uidService, setNewDateList))
         }
     }, [dateDay])
@@ -104,7 +82,7 @@ export const ModalEditDate = ({ uidService, idModal }) => {
     //Efecto secundario de seleccionar una fecha.
     useEffect(() => {
         if (
-            (uidDate !== 'Selecciona una cita' || uidDate !== '') &&
+            uidDate !== 'Selecciona una cita' && uidDate !== '' &&
             dateList.length !== 0
         ) {
             //Obtenemos la cita que es.
@@ -133,7 +111,7 @@ export const ModalEditDate = ({ uidService, idModal }) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title text-center" id={idModal}>
-                            Registro de una nueva cita.
+                            Modificación de cita.
                         </h5>
                         <button
                             type="button"
@@ -219,9 +197,8 @@ export const ModalEditDate = ({ uidService, idModal }) => {
                                     <button
                                         type="submit"
                                         className="btn btn-outline-primary mt-3"
-                                        data-bs-dismiss="modal"
                                     >
-                                        Registrar Cita
+                                        Modificar cita.
                                     </button>
                                 </>
                             )}
