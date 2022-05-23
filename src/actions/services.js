@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
 
 import { types } from '../types/types'
 import { startLogout } from './auth'
@@ -210,5 +211,49 @@ const setAvaliableCategories = (categories) => {
     return {
         type: types.getAvaliableCategories,
         payload: categories,
+    }
+}
+
+export const followUnfollow = (service) => {
+    return async (dispatch) => {
+        // Mostramos la notificación.
+        loadingOpen('Añadiendo servicio a seguidos')
+
+        // Realizamos petición de seguimiento.
+        const response = await fetch(url + '/follow-unfollow/' + service.uid, {
+            method: 'POST',
+            headers: {
+                token: localStorage.getItem('token'),
+            },
+        })
+
+        // Cerramos notificación
+        loadingClose()
+
+        //Obtenemos la respuesta
+        const body = await response.json()
+
+        if (body.success) {
+            dispatch(setFollowUnfollow(body.followService, service))
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout())
+            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+        } else if (body.msg) {
+            Swal.fire('Error', body.msg, 'error')
+        } else Swal.fire('Error', body.errors[0].msg, 'error')
+    }
+}
+
+const setFollowUnfollow = (follow, service) => {
+    if (follow) {
+        return {
+            type: types.followService,
+            payload: service,
+        }
+    }
+
+    return {
+        type: types.unfollowService,
+        payload: service.uid,
     }
 }

@@ -72,10 +72,7 @@ export const ServiceScreen = () => {
                     </div>
 
                     <div className="col-lg-2 col-md-4 col-12 justify-content-around d-flex flex-column">
-                        <ActionsService
-                            idUserService={service.idUser}
-                            uidService={service.uid}
-                        />
+                        <ActionsService service={service} />
                     </div>
                     <div className="col-lg-6 col-md-8 col-12 mt-1 ">
                         {/*

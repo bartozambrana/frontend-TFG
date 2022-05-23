@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import { ModalGestionDatos } from './ModalGestionDatos'
@@ -11,12 +11,15 @@ import { ModalEditDateOwner } from '../dates/ModalEditDateOwner'
 import { ModalCancelDateOwner } from '../dates/ModalCancelDateOwner'
 import { ModalDelDateOwner } from '../dates/ModalDelDateOwner'
 import { ModalSelectDate } from '../dates/ModalSelectDate'
+import { followUnfollow } from '../../actions/services'
 
-export const ActionsService = ({ idUserService, uidService }) => {
+export const ActionsService = ({ service }) => {
     const { user } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+
     return (
         <>
-            {user.uid === idUserService ? (
+            {user.uid === service.idUser ? (
                 <>
                     <div className="dropdown ">
                         <button
@@ -34,9 +37,9 @@ export const ActionsService = ({ idUserService, uidService }) => {
                         >
                             <li className="dropdown-item border-bottom">
                                 <a
-                                    href={'#NewDate' + uidService}
+                                    href={'#NewDate' + service.uid}
                                     data-bs-toggle="modal"
-                                    data-bs-target={'#NewDate' + uidService}
+                                    data-bs-target={'#NewDate' + service.uid}
                                     className="link-no-decoration-black"
                                 >
                                     Añadir Cita
@@ -44,9 +47,9 @@ export const ActionsService = ({ idUserService, uidService }) => {
                             </li>
                             <li className="dropdown-item border-bottom">
                                 <a
-                                    href={'#EditDate' + uidService}
+                                    href={'#EditDate' + service.uid}
                                     data-bs-toggle="modal"
-                                    data-bs-target={'#EditDate' + uidService}
+                                    data-bs-target={'#EditDate' + service.uid}
                                     className="link-no-decoration-black"
                                 >
                                     Modificar Cita
@@ -54,9 +57,9 @@ export const ActionsService = ({ idUserService, uidService }) => {
                             </li>
                             <li className="dropdown-item border-bottom">
                                 <a
-                                    href={'#CancelDate' + uidService}
+                                    href={'#CancelDate' + service.uid}
                                     data-bs-toggle="modal"
-                                    data-bs-target={'#CancelDate' + uidService}
+                                    data-bs-target={'#CancelDate' + service.uid}
                                     className="link-no-decoration-black"
                                 >
                                     Cancelar Cita a Usuario.
@@ -64,9 +67,9 @@ export const ActionsService = ({ idUserService, uidService }) => {
                             </li>
                             <li className="dropdown-item border-bottom">
                                 <a
-                                    href={'#DelDate' + uidService}
+                                    href={'#DelDate' + service.uid}
                                     data-bs-toggle="modal"
-                                    data-bs-target={'#DelDate' + uidService}
+                                    data-bs-target={'#DelDate' + service.uid}
                                     className="link-no-decoration-black"
                                 >
                                     Eliminar una cita
@@ -78,37 +81,37 @@ export const ActionsService = ({ idUserService, uidService }) => {
                     <button
                         className="btn btn-outline-primary mt-1"
                         data-bs-toggle="modal"
-                        data-bs-target={'#NewPost' + uidService}
+                        data-bs-target={'#NewPost' + service.uid}
                     >
                         Añadir Post
                     </button>
                     <ModalNewPost
-                        idModal={'NewPost' + uidService}
-                        idService={uidService}
+                        idModal={'NewPost' + service.uid}
+                        idService={service.uid}
                     />
 
                     <button
                         className="btn btn-outline-secondary mt-1"
                         data-bs-toggle="modal"
-                        data-bs-target={'#NewWork' + uidService}
+                        data-bs-target={'#NewWork' + service.uid}
                     >
                         Añadir Trabajo{' '}
                     </button>
                     <ModalNewWork
-                        idService={uidService}
-                        idModal={'NewWork' + uidService}
+                        idService={service.uid}
+                        idModal={'NewWork' + service.uid}
                     />
 
                     <button
                         className="btn btn-outline-danger mt-1"
                         data-bs-toggle="modal"
-                        data-bs-target={'#EditService' + uidService}
+                        data-bs-target={'#EditService' + service.uid}
                     >
                         Gestión de datos
                     </button>
                     <ModalGestionDatos
-                        idService={uidService}
-                        idModal={'EditService' + uidService}
+                        idService={service.uid}
+                        idModal={'EditService' + service.uid}
                     />
                 </>
             ) : (
@@ -117,7 +120,7 @@ export const ActionsService = ({ idUserService, uidService }) => {
                         className="btn btn-success mt-1 "
                         data-bs-toggle="modal"
                         data-bs-target={
-                            '#selectDate' + user.uid + 'service' + uidService
+                            '#selectDate' + user.uid + 'service' + service.uid
                         }
                     >
                         {' '}
@@ -125,40 +128,61 @@ export const ActionsService = ({ idUserService, uidService }) => {
                     </button>
                     <ModalSelectDate
                         idModal={
-                            'selectDate' + user.uid + 'service' + uidService
+                            'selectDate' + user.uid + 'service' + service.uid
                         }
-                        uidService={uidService}
+                        uidService={service.uid}
                     />
-
-                    <button className="btn btn-primary mt-1"> Sigueme </button>
                 </>
             )}
+
+            {
+                /* Si existe entre los servicio que sigue el usuario */
+                user.followServices.length !== 0 &&
+                user.followServices.find(
+                    (follow) => follow._id === service.uid
+                ) ? (
+                    <button
+                        className="btn btn-outline-danger mt-1"
+                        onClick={() => dispatch(followUnfollow(service))}
+                    >
+                        unfollow
+                    </button>
+                ) : (
+                    <button
+                        className="btn btn-primary mt-1"
+                        onClick={() => dispatch(followUnfollow(service))}
+                    >
+                        follow
+                    </button>
+                )
+            }
+
             <button className="btn btn-secondary mt-1">
                 <Link
                     className="link-light"
                     style={{ textDecoration: 'none' }}
-                    to={'/service/gallery/' + uidService}
+                    to={'/service/gallery/' + service.uid}
                 >
                     Galería
                 </Link>
             </button>
             <ModalNewDates
-                uidService={uidService}
-                idModal={'NewDate' + uidService}
+                uidService={service.uid}
+                idModal={'NewDate' + service.uid}
             />
             <ModalEditDateOwner
-                uidService={uidService}
-                idModal={'EditDate' + uidService}
+                uidService={service.uid}
+                idModal={'EditDate' + service.uid}
             />
 
             <ModalCancelDateOwner
-                uidService={uidService}
-                idModal={'CancelDate' + uidService}
+                uidService={service.uid}
+                idModal={'CancelDate' + service.uid}
             />
 
             <ModalDelDateOwner
-                uidService={uidService}
-                idModal={'DelDate' + uidService}
+                uidService={service.uid}
+                idModal={'DelDate' + service.uid}
             />
         </>
     )

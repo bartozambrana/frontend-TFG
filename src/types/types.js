@@ -50,6 +50,9 @@ export const types = {
 
     setServiceError: '[Services] setServiceError',
 
+    followService: '[auth] followService',
+    unfollowService: '[auth] unfollowService',
+
     //Works
     getWorks: '[Works] getWorks',
     putWork: '[Works] putWork',
