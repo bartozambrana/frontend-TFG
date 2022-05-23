@@ -3,7 +3,10 @@ import { useDispatch } from 'react-redux'
 import { putCancelDate } from '../../actions/dates'
 
 export const ModalCancelDateUser = ({ idModal, appointment }) => {
+    // Lanazador de acciones
     const dispatch = useDispatch()
+
+    // Acción cuanso se confirma la acción.
     const handleConfirm = () => {
         dispatch(putCancelDate(appointment.uid, true))
     }
@@ -31,6 +34,7 @@ export const ModalCancelDateUser = ({ idModal, appointment }) => {
                     </div>
                     <div className="modal-body">
                         <div className="alert alert-info">
+                            {/* Información de la cita que va a cancelar */}
                             <p>
                                 Está seguro de eliminar la cita para el servicio{' '}
                                 <strong>

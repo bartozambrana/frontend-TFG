@@ -139,7 +139,7 @@ export const ModalEditDateUser = ({ idModal, appointment }) => {
                                     className="w-50 ms-3 border border-secondary"
                                 />
                             </label>
-
+                            {/* Lista do citas en el caso de que para el día seleccionado haya citas */}
                             {appointmentList.length !== 0 && (
                                 <select
                                     className="form-select mt-3 text-center"
@@ -164,7 +164,11 @@ export const ModalEditDateUser = ({ idModal, appointment }) => {
                                     ))}
                                 </select>
                             )}
-
+                            {/* 
+                                En el caso de que haya seleccionado una cita, le mostramos la 
+                                información de la misma para que sea consciente de lo que ha
+                                selecciona.
+                            */}
                             {uidDate !== '' &&
                                 uidDate !== 'Selecciona una cita' && (
                                     <div className="alert alert-info mt-3">

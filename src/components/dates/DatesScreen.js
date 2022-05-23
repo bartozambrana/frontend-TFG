@@ -47,6 +47,7 @@ export const DatesScreen = () => {
 
             <div className="container mt-5">
                 <ul className="list-group list-group-flush">
+                    {/* Mostramos el listado de citas que posee el usuario */}
                     {userAppointments.length !== 0 ? (
                         userAppointments.map((appointment, idx) => {
                             return (

@@ -47,6 +47,12 @@ export const DateItem = ({ appointment }) => {
                         </p>
                     </div>
                 </div>
+                {/* 
+                    Comprobamos si al fecha actual es menor o igual a la cual se va a mostrar
+
+                    Si es igual o menor, no se muestran los botonoes que habilitan la edición y cancelación 
+                    de una cta.
+                */}
                 {compareAsc(new Date(date), new Date()) === 1 && (
                     <div className="d-flex justify-content-end ">
                         <button
@@ -60,6 +66,10 @@ export const DateItem = ({ appointment }) => {
                                 aria-hidden="true"
                             ></i>
                         </button>
+                        <ModalEditDateUser
+                            idModal={'EditDateUser' + uidDate}
+                            appointment={appointment}
+                        />
                         <button
                             className="btn "
                             style={styleBtn}
@@ -71,18 +81,13 @@ export const DateItem = ({ appointment }) => {
                                 aria-hidden="true"
                             ></i>
                         </button>
+                        <ModalCancelDateUser
+                            idModal={'CancelDateUser' + uidDate}
+                            appointment={appointment}
+                        />
                     </div>
                 )}
             </div>
-            <ModalCancelDateUser
-                idModal={'CancelDateUser' + uidDate}
-                appointment={appointment}
-            />
-
-            <ModalEditDateUser
-                idModal={'EditDateUser' + uidDate}
-                appointment={appointment}
-            />
         </>
     )
 }
