@@ -10,6 +10,7 @@ import '../../style.css'
 import { ModalEditDateOwner } from '../dates/ModalEditDateOwner'
 import { ModalCancelDateOwner } from '../dates/ModalCancelDateOwner'
 import { ModalDelDateOwner } from '../dates/ModalDelDateOwner'
+import { ModalSelectDate } from '../dates/ModalSelectDate'
 
 export const ActionsService = ({ idUserService, uidService }) => {
     const { user } = useSelector((state) => state.auth)
@@ -52,7 +53,7 @@ export const ActionsService = ({ idUserService, uidService }) => {
                                 </a>
                             </li>
                             <li className="dropdown-item border-bottom">
-                                <a 
+                                <a
                                     href={'#CancelDate' + uidService}
                                     data-bs-toggle="modal"
                                     data-bs-target={'#CancelDate' + uidService}
@@ -62,13 +63,13 @@ export const ActionsService = ({ idUserService, uidService }) => {
                                 </a>
                             </li>
                             <li className="dropdown-item border-bottom">
-                                <a 
+                                <a
                                     href={'#DelDate' + uidService}
                                     data-bs-toggle="modal"
                                     data-bs-target={'#DelDate' + uidService}
                                     className="link-no-decoration-black"
                                 >
-                                Eliminar una cita
+                                    Eliminar una cita
                                 </a>
                             </li>
                         </ul>
@@ -112,10 +113,23 @@ export const ActionsService = ({ idUserService, uidService }) => {
                 </>
             ) : (
                 <>
-                    <button className="btn btn-success mt-1 ">
+                    <button
+                        className="btn btn-success mt-1 "
+                        data-bs-toggle="modal"
+                        data-bs-target={
+                            '#selectDate' + user.uid + 'service' + uidService
+                        }
+                    >
                         {' '}
                         Pide Cita{' '}
                     </button>
+                    <ModalSelectDate
+                        idModal={
+                            'selectDate' + user.uid + 'service' + uidService
+                        }
+                        uidService={uidService}
+                    />
+
                     <button className="btn btn-primary mt-1"> Sigueme </button>
                 </>
             )}
@@ -137,7 +151,7 @@ export const ActionsService = ({ idUserService, uidService }) => {
                 idModal={'EditDate' + uidService}
             />
 
-            <ModalCancelDateOwner 
+            <ModalCancelDateOwner
                 uidService={uidService}
                 idModal={'CancelDate' + uidService}
             />

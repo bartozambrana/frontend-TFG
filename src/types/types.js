@@ -72,4 +72,6 @@ export const types = {
     //Appointments
     getUserAppointments: '[Appointments] getUserAppointments',
     putUserCancelAppointment: '[Appointments] putUserCancelAppoint',
+    putSelectAppointmentUser: '[Appointments] putSelectAppointmentUser',
+    putModifyAppointment: '[Appointments] putModifyAppointment',
 }

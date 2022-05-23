@@ -37,14 +37,7 @@ export const postNewDate = (dateDay, initHour, endHour, uidService) => {
 
         if (body.success) {
             //Mostramos que la cita ha sido añadida.
-            Swal.fire({
-                title: 'Éxito',
-                text: 'Se ha añadido al sistema la cita',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'success',
-            })
+            swalInfoTimer('Se ha añadido la cita.')
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
             Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
@@ -77,14 +70,7 @@ export const getDatesDay = (dateDay, uidService, setNewDateList) => {
         if (body.success) {
             //Establecemos la lista de citas.
             if (body.dates.length === 0)
-                Swal.fire({
-                    title: 'Éxito',
-                    text: 'No se disponen citas para la fecha introducida.',
-                    timer: 4000,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#414e52',
-                    icon: 'info',
-                })
+                swalInfoTimer('No hay citas para el día solicitado')
 
             setNewDateList(body.dates)
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
@@ -186,9 +172,10 @@ export const putCancelDate = (uidDate, user = false) => {
         const body = await response.json()
         if (body.success) {
             swalInfoTimer('Cita cancelada.')
-            if (user)
+            if (user) {
                 //Usuario cliente
                 dispatch(userCancelAppointment(uidDate))
+            }
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
             Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
@@ -266,6 +253,77 @@ export const getUserAppointments = () => {
     }
 }
 
+export const putSelectDate = (uidDate) => {
+    return async (dispatch) => {
+        //Mostramos que se está registrando la cita.
+        loadingOpen('cargando la cita.')
+
+        //Petición al servidor.
+        const response = await fetch(url + '/select/' + uidDate, {
+            method: 'PUT',
+            headers: {
+                token: localStorage.getItem('token'),
+            },
+        })
+
+        //Cerramos la notificación
+        loadingClose()
+
+        //Obtenemos el cuerpo de la respuesta.
+        const body = await response.json()
+
+        //Respuestas dependiendo de la respuonse del servidor,
+        if (body.success) {
+            swalInfoTimer('Cita seleccionada con éxito.')
+            dispatch(userSelectAppointment(body.date)) //Cargamos la citas localmente
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+        } else if (body.msg) {
+            Swal.fire('Error', body.msg, 'error')
+        } else if (body.errors) {
+            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
+            Swal.fire('Error', body.errors[0].msg, 'error')
+        }
+    }
+}
+
+export const putModifyDate = (uidNewDate, uidOldDate) => {
+    return async (dispatch) => {
+        //Notificación de que se está modificando la cita.
+        loadingOpen('Actualizando la cita ...')
+
+        //Petición al servidor.
+        const response = await fetch(url + 'modify/' + uidNewDate, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                token: localStorage.getItem('token'),
+            },
+            body: JSON.stringify({ idOldDate: uidOldDate }),
+        })
+
+        //Cerramos la notificación al usuario.
+        loadingClose()
+
+        //Obtenemos el cuerpo de la respuesta.
+        const body = await response.json()
+
+        //Respuestas dependiendo de la respuonse del servidor,
+        if (body.success) {
+            swalInfoTimer('Cita Modificada con éxito.')
+            dispatch(userModifyAppointment(body.date, uidOldDate)) //Cargamos la citas localmente
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+        } else if (body.msg) {
+            Swal.fire('Error', body.msg, 'error')
+        } else if (body.errors) {
+            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
+            Swal.fire('Error', body.errors[0].msg, 'error')
+        }
+    }
+}
 const userAppointments = (appointments) => {
     return {
         type: types.getUserAppointments,
@@ -275,4 +333,12 @@ const userAppointments = (appointments) => {
 
 const userCancelAppointment = (uid) => {
     return { type: types.putUserCancelAppointment, payload: uid }
+}
+
+const userSelectAppointment = (date) => {
+    return { type: types.putSelectAppointmentUser, payload: date }
+}
+
+const userModifyAppointment = (date, oldUid) => {
+    return { type: types.putModifyAppointment, payload: { date, oldUid } }
 }

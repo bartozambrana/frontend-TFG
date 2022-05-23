@@ -32,11 +32,11 @@ export const ModalCancelDateUser = ({ idModal, appointment }) => {
                     <div className="modal-body">
                         <div className="alert alert-info">
                             <p>
-                                Está seguro de eliminar la cita para{' '}
+                                Está seguro de eliminar la cita para el servicio{' '}
                                 <strong>
                                     {appointment.idService.serviceName}
                                 </strong>{' '}
-                                para el día{' '}
+                                del día{' '}
                                 <strong>
                                     {format(
                                         new Date(appointment.date),
@@ -45,7 +45,9 @@ export const ModalCancelDateUser = ({ idModal, appointment }) => {
                                 </strong>{' '}
                                 de <strong>{appointment.initHour}</strong> hasta
                                 las <strong>{appointment.endHour}</strong>
-                                <hr />
+                            </p>
+                            <hr />
+                            <p>
                                 <strong>¿Está seguro?</strong>
                             </p>
                         </div>

@@ -3,12 +3,12 @@
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getDatesDay, putSelectDate } from '../../actions/dates'
+import { getDatesDay, putModifyDate } from '../../actions/dates'
 import { swallError } from '../../helpers/SwalNotifications'
 
 import { useForm } from '../../hooks/useForm'
 
-export const ModalSelectDate = ({ idModal, uidService }) => {
+export const ModalEditDateUser = ({ idModal, appointment }) => {
     // Lanzador de acciones.
     const dispatch = useDispatch()
 
@@ -22,15 +22,30 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
     const [formValues, handleInputChange, reset] = useForm({ uidDate: '' })
     const { uidDate } = formValues
 
+    //Desestructuración de la cita antigua.
+    const {
+        initHour: oldInit,
+        endHour: oldEnd,
+        idService: service,
+        date,
+    } = appointment
+
     // Método ejecutado cuando el día de selecciona cambia.
     const handleDateDay = (e) => {
+        e.preventDefault()
         setDateDay(format(new Date(e.target.value), 'yyyy-MM-dd')) //Establecemos la fecha.
     }
 
+    // Limpieza de los valores.
+    const handleReset = () => {
+        setDateDay('')
+        setAppointmentList([]), reset()
+    }
     //Función para añadir el lestado de citas para un determinado día.
     const setNewAppointmentList = (appointments) => {
         setAppointmentList([
             ...appointments.map((date) => ({
+                date: date.date,
                 initHour: date.initHour,
                 endHour: date.endHour,
                 uid: date.uid,
@@ -41,7 +56,7 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
     //Cuando se selecciona un día establecemos el listado de citas registradas para dicho día.
     useEffect(() => {
         if (dateDay !== '')
-            dispatch(getDatesDay(dateDay, uidService, setNewAppointmentList))
+            dispatch(getDatesDay(dateDay, service._id, setNewAppointmentList))
     }, [dateDay])
 
     //Método de validación de formulario.
@@ -59,18 +74,13 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
         }
         return true
     }
-    const handleReset = () => {
-        reset()
-        setAppointmentList([])
-        setDateDay('')
-    }
+
     //Método cuando se pulsa sobre el botón de selección de una cita.
     const handleSubmit = (e) => {
         e.preventDefault() //Para que no se recargue la página.
         if (isFormValid()) {
-            //Si el fromulario es válido lanzamos la acción de guardarlo en el servidor. Así como en local.
-            dispatch(putSelectDate(uidDate))
-            //Reiniciamos los campos del formulario.
+            //Si el fromulario es válido lanzamos la acción de guardarlo en el servidor.
+            dispatch(putModifyDate(uidDate, appointment.uid))
             handleReset()
         }
     }
@@ -88,7 +98,7 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title text-center" id={idModal}>
-                            Selección de una cita.
+                            Modifificación de una cita.
                         </h5>
                         <button
                             type="button"
@@ -99,12 +109,27 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
                         ></button>
                     </div>
                     <div className="modal-body">
+                        <div className="alert alert-info">
+                            <p>Está seguro de cambiar la siguiente cita:</p>
+                            <hr />
+                            <p>
+                                Servicio: <strong>{service.serviceName}</strong>{' '}
+                                <br />
+                                Fecha:{' '}
+                                <strong>
+                                    {format(new Date(date), 'dd-MM-yyyy')}
+                                </strong>
+                                <br />
+                                Hora: <strong>{oldInit}</strong>-
+                                <strong>{oldEnd}</strong>
+                            </p>
+                        </div>
                         <form className="form-group" onSubmit={handleSubmit}>
                             <label
                                 className="form-control text-center mt-3 "
                                 style={{ color: '#6c757d' }}
                             >
-                                Día de la cita:{' '}
+                                Día de la nueva cita:{' '}
                                 <input
                                     type="date"
                                     name="dateDay"
@@ -123,7 +148,7 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
                                     onChange={handleInputChange}
                                 >
                                     <option
-                                        key={'defaultDateSelection'}
+                                        key={'defaultEditDateSelection'}
                                         value="Selecciona una cita"
                                     >
                                         Selecciona una cita
@@ -140,12 +165,63 @@ export const ModalSelectDate = ({ idModal, uidService }) => {
                                 </select>
                             )}
 
+                            {uidDate !== '' &&
+                                uidDate !== 'Selecciona una cita' && (
+                                    <div className="alert alert-info mt-3">
+                                        {appointmentList.map((date) => {
+                                            if (date.uid === uidDate)
+                                                return (
+                                                    <>
+                                                        <p
+                                                            key={
+                                                                'paragraph' +
+                                                                date.uid
+                                                            }
+                                                        >
+                                                            Va a cambiar la cita
+                                                            por una cita para el
+                                                            día{' '}
+                                                            <strong>
+                                                                {format(
+                                                                    new Date(
+                                                                        date.date
+                                                                    ),
+                                                                    'dd-MM-yyyy'
+                                                                )}
+                                                            </strong>{' '}
+                                                            de {date.initHour} a{' '}
+                                                            {date.endHour}
+                                                        </p>
+                                                        <hr
+                                                            key={
+                                                                'paragraph' +
+                                                                date.uid +
+                                                                '2'
+                                                            }
+                                                        />
+                                                        <p
+                                                            key={
+                                                                'paragraph' +
+                                                                date.uid +
+                                                                '3'
+                                                            }
+                                                        >
+                                                            <strong>
+                                                                ¿Está seguro?
+                                                            </strong>
+                                                        </p>
+                                                    </>
+                                                )
+                                        })}
+                                    </div>
+                                )}
+
                             <button
                                 type="submit"
-                                className="btn btn-outline-primary mt-3"
+                                className="btn btn-outline-success mt-3"
                                 data-bs-dismiss="modal"
                             >
-                                Selecciona Cita
+                                Confirmar
                             </button>
                         </form>
                     </div>

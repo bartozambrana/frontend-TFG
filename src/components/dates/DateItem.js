@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import '../../style.css'
 import { ModalCancelDateUser } from './ModalCancelDateUser'
+import { ModalEditDateUser } from './ModalEditDateUser'
 const styleBtn = {
     backgroundColor: 'transparent',
     boxShadow: 'none',
@@ -16,10 +17,6 @@ export const DateItem = ({ appointment }) => {
         idService: service,
         date,
     } = appointment
-
-    const handleEditDate = () => {
-        console.log('Edit Date: ', uidDate)
-    }
 
     return (
         <>
@@ -55,7 +52,8 @@ export const DateItem = ({ appointment }) => {
                         <button
                             className="btn"
                             style={styleBtn}
-                            onClick={handleEditDate}
+                            data-bs-toggle="modal"
+                            data-bs-target={'#EditDateUser' + uidDate}
                         >
                             <i
                                 className="fa fa-pencil-square-o"
@@ -78,6 +76,11 @@ export const DateItem = ({ appointment }) => {
             </div>
             <ModalCancelDateUser
                 idModal={'CancelDateUser' + uidDate}
+                appointment={appointment}
+            />
+
+            <ModalEditDateUser
+                idModal={'EditDateUser' + uidDate}
                 appointment={appointment}
             />
         </>

@@ -22,7 +22,7 @@ export const ServiceScreen = () => {
             visitedServices.filter((s) => s.uid === idService).length === 0
         )
             dispatch(getServiceById(idService))
-    }, [dispatch, visitedServices, idService, userServices])
+    }, [idService])
 
     if (
         serviceErrorServer &&
