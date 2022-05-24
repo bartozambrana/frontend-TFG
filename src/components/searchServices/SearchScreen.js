@@ -8,6 +8,7 @@ import { getRandomServices, searchQuery } from '../../actions/browser'
 import { ServicesList } from './ServicesList'
 
 import './searchBox.css'
+import '../../style.css'
 
 export const SearchScreen = () => {
     //Objeto del buscador para saver la lista de servicios servidos.
@@ -146,11 +147,7 @@ export const SearchScreen = () => {
                 {/* Lista de servicios obtenidos por la consulta*/}
                 <ServicesList />
 
-                <button
-                    className="btn mt-3"
-                    id="see-more"
-                    onClick={handleServices}
-                >
+                <button className="btn mt-3 see-more" onClick={handleServices}>
                     <i
                         className="fa fa-chevron-circle-down"
                         aria-hidden="true"

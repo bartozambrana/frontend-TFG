@@ -1,5 +1,4 @@
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 
 import { ModalEditPost } from './ModalEditPost'
 import { ModalDeletePost } from './ModalDeletePost'
@@ -8,8 +7,6 @@ import '../../style.css'
 
 export const PostItem = ({ post }) => {
     const { userServices } = useSelector((state) => state.services)
-
-    const { idService } = useParams()
 
     return (
         <div className="rounded-bottom mb-3">
@@ -23,8 +20,8 @@ export const PostItem = ({ post }) => {
                 </p>
                 <p className="ms-2">{post.description}</p>
                 {userServices &&
-                    userServices.filter((s) => s.uid === idService).length ===
-                        1 && (
+                    userServices.filter((s) => s.uid === post.idService)
+                        .length === 1 && (
                         <div className="d-flex justify-content-end">
                             <button className="btn btn-edit-del">
                                 <i

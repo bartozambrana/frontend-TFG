@@ -1,5 +1,5 @@
 import { FollowServicesBox } from './FollowServicesBox'
-import { LasCommentsBox } from './LasCommentsBox'
+import { LastCommentsBox } from './LastCommentsBox'
 
 export const AsideHomeBar = () => {
     return (
@@ -8,7 +8,7 @@ export const AsideHomeBar = () => {
                 <FollowServicesBox />
             </div>
             <div className="col-12">
-                <LasCommentsBox />
+                <LastCommentsBox />
             </div>
         </aside>
     )

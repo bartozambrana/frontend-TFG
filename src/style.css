@@ -55,6 +55,16 @@ body {
     text-decoration: underline;
 }
 
+.see-more {
+    background-color: #414e52;
+    color: #fff;
+}
+
+.see-more:hover {
+    background-color: #4c5b5f;
+    color: #fff;
+}
+
 @media (min-width: 1300px) {
     .scrollbar-hidden {
         overflow: hidden !important;

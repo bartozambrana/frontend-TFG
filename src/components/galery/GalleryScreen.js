@@ -37,6 +37,7 @@ export const GalleryScreen = () => {
                                     description={work.description}
                                     images={work.photos}
                                     uid={work.uid}
+                                    idService={idService}
                                 />
                             )
                         })}

@@ -18,6 +18,7 @@ export const CommentItem = ({ bussiness, description, uid, bussinessId }) => {
                         style={{ textDecoration: 'none', color: '#38ABBA' }}
                         to={'/service/' + bussinessId}
                     >
+                        <i className="fa fa-briefcase" aria-hidden="true"></i>{' '}
                         {bussiness}
                     </Link>
                     <p className="ms-5"> {description} </p>

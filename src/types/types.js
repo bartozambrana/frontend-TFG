@@ -4,6 +4,8 @@ export const types = {
     logout: '[auth] logout',
     checkingFinish: '[auth] checking finish]',
     putUser: '[auth] put user',
+    getHomeContent: '[auth] getHomeContent',
+    getMoreHomeContent: '[auth] getMoreHomeContent',
 
     //Comments
     getCommentsUser: '[Comment] getCommentsUser',

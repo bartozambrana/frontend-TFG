@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 import { startLogout } from './auth'
 
@@ -6,6 +7,8 @@ const url = process.env.REACT_APP_API_URL_DEV + '/comments/'
 
 export const getCommentsUser = () => {
     return async (dispatch) => {
+        loadingOpen('Cargando contenido ...')
+
         const token = localStorage.getItem('token') || ''
         const response = await fetch(url + '?userComments=true', {
             method: 'GET',
@@ -13,7 +16,9 @@ export const getCommentsUser = () => {
                 token: token,
             },
         })
-        console.log('peticion fetch comments realizada')
+
+        loadingClose()
+
         const body = await response.json()
 
         if (body.success) {

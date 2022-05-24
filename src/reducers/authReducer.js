@@ -60,6 +60,24 @@ export const authReducer = (state = initialState, action) => {
                 },
             }
 
+        case types.getHomeContent:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    homeContent: action.payload,
+                },
+            }
+
+        case types.getMoreHomeContent:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    homeContent: [...state.user.homeContent, action.payload],
+                },
+            }
+
         default:
             return state
     }

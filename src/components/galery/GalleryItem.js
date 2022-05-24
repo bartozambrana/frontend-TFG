@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { ModalDeleteWork } from '../works/ModalDeleteWork'
 import { ModalEditWork } from '../works/ModalEditWork'
 
@@ -9,11 +8,10 @@ const styleBtn = {
     boxShadow: 'none',
 }
 
-export const GalleryItem = ({ images, description, uid }) => {
+export const GalleryItem = ({ images, description, uid, idService }) => {
     const idCarousel = 'idCarousel' + uid
     const targetCarousel = '#' + idCarousel
 
-    const { idService } = useParams()
     const { userServices } = useSelector((state) => state.services)
 
     return (

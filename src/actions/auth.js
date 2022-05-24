@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 //const baseUrl = process.env.REACT_APP_API_URL;
 const baseUrl = process.env.REACT_APP_API_URL_DEV
@@ -201,19 +202,7 @@ export const confirmDelUser = (email, password, uidUser) => {
 
 const delUser = () => {
     return async (dispatch) => {
-        Swal.fire({
-            title: 'Eliminando...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Eliminando ...')
 
         const response = await fetch(baseUrl + '/users/', {
             method: 'DELETE',
@@ -222,7 +211,7 @@ const delUser = () => {
             },
         })
 
-        Swal.close()
+        loadingClose()
 
         const body = await response.json()
         if (body.success) {
@@ -238,5 +227,56 @@ const delUser = () => {
             //Informamos del error que ha ocurrido al usuario.
             Swal.fire('Error', body.errors[0].msg, 'error')
         }
+    }
+}
+
+export const getHomeContent = (servedPosts, servedWorks) => {
+    return async (dispatch) => {
+        //Notificación de que se está procesando la información.
+        loadingOpen('Cargando contenido ...')
+        //Peteción al servidor.
+        let url = baseUrl + '/users/randomContent/?'
+        if (servedPosts !== '') url += '&servedPosts=' + servedPosts
+        if (servedWorks !== '') url += '&servedWorks=' + servedWorks
+
+        console.log(url)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                token: localStorage.getItem('token'),
+            },
+        })
+
+        //Cerramos notificación.
+        loadingClose()
+
+        //Cuerpo de la response.
+        const body = await response.json()
+
+        let moreContent = false
+        if (servedPosts === '' && servedWorks === '') moreContent = false
+        if (body.success) {
+            dispatch(setHomeContent(body.homeContent, moreContent))
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            // O el token introducido es inválido o es vacío => caducó la sesión.
+            dispatch(startLogout()) //Limpiamos todos los reducers
+            Swal.fire('Error', 'La sesión caducó', 'error')
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            Swal.fire('Error', body.msg, 'error')
+        }
+    }
+}
+
+const setHomeContent = (homeContent, moreContent) => {
+    if (moreContent)
+        return {
+            type: types.getMoreHomeContent,
+            payload: homeContent,
+        }
+
+    return {
+        type: types.getHomeContent,
+        payload: homeContent,
     }
 }
