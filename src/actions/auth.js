@@ -253,7 +253,7 @@ export const getHomeContent = (servedPosts, servedWorks) => {
         //Cuerpo de la response.
         const body = await response.json()
 
-        let moreContent = false
+        let moreContent = true
         if (servedPosts === '' && servedWorks === '') moreContent = false
         if (body.success) {
             dispatch(setHomeContent(body.homeContent, moreContent))

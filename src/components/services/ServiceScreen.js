@@ -7,6 +7,7 @@ import { getServiceById } from '../../actions/services'
 import { ActionsService } from './ActionsService'
 import { PostsList } from '../posts/PostsList'
 import { isMobile } from 'react-device-detect'
+import { Comments } from './Comments'
 
 export const ServiceScreen = () => {
     //Identificador del servicio de la url
@@ -52,6 +53,7 @@ export const ServiceScreen = () => {
 
     return (
         <main>
+            {/*Cabecera*/}
             <div className="container-front-image">
                 <img
                     src="https://res.cloudinary.com/tfgbartozambrana/image/upload/v1652179082/hair-gadc3cfa92_1280_vdd7ik.jpg"
@@ -93,10 +95,13 @@ export const ServiceScreen = () => {
 
             <div className={classVar}>
                 <div className="row">
+                    {/* Sección de listado de posts */}
                     <div className="col-md-8 col-12">
                         <PostsList />
                     </div>
-                    <div className="col-md-4 col-12">dfafadsfsdfafdasfs</div>
+                    <aside className="col-md-4 col-12">
+                        <Comments />
+                    </aside>
                 </div>
             </div>
         </main>

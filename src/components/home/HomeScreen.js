@@ -21,6 +21,12 @@ export const HomeScreen = () => {
                         className="w-100"
                     />
                 )}
+                <h1
+                    className="caption"
+                    style={{ color: 'white', fontSize: '3rem' }}
+                >
+                    Disfruta de esta experiencia
+                </h1>
             </div>
             <div className="container">
                 <div className="row justify-content-center">

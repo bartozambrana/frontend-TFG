@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 
 import { startLogout } from './auth'
@@ -57,21 +58,7 @@ export const getRandomServices = ({
     initial = false,
 }) => {
     return async (dispatch) => {
-        if (!initial) {
-            Swal.fire({
-                title: 'Obteniendo contenido ...',
-                didOpen() {
-                    Swal.showLoading()
-                },
-                didClose() {
-                    Swal.hideLoading()
-                },
-                allowEnterKey: false,
-                allowEscapeKey: false,
-                allowOutsideClick: false,
-                showConfirmButton: false,
-            })
-        }
+        loadingOpen('Obteniendo contenido')
 
         let baseUrl = url + 'random/?amount=' + amount
         if (servicesServed) baseUrl += '&servicesSended=' + servicesServed
@@ -83,7 +70,7 @@ export const getRandomServices = ({
             },
         })
 
-        if (!initial) Swal.close()
+        loadingClose()
 
         const body = await response.json()
 

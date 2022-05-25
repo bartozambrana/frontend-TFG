@@ -66,6 +66,7 @@ export const authReducer = (state = initialState, action) => {
                 user: {
                     ...state.user,
                     homeContent: action.payload,
+                    mumElementsReceived: action.payload.length,
                 },
             }
 
@@ -74,7 +75,8 @@ export const authReducer = (state = initialState, action) => {
                 ...state,
                 user: {
                     ...state.user,
-                    homeContent: [...state.user.homeContent, action.payload],
+                    homeContent: [...state.user.homeContent, ...action.payload],
+                    mumElementsReceived: action.payload.length,
                 },
             }
 

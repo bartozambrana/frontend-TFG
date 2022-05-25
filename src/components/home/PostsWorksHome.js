@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHomeContent } from '../../actions/auth'
 import { GalleryItem } from '../galery/GalleryItem'
@@ -11,8 +11,6 @@ export const PostsWorksHome = () => {
     // Objeto del usuario.
     const { user } = useSelector((state) => state.auth)
 
-    const [numElements, setNumElements] = useState(0)
-
     // Efecto secundario cuando entremos en la página por primera vez, cargamos el contenido de la página,
     // a no se que este ya se encuentre cargado.
     useEffect(() => {
@@ -23,8 +21,6 @@ export const PostsWorksHome = () => {
 
     //Obtener más contenido.
     const handleMoreContent = () => {
-        // Establecemos el número de elementos previos
-        setNumElements(user.homeContent.length)
         //Realizamos un listado de los posts y servicios que ya han sido servidos.
         let servedPosts = ''
         let servedWorks = ''
@@ -68,25 +64,29 @@ export const PostsWorksHome = () => {
                     )
                 })}
 
-            {user.homeContent === numElements && (
-                <div className="alert alert-info">
+            {user.mumElementsReceived === 0 ? (
+                <div
+                    className="alert alert-info"
+                    style={{ fontSize: '1.8rem' }}
+                >
                     No disponemos de más contenido ahora mismo.
                     <br />
                     Gracias por visitarnos.
                 </div>
+            ) : (
+                <div className="text-center">
+                    <button
+                        className="btn mt-3 see-more text"
+                        onClick={handleMoreContent}
+                    >
+                        <i
+                            className="fa fa-chevron-circle-down"
+                            aria-hidden="true"
+                        ></i>{' '}
+                        Ver más
+                    </button>
+                </div>
             )}
-            <div className="text-center">
-                <button
-                    className="btn mt-3 see-more text"
-                    onClick={handleMoreContent}
-                >
-                    <i
-                        className="fa fa-chevron-circle-down"
-                        aria-hidden="true"
-                    ></i>{' '}
-                    Ver más
-                </button>
-            </div>
         </>
     )
 }

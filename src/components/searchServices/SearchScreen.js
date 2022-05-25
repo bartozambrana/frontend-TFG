@@ -9,6 +9,7 @@ import { ServicesList } from './ServicesList'
 
 import './searchBox.css'
 import '../../style.css'
+import { isMobile } from 'react-device-detect'
 
 export const SearchScreen = () => {
     //Objeto del buscador para saver la lista de servicios servidos.
@@ -103,6 +104,28 @@ export const SearchScreen = () => {
 
     return (
         <main>
+            {/* Cabecera */}
+            <div className="container-front-image">
+                {!isMobile ? (
+                    <img
+                        src="/assets/landscape-cutted.png"
+                        alt="landscape"
+                        className="w-100"
+                    />
+                ) : (
+                    <img
+                        src="/assets/landscape.jpg"
+                        alt="landscape"
+                        className="w-100"
+                    />
+                )}
+                <h1
+                    className="caption"
+                    style={{ color: 'white', fontSize: '3rem' }}
+                >
+                    Busca nuevos servicios.
+                </h1>
+            </div>
             {/*Search Container*/}
             <div className="container">
                 {/*SideBar toggle*/}
