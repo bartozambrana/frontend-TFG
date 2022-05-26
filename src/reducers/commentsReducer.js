@@ -4,6 +4,7 @@ const initialState = {
     userComments: [],
     loaded: false, //Para saber si hemos obtenido los comentarios
     commentsErrorServer: false,
+    commentsService: [],
     commentsErrorMsg: '',
 }
 
@@ -17,12 +18,11 @@ export const commentsReducer = (state = initialState, action) => {
                 commentsErrorServer: false,
                 commentsErrorMsg: '',
             }
-        // case types.getCommentsService:
-        //     return {
-        //         ...state,
-        //         ...action.payload,
-        //         loaded:true,
-        //     }
+        case types.getCommentsService:
+            return {
+                ...state,
+                commentsService: [...action.payload],
+            }
         case types.putComment:
             return {
                 ...state,

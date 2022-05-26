@@ -2,7 +2,7 @@ import { types } from '../types/types'
 
 const initialState = {
     userServices: [],
-    loaded: false, //Para saber si hemos obtenido los comentarios
+    loaded: false,
     validCategories: [],
     avaliableCategories: [],
     visitedServices: [],
