@@ -27,15 +27,6 @@ export const authReducer = (state = initialState, action) => {
                 user: action.payload,
             }
         case types.followService:
-            let userCopy = { ...state.user }
-
-            userCopy.followServices = [
-                {
-                    _id: action.payload.uid,
-                    serviceName: action.payload.serviceName,
-                },
-                ...state.user.followServices,
-            ]
             return {
                 ...state,
                 user: {

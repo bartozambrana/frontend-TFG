@@ -24,7 +24,6 @@ export const ModalDelUser = ({ idModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         isFormValid()
-        console.log(email, password)
     }
 
     const handleReset = () => {

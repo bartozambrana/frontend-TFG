@@ -239,7 +239,6 @@ export const getHomeContent = (servedPosts, servedWorks) => {
         if (servedPosts !== '') url += '&servedPosts=' + servedPosts
         if (servedWorks !== '') url += '&servedWorks=' + servedWorks
 
-        console.log(url)
         const response = await fetch(url, {
             method: 'GET',
             headers: {

@@ -4,14 +4,14 @@ import { useDispatch } from 'react-redux'
 import { updateCommentUser } from '../../actions/comment'
 
 import { useForm } from '../../hooks/useForm'
-export const ModalEditComment = ({ uid, description, bussiness, id }) => {
+export const ModalEditComment = ({ uid, description, id, reply = false }) => {
     const dispatch = useDispatch()
     const [formValues, handleInputChange] = useForm({ text: '' })
 
     const { text } = formValues
 
     const handleEditComment = () => {
-        dispatch(updateCommentUser({ text }, uid))
+        dispatch(updateCommentUser(text, uid, reply))
     }
     return (
         <div
@@ -37,7 +37,6 @@ export const ModalEditComment = ({ uid, description, bussiness, id }) => {
                     </div>
                     <div className="modal-body">
                         <h6 className="text-center"> Comentario anterior:</h6>
-                        <p className="mb-1">Servicio: {bussiness}</p>
                         <p>{description}</p>
                         <div className="form-group">
                             <textarea

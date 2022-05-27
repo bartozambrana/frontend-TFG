@@ -10,7 +10,7 @@ export const CommentsScreen = () => {
 
     useEffect(() => {
         if (!state.loaded) dispatch(getCommentsUser())
-    }, [dispatch, state.loaded])
+    }, [state.loaded])
 
     return (
         <div className="container mt-5">
@@ -20,12 +20,7 @@ export const CommentsScreen = () => {
                     state.userComments.map((comment) => {
                         return (
                             <li key={comment.uid} className="list-group-item">
-                                <CommentItem
-                                    bussiness={comment.idService.serviceName}
-                                    bussinessId={comment.idService._id}
-                                    description={comment.text}
-                                    uid={comment.uid}
-                                />
+                                <CommentItem comment={comment} />
                             </li>
                         )
                     })}

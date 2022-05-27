@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { ModalDeleteWork } from '../works/ModalDeleteWork'
 import { ModalEditWork } from '../works/ModalEditWork'
 
@@ -9,6 +10,7 @@ const styleBtn = {
 }
 
 export const GalleryItem = ({ images, description, uid, idService }) => {
+    const location = useLocation()
     const idCarousel = 'idCarousel' + uid
     const targetCarousel = '#' + idCarousel
 
@@ -101,7 +103,8 @@ export const GalleryItem = ({ images, description, uid, idService }) => {
                 {description}
                 {userServices &&
                     userServices.filter((s) => s.uid === idService).length ===
-                        1 && (
+                        1 &&
+                    location.pathname !== '/' && (
                         <div className="d-flex justify-content-end">
                             <button className="btn" style={styleBtn}>
                                 <i

@@ -14,7 +14,6 @@ export const ModalNewService = ({ idModal }) => {
     useEffect(() => {
         //Obtenemos las categorías válidas.
         dispatch(getValidCategories())
-        //console.log('dispatch new service');
     }, [dispatch])
 
     // const dispatch = useDispatch();

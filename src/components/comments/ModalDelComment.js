@@ -3,10 +3,10 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteComment } from '../../actions/comment'
 
-export const ModalDelComment = ({ uid, description, bussiness, id }) => {
+export const ModalDelComment = ({ uid, description, id, reply = false }) => {
     const dispatch = useDispatch()
     const handleDeleteComment = () => {
-        dispatch(deleteComment(uid))
+        dispatch(deleteComment(uid, reply))
     }
     return (
         <div
@@ -32,7 +32,6 @@ export const ModalDelComment = ({ uid, description, bussiness, id }) => {
                     </div>
                     <div className="modal-body">
                         <h6 className="text-center"> Comentario</h6>
-                        <p className="mb-1">Servicio: {bussiness}</p>
                         <p>{description}</p>
                     </div>
 

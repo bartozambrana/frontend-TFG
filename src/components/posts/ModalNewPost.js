@@ -58,7 +58,6 @@ export const ModalNewPost = ({ idService, idModal }) => {
 
     const handlePreview = (e) => {
         e.preventDefault()
-        console.log('Previsualizar: ', preview)
 
         setPreview(!preview)
 

@@ -59,7 +59,7 @@ export const addNewService = (
         })
 
         const body = await response.json()
-        console.log(body.service)
+
         if (body.success) {
             dispatch(setNewService(body.service))
             Swal.fire('Exito', 'Servicio añadido', 'success')

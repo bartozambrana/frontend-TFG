@@ -7,7 +7,7 @@ import { getServiceById } from '../../actions/services'
 import { ActionsService } from './ActionsService'
 import { PostsList } from '../posts/PostsList'
 import { isMobile } from 'react-device-detect'
-import { Comments } from './Comments'
+import { Comments } from './../comments/CommentsService'
 
 export const ServiceScreen = () => {
     //Identificador del servicio de la url
@@ -35,6 +35,7 @@ export const ServiceScreen = () => {
     let service = ''
     let cityName = ''
     let street = ''
+    let postalCode = ''
 
     if (
         loaded &&
@@ -46,6 +47,7 @@ export const ServiceScreen = () => {
             service = userServices.find((s) => s.uid === idService)
         cityName = encodeURIComponent(service.localization.cityName)
         street = encodeURIComponent(service.localization.street)
+        postalCode = service.localization.postalCode
     }
 
     let classVar = 'ms-2 me-2 mt-3'
@@ -77,13 +79,23 @@ export const ServiceScreen = () => {
                         <ActionsService service={service} />
                     </div>
                     <div className="col-lg-6 col-md-8 col-12 mt-1 ">
-                        {/*
-                            (loaded) &&
-                            <iframe className='w-100' height='350' src={"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566588180814!2d-3.3161796837420376!3d38.06906157970678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6ef1a351173d7f%3A0xb007cd0c804e83c7!2s"
-                            +service.localization.postalCode+'%20'+cityName+'%20'+street+"!5e0!3m2!1ses!2ses!4v1652178258048!5m2!1ses!2ses"} loading="lazy" referrerPolicy="no-referrer-when-downgrade" ></iframe>
-                        */}
-                        MAPA
-                        {cityName},{street}
+                        {loaded && (
+                            <iframe
+                                className="w-100"
+                                height="350"
+                                src={
+                                    'http://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566588180814!2d-3.3161796837420376!3d38.06906157970678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6ef1a351173d7f%3A0xb007cd0c804e83c7!2s' +
+                                    postalCode +
+                                    '%20' +
+                                    cityName +
+                                    '%20' +
+                                    street +
+                                    '!5e0!3m2!1ses!2ses!4v1652178258048!5m2!1ses!2ses'
+                                }
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
+                        )}
                     </div>
                 </div>
 
@@ -96,10 +108,10 @@ export const ServiceScreen = () => {
             <div className={classVar}>
                 <div className="row">
                     {/* Sección de listado de posts */}
-                    <div className="col-md-8 col-12">
+                    <div className="col-lg-8 col-12">
                         <PostsList />
                     </div>
-                    <aside className="col-md-4 col-12">
+                    <aside className="col-lg-4 col-12">
                         <Comments />
                     </aside>
                 </div>

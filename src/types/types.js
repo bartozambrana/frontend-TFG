@@ -12,11 +12,13 @@ export const types = {
     getCommentsService: '[Comment] getCommentsService',
 
     putComment: '[Comment] putComment',
+    putReply: '[Comment] putReply',
 
     postComment: '[Comment] postComment',
     postReply: '[Comment] postReply',
 
     delComment: '[Comment] deetelComment',
+    delReply: '[Comment] delReply',
 
     setErrorComments: '[Comment] setErrorComments',
 

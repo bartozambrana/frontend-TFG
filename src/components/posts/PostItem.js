@@ -4,9 +4,11 @@ import { ModalEditPost } from './ModalEditPost'
 import { ModalDeletePost } from './ModalDeletePost'
 
 import '../../style.css'
+import { useLocation } from 'react-router-dom'
 
 export const PostItem = ({ post }) => {
     const { userServices } = useSelector((state) => state.services)
+    const location = useLocation()
 
     return (
         <div className="rounded-bottom mb-3">
@@ -21,7 +23,8 @@ export const PostItem = ({ post }) => {
                 <p className="ms-2">{post.description}</p>
                 {userServices &&
                     userServices.filter((s) => s.uid === post.idService)
-                        .length === 1 && (
+                        .length === 1 &&
+                    location.pathname !== '/' && (
                         <div className="d-flex justify-content-end">
                             <button className="btn btn-edit-del">
                                 <i
