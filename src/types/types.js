@@ -34,6 +34,7 @@ export const types = {
     putSelectDate: '[Appointments] putSelectDate',
     putModifyDate: '[Appointments] putModifyDate',
     putCancelDate: '[Appointments] putCancelDate',
+    putValoration: '[Appointments] putValoration',
 
     delDate: '[Appointments] delDate',
 

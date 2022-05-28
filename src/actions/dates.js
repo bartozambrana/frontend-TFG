@@ -1,8 +1,10 @@
 import Swal from 'sweetalert2'
+
 import {
     loadingClose,
     loadingOpen,
     swalInfoTimer,
+    swallError,
 } from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 
@@ -322,6 +324,69 @@ export const putModifyDate = (uidNewDate, uidOldDate) => {
             //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
             Swal.fire('Error', body.errors[0].msg, 'error')
         }
+    }
+}
+
+export const sendValoration = (valoration, uidDate) => {
+    return async (dispatch) => {
+        loadingOpen('Enviando valoración ...')
+        const response = await fetch(url + 'valoration/' + uidDate, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                token: localStorage.getItem('token'),
+            },
+            body: JSON.stringify({ valoration }),
+        })
+
+        loadingClose()
+
+        const body = await response.json()
+
+        if (body.success) {
+            swalInfoTimer('Valoración establecido..')
+            dispatch(putValoration(body.date)) //Cargamos la citas localmente
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Sesión caducada, inicie sesión')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else if (body.errors) {
+            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
+            swallError(body.errors[0].msg)
+        }
+    }
+}
+
+export const getRating = (uidDate, handleRating) => {
+    return async (dispatch) => {
+        const response = await fetch(url + 'rating/' + uidDate, {
+            method: 'GET',
+            headers: {
+                token: localStorage.getItem('token'),
+            },
+        })
+
+        const body = await response.json()
+
+        if (body.success) {
+            handleRating(body.rating)
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Sesión caducada, inicie sesión')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else if (body.errors) {
+            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
+            swallError(body.errors[0].msg)
+        }
+    }
+}
+
+const putValoration = (date) => {
+    return {
+        type: types.putValoration,
+        payload: date,
     }
 }
 const userAppointments = (appointments) => {

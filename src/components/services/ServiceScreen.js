@@ -8,6 +8,7 @@ import { ActionsService } from './ActionsService'
 import { PostsList } from '../posts/PostsList'
 import { isMobile } from 'react-device-detect'
 import { Comments } from './../comments/CommentsService'
+import { ShowRating } from './ShowRating'
 
 export const ServiceScreen = () => {
     //Identificador del servicio de la url
@@ -113,6 +114,7 @@ export const ServiceScreen = () => {
                     </div>
                     <aside className="col-lg-4 col-12">
                         <Comments />
+                        <ShowRating idService={idService} />
                     </aside>
                 </div>
             </div>

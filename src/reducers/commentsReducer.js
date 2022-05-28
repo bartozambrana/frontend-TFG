@@ -51,7 +51,7 @@ export const commentsReducer = (state = initialState, action) => {
                 ),
                 //Si está en la pantalla de un servicio.
                 commentsService: state.commentsService.filter(
-                    (c) => c.uid === action.payload
+                    (c) => c.uid !== action.payload
                 ),
                 commentsErrorServer: false,
                 commentsErrorMsg: '',
@@ -109,6 +109,14 @@ export const commentsReducer = (state = initialState, action) => {
                         ),
                     }
                 }),
+            }
+        case types.postComment:
+            return {
+                ...state,
+                //Si está en la pantalla de las comentarios del usuario.
+                userComments: [...state.userComments, action.payload],
+                //Si está en la pantalla de un servicio.
+                commentsService: [...state.commentsService, action.payload],
             }
         case types.logout:
             return initialState

@@ -1,5 +1,10 @@
 import Swal from 'sweetalert2'
-import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
+import {
+    loadingClose,
+    loadingOpen,
+    swalInfoTimer,
+    swallError,
+} from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 import { startLogout } from './auth'
 
@@ -176,5 +181,39 @@ const setReply = (reply, idComment) => {
     return {
         type: types.postReply,
         payload: { reply, idComment },
+    }
+}
+
+export const postComment = (idService, text) => {
+    return async (dispatch) => {
+        loadingOpen('Añadiendo comentario ...')
+
+        const response = await fetch(url + idService, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                token: localStorage.getItem('token'),
+            },
+            body: JSON.stringify({ text }),
+        })
+
+        loadingClose()
+
+        const body = await response.json()
+
+        if (body.success) {
+            dispatch(setComment(body.comment))
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout())
+            swalInfoTimer('Sesión caducada')
+        } else if (body.msg) swallError(body.msg)
+        else swalInfoTimer(body.errors[0].msg)
+    }
+}
+
+const setComment = (comment) => {
+    return {
+        type: types.postComment,
+        payload: comment,
     }
 }

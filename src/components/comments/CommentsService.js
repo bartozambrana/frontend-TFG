@@ -5,6 +5,7 @@ import { getCommentsService } from '../../actions/comment'
 import { CommentItem } from './CommentItemService'
 
 import '../../style.css'
+import { ModalNewComment } from './ModalNewComment'
 
 export const Comments = () => {
     //Obtenemos el identificador del servicio de la url en la que nos encontramos.
@@ -29,18 +30,34 @@ export const Comments = () => {
     }, [idService])
 
     return (
-        <div
-            className="shadow overflow-auto scrollbar-hidden"
-            style={{ maxHeight: '500px' }}
-        >
-            <h1 className="h1__home text-center">Comentarios</h1>
-            {commentsService.length !== 0 &&
-                commentsService.map((comment, idx) => (
-                    <CommentItem
-                        key={'CommentService' + idx}
-                        comment={comment}
+        <>
+            <div
+                className="shadow overflow-auto scrollbar-hidden"
+                style={{ maxHeight: '500px' }}
+            >
+                <h1 className="h1__home text-center">Comentarios</h1>
+                {commentsService.length !== 0 &&
+                    commentsService.map((comment, idx) => (
+                        <CommentItem
+                            key={'CommentService' + idx}
+                            comment={comment}
+                        />
+                    ))}
+                <div className="d-flex justify-content-end me-1 mb-1">
+                    <button
+                        style={{ boxShadow: 'none' }}
+                        className="btn btn-outline-secondary"
+                        data-bs-toggle="modal"
+                        data-bs-target={'#addComentService' + idService}
+                    >
+                        Comenta
+                    </button>
+                    <ModalNewComment
+                        idModal={'addComentService' + idService}
+                        idService={idService}
                     />
-                ))}
-        </div>
+                </div>
+            </div>
+        </>
     )
 }

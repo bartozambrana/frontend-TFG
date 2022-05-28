@@ -4,10 +4,13 @@ import { Link } from 'react-router-dom'
 import '../../style.css'
 import { ModalCancelDateUser } from './ModalCancelDateUser'
 import { ModalEditDateUser } from './ModalEditDateUser'
+import { Valoration } from './Valoration'
+
 const styleBtn = {
     backgroundColor: 'transparent',
     boxShadow: 'none',
 }
+
 export const DateItem = ({ appointment }) => {
     //Desescrucción de la cita.
     const {
@@ -53,41 +56,45 @@ export const DateItem = ({ appointment }) => {
                     Si es igual o menor, no se muestran los botonoes que habilitan la edición y cancelación 
                     de una cta.
                 */}
-                {compareAsc(new Date(date), new Date()) === 1 && (
-                    <div className="d-flex justify-content-end ">
-                        <button
-                            className="btn"
-                            style={styleBtn}
-                            data-bs-toggle="modal"
-                            data-bs-target={'#EditDateUser' + uidDate}
-                        >
-                            <i
-                                className="fa fa-pencil-square-o"
-                                aria-hidden="true"
-                            ></i>
-                        </button>
-                        <ModalEditDateUser
-                            idModal={'EditDateUser' + uidDate}
-                            appointment={appointment}
-                        />
-                        <button
-                            className="btn "
-                            style={styleBtn}
-                            data-bs-toggle="modal"
-                            data-bs-target={'#CancelDateUser' + uidDate}
-                        >
-                            <i
-                                className="fa fa-trash ms-3"
-                                aria-hidden="true"
-                            ></i>
-                        </button>
-                        <ModalCancelDateUser
-                            idModal={'CancelDateUser' + uidDate}
-                            appointment={appointment}
-                        />
-                    </div>
-                )}
+                <div className="d-flex justify-content-end ">
+                    {compareAsc(new Date(date), new Date()) === 1 ||
+                        (true && (
+                            <>
+                                <button
+                                    className="btn"
+                                    style={styleBtn}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#EditDateUser' + uidDate}
+                                >
+                                    <i
+                                        className="fa fa-pencil-square-o"
+                                        aria-hidden="true"
+                                    ></i>
+                                </button>
+                                <ModalEditDateUser
+                                    idModal={'EditDateUser' + uidDate}
+                                    appointment={appointment}
+                                />
+                                <button
+                                    className="btn "
+                                    style={styleBtn}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#CancelDateUser' + uidDate}
+                                >
+                                    <i
+                                        className="fa fa-trash ms-3"
+                                        aria-hidden="true"
+                                    ></i>
+                                </button>
+                                <ModalCancelDateUser
+                                    idModal={'CancelDateUser' + uidDate}
+                                    appointment={appointment}
+                                />
+                            </>
+                        ))}
+                </div>
             </div>
+            {!appointment.valoration && <Valoration uidDate={uidDate} />}
         </>
     )
 }

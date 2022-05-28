@@ -35,6 +35,14 @@ export const dateReducer = (state = initialState, action) => {
                     }),
                 ],
             }
+        case types.putValoration:
+            return {
+                ...state,
+                userAppointments: state.userAppointments.map((date) => {
+                    if (date.uid === action.payload.uid) return action.payload
+                    return date
+                }),
+            }
         case types.logout:
             return initialState
 

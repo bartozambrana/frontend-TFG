@@ -32,12 +32,7 @@ export const LastCommentsBox = () => {
                                 key={'CommentHome' + idx}
                                 className="list-group-item"
                             >
-                                <CommentItem
-                                    bussiness={comment.idService.serviceName}
-                                    bussinessId={comment.idService._id}
-                                    description={comment.text}
-                                    uid={comment.uid}
-                                />
+                                <CommentItem comment={comment} />
                             </li>
                         )
                     })}

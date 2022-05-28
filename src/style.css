@@ -93,3 +93,24 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: darkgrey;
 }
+
+/*Estrellas de la valoración*/
+.clickedstar {
+    color: rgb(212, 180, 0);
+}
+
+.rating {
+    display: inline-block;
+    position: relative;
+    cursor:pointer;
+    font-size: 25px;
+    color: rgb(110, 109, 109);
+}
+
+.rating i:hover{
+    color: rgb(212, 180, 0);
+}
+
+.rating i:hover~i {
+    color: #c7c7c7;
+}
