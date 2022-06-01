@@ -1,4 +1,9 @@
-import Swal from 'sweetalert2'
+import {
+    loadingClose,
+    loadingOpen,
+    swallError,
+    swallSuccess,
+} from '../helpers/SwalNotifications'
 
 import { types } from '../types/types'
 import { startLogout } from './auth'
@@ -8,19 +13,7 @@ const url = process.env.REACT_APP_API_URL_DEV + '/posts/'
 export const getPosts = (idService) => {
     return async (dispatch) => {
         //Mensaje mostrado mientras el contenido se está subiendo al servidor.
-        Swal.fire({
-            title: 'Obteniendo posts',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Cargando contenido ...')
 
         // Request al servidor.
         const response = await fetch(url + idService, {
@@ -30,23 +23,21 @@ export const getPosts = (idService) => {
             },
         })
 
-        Swal.close()
+        loadingClose()
 
         const body = await response.json()
         // Exito en la respuesta
         if (body.success) {
             // acción de guardar el post añadido
             dispatch(gettingPosts(body.posts, idService))
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            // Notificación del error establecido
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -60,19 +51,7 @@ export const postPost = (fileUpload, caption, description, idService) => {
         formData.append('archivo', fileUpload[0], fileUpload[0].name)
 
         //Mensaje mostrado mientras el contenido se está subiendo al servidor.
-        Swal.fire({
-            title: 'Subiendo el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Subiendo contenido ...')
 
         //Obtenemos la respuesta
         const response = await fetch(url + idService, {
@@ -84,7 +63,7 @@ export const postPost = (fileUpload, caption, description, idService) => {
         })
 
         //Cerramos notificación de carga de pantalla
-        Swal.close()
+        loadingClose()
 
         // Cuerpo de la respuesta
         const body = await response.json()
@@ -94,17 +73,15 @@ export const postPost = (fileUpload, caption, description, idService) => {
             // acción de guardar el post añadido
             dispatch(postingPost(body.post))
             // Notificación
-            Swal.fire('Exito', 'Contenido actulizado', 'success')
+            swallSuccess('Contenido actualizado')
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            // Notificación del error establecido
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -121,19 +98,7 @@ export const putPost = (fileUpload, caption, description, uidPost) => {
             formData.append('archivo', fileUpload[0], fileUpload[0].name)
 
         //Mensaje mostrado mientras el contenido se está subiendo al servidor.
-        Swal.fire({
-            title: 'Subiendo el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Actualizando contenido ...')
 
         //Obtenemos la respuesta
         const response = await fetch(url + uidPost, {
@@ -145,7 +110,7 @@ export const putPost = (fileUpload, caption, description, uidPost) => {
         })
 
         //Cerramos notificación de carga de pantalla
-        Swal.close()
+        loadingClose()
 
         // Cuerpo de la respuesta
         const body = await response.json()
@@ -155,17 +120,15 @@ export const putPost = (fileUpload, caption, description, uidPost) => {
             // acción de guardar el post añadido
             dispatch(puttingPost(body.post))
             // Notificación
-            Swal.fire('Exito', 'Contenido actulizado', 'success')
+            swallSuccess('Contenido actualizado')
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            // Notificación del error establecido
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -173,19 +136,7 @@ export const putPost = (fileUpload, caption, description, uidPost) => {
 export const deletePost = (uidPost) => {
     return async (dispatch) => {
         //Mensaje mostrado mientras el contenido se está subiendo al servidor.
-        Swal.fire({
-            title: 'Eliminando el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Eliminando contenido ...')
 
         //Obtenemos la respuesta
         const response = await fetch(url + uidPost, {
@@ -196,7 +147,7 @@ export const deletePost = (uidPost) => {
         })
 
         //Cerramos notificación de carga de pantalla
-        Swal.close()
+        loadingClose()
 
         // Cuerpo de la respuesta
         const body = await response.json()
@@ -206,17 +157,15 @@ export const deletePost = (uidPost) => {
             // acción de guardar el post añadido
             dispatch(deletingPost(uidPost))
             // Notificación
-            Swal.fire('Exito', 'Contenido eliminado', 'success')
+            swallSuccess('Contenido eliminado')
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            // Notificación del error establecido
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }

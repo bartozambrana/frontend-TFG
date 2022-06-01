@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
+
 import { putUser } from '../../actions/auth'
 import { useForm } from '../../hooks/useForm'
 import validator from 'validator'
 import { ModalDelUser } from './ModalDelUser'
+import { swallError } from '../../helpers/SwalNotifications'
 
 export const ModalEditUser = ({ idModal }) => {
     // Dispatch para lanzar las acciones.
@@ -28,24 +29,16 @@ export const ModalEditUser = ({ idModal }) => {
     //Validación de campos.
     const isFormValid = () => {
         if (userName.trim().length === 0) {
-            Swal.fire('Error', 'Nombre de usuario vacío', 'error')
+            swallError('Nombre del usuario no introducido')
             return false
         } else if (
             (email !== '' && email !== email2) ||
             (email !== '' && !validator.isEmail(email))
         ) {
-            Swal.fire(
-                'Error',
-                'Los emails introducidos no coinciden o no es un email válido',
-                'error'
-            )
+            swallError('Los emails introducidos no coincienden')
             return false
         } else if (password !== password2) {
-            Swal.fire(
-                'Error',
-                'Las contraseñas introducidas no coinciden',
-                'error'
-            )
+            swallError('Las constraseñas no coinciden')
             return false
         }
 

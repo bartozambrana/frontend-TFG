@@ -34,6 +34,13 @@ export const FollowServicesBox = () => {
                                 </Link>
                             </li>
                         ))}
+                    {user &&
+                        user.followServices &&
+                        user.followServices.length === 0 && (
+                            <li className="alert alert-info">
+                                Aún no sigue a ningún servicio.
+                            </li>
+                        )}
                 </ul>
             </div>
         </div>

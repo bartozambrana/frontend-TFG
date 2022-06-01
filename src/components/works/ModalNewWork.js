@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
+
 import { postWork } from '../../actions/works'
+import { swallError } from '../../helpers/SwalNotifications'
 
 import { useForm } from '../../hooks/useForm'
 
@@ -19,13 +20,10 @@ export const ModalNewWork = ({ idService, idModal }) => {
     //Verificacion de los campos del formulario.
     const isFormValid = () => {
         if (description.trim().length === 0) {
-            Swal.fire('Error', 'Descripción del trabajo no añadida', 'error')
+            swallError('Descripción no añadida')
             return false
         } else if (fileUploads.length === 0) {
-            Swal.fire(
-                'Error',
-                'No ha añadido ninguna imagen del trabajo realizado'
-            )
+            swallError('No se ha añadido ninguna imagen')
             return false
         }
 

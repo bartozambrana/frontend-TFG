@@ -1,5 +1,9 @@
-import Swal from 'sweetalert2'
-import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
+import {
+    loadingClose,
+    loadingOpen,
+    swalInfoTimer,
+    swallError,
+} from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 
 import { startLogout } from './auth'
@@ -8,19 +12,7 @@ const url = process.env.REACT_APP_API_URL_DEV + '/services/'
 
 export const searchQuery = (categories, population, name) => {
     return async (dispatch) => {
-        Swal.fire({
-            title: 'Subiendo el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Buscando servicios...')
 
         const response = await fetch(
             url +
@@ -39,16 +31,20 @@ export const searchQuery = (categories, population, name) => {
             }
         )
 
-        Swal.close()
-
+        loadingClose()
         const body = await response.json()
 
         if (body.success) {
             dispatch(setSearch(body.services))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -77,36 +73,23 @@ export const getRandomServices = ({
         if (body.success) {
             dispatch(setServices(body.services, initial))
             if (body.services.length === 0) {
-                Swal.fire({
-                    title: 'Notificación',
-                    text: 'No se existen más servicios',
-                    timer: 2000,
-                    showConfirmButton: true,
-                    confirmButtonColor: '#414e52',
-                })
+                swalInfoTimer('No hay más servicios disponibles')
             }
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
 export const getServicesByName = (name) => {
     return async (dispatch) => {
-        Swal.fire({
-            title: 'Obteniendo contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Buscando servicios...')
 
         const response = await fetch(url + '/called/' + name, {
             method: 'GET',
@@ -115,7 +98,7 @@ export const getServicesByName = (name) => {
             },
         })
 
-        Swal.close()
+        loadingClose()
 
         const body = await response.json()
 
@@ -123,8 +106,13 @@ export const getServicesByName = (name) => {
             dispatch(setSearch(body.services))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 

@@ -1,6 +1,12 @@
-import Swal from 'sweetalert2'
+import {
+    loadingClose,
+    loadingOpen,
+    swallError,
+    swallSuccess,
+} from '../helpers/SwalNotifications'
 
 import { types } from '../types/types'
+import { startLogout } from './auth'
 
 const url = process.env.REACT_APP_API_URL_DEV + '/works/'
 
@@ -19,7 +25,7 @@ export const getWorks = (uid) => {
             dispatch(gettingWorks({ uid: uid, works: body.works }))
             dispatch(setError(false))
         } else {
-            Swal.fire('Error', 'No existe el servicio introducido', 'error')
+            swallError('No existe el servicio introducido')
             dispatch(setError(true))
         }
     }
@@ -37,19 +43,7 @@ export const putWork = (uid, photosDeleted, filesUpload, description) => {
             formData.append('archivo' + i, filesUpload[i], filesUpload[i].name)
         }
 
-        Swal.fire({
-            title: 'Subiendo el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Subiendo el contenido ...')
 
         const response = await fetch(url + uid, {
             method: 'PUT',
@@ -59,16 +53,25 @@ export const putWork = (uid, photosDeleted, filesUpload, description) => {
             body: formData,
         })
 
-        Swal.close()
+        loadingClose()
 
         const body = await response.json()
 
         if (body.success) {
             dispatch(updatingWorks(body.work))
-            Swal.fire('Exito', 'Contenido actulizado', 'success')
+            dispatch(setError(false))
+            swallSuccess('Contenido actualizado correctamente')
         } else {
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else Swal.fire('Error', body.msg, 'error')
+            dispatch(setError(true))
+            if (body.msg === 'token empty' || body.msg === 'token invalid') {
+                dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+                swallError('Su sesión ha caducado.')
+            } else if (body.msg) {
+                swallError(body.msg)
+            } else {
+                //Informamos del error que ha ocurrido al usuario.
+                swallError(body.errors[0].msg)
+            }
         }
     }
 }
@@ -82,19 +85,7 @@ export const postWork = (filesUpload, description, uid) => {
             formData.append('archivo' + i, filesUpload[i], filesUpload[i].name)
         }
 
-        Swal.fire({
-            title: 'Subiendo el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Subiendo el contenido ...')
 
         const response = await fetch(url + uid, {
             method: 'POST',
@@ -104,37 +95,32 @@ export const postWork = (filesUpload, description, uid) => {
             body: formData,
         })
 
-        Swal.close()
+        loadingClose()
 
         const body = await response.json()
 
         if (body.success) {
             dispatch(postingWork(body.work))
-            Swal.fire('Exito', 'Trabajo añadido', 'success')
+            swallSuccess('Contenido añadido correctamente')
             dispatch(setError(false))
         } else {
             dispatch(setError(true))
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else Swal.fire('Error', body.msg, 'error')
+            if (body.msg === 'token empty' || body.msg === 'token invalid') {
+                dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+                swallError('Su sesión ha caducado.')
+            } else if (body.msg) {
+                swallError(body.msg)
+            } else {
+                //Informamos del error que ha ocurrido al usuario.
+                swallError(body.errors[0].msg)
+            }
         }
     }
 }
 
 export const deleteWork = (uidWork) => {
     return async (dispatch) => {
-        Swal.fire({
-            title: 'Eliminando el contenido ...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Eliminando el contenido ...')
 
         const response = await fetch(url + uidWork, {
             method: 'DELETE',
@@ -143,18 +129,24 @@ export const deleteWork = (uidWork) => {
             },
         })
 
-        Swal.close()
-
+        loadingClose()
         const body = await response.json()
 
         if (body.success) {
             dispatch(deletingWork(uidWork))
-            Swal.fire('Exito', 'Contenido actulizado', 'success')
+            swallSuccess('Contenido eliminado correctamente')
             dispatch(setError(false))
         } else {
             dispatch(setError(true))
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else Swal.fire('Error', body.msg, 'error')
+            if (body.msg === 'token empty' || body.msg === 'token invalid') {
+                dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+                swallError('Su sesión ha caducado.')
+            } else if (body.msg) {
+                swallError(body.msg)
+            } else {
+                //Informamos del error que ha ocurrido al usuario.
+                swallError(body.errors[0].msg)
+            }
         }
     }
 }

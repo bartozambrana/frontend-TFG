@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import Swal from 'sweetalert2'
 
 import { useDispatch } from 'react-redux'
 // import { updateCommentUser } from '../../actions/comment';
 import { useForm } from '../../hooks/useForm'
 import { addNewService, getValidCategories } from '../../actions/services'
+import { swallError } from '../../helpers/SwalNotifications'
 
 export const ModalNewService = ({ idModal }) => {
     const dispatch = useDispatch()
@@ -37,26 +37,22 @@ export const ModalNewService = ({ idModal }) => {
 
     const isFormValid = () => {
         if (serviceCategory.trim().length === 0) {
-            Swal.fire('Error', 'Categoria del servicio vacío', 'error')
+            swallError('Categoría del servicio vacía')
             return false
         } else if (serviceInfo.trim().length === 0) {
-            Swal.fire('Error', 'Información del servicio vacío', 'error')
+            swallError('Información del servicio vacía')
             return false
         } else if (serviceName.trim().length === 0) {
-            Swal.fire('Error', 'Nombre del servicio vacío', 'error')
+            swallError('Nombre del servicio vacío')
             return false
         } else if (cityName.trim().length === 0) {
-            Swal.fire(
-                'Error',
-                'Nombre del servicio del servicio vacío',
-                'error'
-            )
+            swallError('Ciudad no introducida')
             return false
         } else if (street.trim().length === 0) {
-            Swal.fire('Error', 'Calle del servicio vacío', 'error')
+            swallError('Dirrea no introducida')
             return false
         } else if (postalCode.toString().length !== 5) {
-            Swal.fire('Error', 'El codigo postal tiene 5', 'error')
+            swallError('El código postal debe tener 5 dígitos')
             return false
         }
         return true

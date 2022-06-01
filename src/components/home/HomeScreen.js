@@ -23,7 +23,11 @@ export const HomeScreen = () => {
                 )}
                 <h1
                     className="caption"
-                    style={{ color: 'white', fontSize: '3rem' }}
+                    style={{
+                        color: 'white',
+                        fontSize: '3rem',
+                        textShadow: '2px 2px black',
+                    }}
                 >
                     Disfruta de esta experiencia
                 </h1>

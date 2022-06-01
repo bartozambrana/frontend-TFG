@@ -119,6 +119,8 @@ export const CommentItem = ({ comment }) => {
                             (comment.author.userName === user.userName &&
                                 comment.replyTo.length !== 0 &&
                                 comment.replyTo[comment.replyTo.length - 1]
+                                    .author.serviceName &&
+                                comment.replyTo[comment.replyTo.length - 1]
                                     .author.serviceName ===
                                     visitedServices.find(
                                         (s) => s.uid === idService

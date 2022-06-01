@@ -1,5 +1,9 @@
-import Swal from 'sweetalert2'
-import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
+import {
+    loadingClose,
+    loadingOpen,
+    swallError,
+    swallSuccess,
+} from '../helpers/SwalNotifications'
 
 import { types } from '../types/types'
 import { startLogout } from './auth'
@@ -20,9 +24,14 @@ export const getValidCategories = () => {
         if (body.success) {
             dispatch(setValidCategories(body.categories))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
-            dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -62,16 +71,15 @@ export const addNewService = (
 
         if (body.success) {
             dispatch(setNewService(body.service))
-            Swal.fire('Exito', 'Servicio añadido', 'success')
+            swallSuccess('Servicio creado correctamente.')
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -97,9 +105,14 @@ export const getServicesUser = () => {
         if (body.success) {
             dispatch(setServicesUser(body.services))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
-            dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -125,9 +138,14 @@ export const getServiceById = (id) => {
             dispatch(setServiceById(body.service))
             dispatch({ type: types.setServiceError, payload: false })
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
-            dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else dispatch({ type: types.setServiceError, payload: true })
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -166,16 +184,15 @@ export const putService = (
 
         if (body.success) {
             dispatch(setUpdateService(body.service))
-            Swal.fire('Exito', 'Servicio actualizado', 'success')
+            swallSuccess('Servicio actualizado correctamente.')
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -201,9 +218,14 @@ export const getAvaliableCategories = () => {
         if (body.success) {
             dispatch(setAvaliableCategories(body.categories))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
-            dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -236,11 +258,14 @@ export const followUnfollow = (service) => {
         if (body.success) {
             dispatch(setFollowUnfollow(body.followService, service))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
-            dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 

@@ -1,9 +1,10 @@
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import Swal from 'sweetalert2'
+
 import validator from 'validator'
 
 import { startRegister } from '../../actions/auth'
+import { swallError } from '../../helpers/SwalNotifications'
 import { useForm } from '../../hooks/useForm'
 
 export const RegisterScreen = () => {
@@ -28,13 +29,13 @@ export const RegisterScreen = () => {
 
     const isFormValid = () => {
         if (userName.trim().length === 0) {
-            Swal.fire('Error', 'Nombre vacío', 'error')
+            swallError('Nombre vacío')
             return false
         } else if (!validator.isEmail(email)) {
-            Swal.fire('Error', 'Email inválido', 'error')
+            swallError('Email vacío')
             return false
         } else if (password !== confirmPassword || password.length < 5) {
-            Swal.fire('Error', 'Las contraseñas no coinciden', 'error')
+            swallError('Las contraseñas no coinciden')
             return false
         }
         return true

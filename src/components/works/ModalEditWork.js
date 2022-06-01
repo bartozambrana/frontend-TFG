@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
 
 import { useForm } from '../../hooks/useForm'
 import { putWork } from '../../actions/works'
+import { swallError } from '../../helpers/SwalNotifications'
 
 const styleCheck = {
     backgroundColor: 'rgb(114, 180, 108)',
@@ -68,11 +68,7 @@ export const ModalEditWork = ({ uidWork }) => {
             fileUploads.length === 0 &&
             !selectable
         ) {
-            Swal.fire(
-                'Error',
-                'No puede actualizar un trabajo sin modificaciones',
-                'error'
-            )
+            swallError('No se puede actualizar un trabajo sin actualizaciones.')
             return false
         }
         return true

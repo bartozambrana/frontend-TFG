@@ -1,5 +1,3 @@
-import Swal from 'sweetalert2'
-
 import {
     loadingClose,
     loadingOpen,
@@ -42,11 +40,13 @@ export const postNewDate = (dateDay, initHour, endHour, uidService) => {
             swalInfoTimer('Se ha añadido la cita.')
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else if (body.msg) Swal.fire('Error', body.msg, 'error')
-        else if (body.errors)
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -77,12 +77,12 @@ export const getDatesDay = (dateDay, uidService, setNewDateList) => {
             setNewDateList(body.dates)
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -115,12 +115,12 @@ export const getAsignedDates = (dateDay, uidService, setNewDateList) => {
             setNewDateList(body.dates)
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -148,12 +148,12 @@ export const putDateService = (uidDate, initHour, endHour) => {
             swalInfoTimer('Cita actualizada.')
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -180,12 +180,12 @@ export const putCancelDate = (uidDate, user = false) => {
             }
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -208,12 +208,12 @@ export const delDate = (uidDate) => {
             swalInfoTimer('Cita Eliminada.')
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -248,9 +248,12 @@ export const getUserAppointments = () => {
             dispatch(userAppointments(body.userDates))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -280,12 +283,12 @@ export const putSelectDate = (uidDate) => {
             dispatch(userSelectAppointment(body.date)) //Cargamos la citas localmente
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -317,12 +320,12 @@ export const putModifyDate = (uidNewDate, uidOldDate) => {
             dispatch(userModifyAppointment(body.date, uidOldDate)) //Cargamos la citas localmente
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
+            swallError('Su sesión ha caducado.')
         } else if (body.msg) {
-            Swal.fire('Error', body.msg, 'error')
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }

@@ -1,8 +1,12 @@
 import { useForm } from '../../hooks/useForm'
 import validator from 'validator'
-import Swal from 'sweetalert2'
+
+import { useDispatch } from 'react-redux'
+import { confirmDel } from '../../actions/auth'
+import { swallError } from '../../helpers/SwalNotifications'
 
 export const ModalDelUser = ({ idModal }) => {
+    const dispatch = useDispatch()
     const [formValues, handleInputChange, reset] = useForm({
         email: '',
         password: '',
@@ -11,10 +15,10 @@ export const ModalDelUser = ({ idModal }) => {
     const { email, password } = formValues
     const isFormValid = () => {
         if (!validator.isEmail(email)) {
-            Swal.fire('Error', 'No se corresponde con un email', 'error')
+            swallError('El email no es válido')
             return false
         } else if (password.length === 0) {
-            Swal.fire('Error', 'No se ha introducido la contraseña', 'error')
+            swallError('No se ha introducido una constraseña')
             return false
         }
 
@@ -23,7 +27,9 @@ export const ModalDelUser = ({ idModal }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        isFormValid()
+        if (isFormValid()) {
+            dispatch(confirmDel(email, password))
+        }
     }
 
     const handleReset = () => {

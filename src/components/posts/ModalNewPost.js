@@ -2,10 +2,10 @@ import { useState } from 'react'
 
 import { isMobile } from 'react-device-detect'
 import { useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
 
 import { useForm } from '../../hooks/useForm'
 import { postPost } from '../../actions/posts'
+import { swallError } from '../../helpers/SwalNotifications'
 
 export const ModalNewPost = ({ idService, idModal }) => {
     const dispatch = useDispatch()
@@ -33,16 +33,13 @@ export const ModalNewPost = ({ idService, idModal }) => {
     //Verificacion de los campos del formulario.
     const isFormValid = () => {
         if (caption.trim().length === 0) {
-            Swal.fire('Error', 'No ha introducido un título', 'error')
+            swallError('No se ha introducido un título')
             return false
         } else if (description.trim().length === 0) {
-            Swal.fire('Error', 'Descripción del trabajo no añadida', 'error')
+            swallError('Descripción del trabajo no introducida')
             return false
         } else if (fileUpload.length === 0) {
-            Swal.fire(
-                'Error',
-                'No ha añadido ninguna imagen del trabajo realizado'
-            )
+            swallError('No he añadido una imagen')
             return false
         }
 

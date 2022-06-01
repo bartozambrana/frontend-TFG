@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
 export const loadingOpen = (text) => {
     Swal.fire({
@@ -16,7 +16,9 @@ export const loadingOpen = (text) => {
     })
 }
 
-export const loadingClose = () => {Swal.close();}
+export const loadingClose = () => {
+    Swal.close()
+}
 
 export const swalInfoTimer = (text) => {
     Swal.fire({
@@ -32,9 +34,19 @@ export const swalInfoTimer = (text) => {
 export const swallError = (text) => {
     Swal.fire({
         title: text,
-        timer: 2000,
+        timer: 4000,
         showConfirmButton: true,
         confirmButtonColor: '#414e52',
         icon: 'error',
+    })
+}
+
+export const swallSuccess = (text) => {
+    Swal.fire({
+        title: text,
+        timer: 4000,
+        showConfirmButton: true,
+        confirmButtonColor: '#414e52',
+        icon: 'success',
     })
 }

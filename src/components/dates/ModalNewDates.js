@@ -3,10 +3,10 @@ import { useDispatch } from 'react-redux'
 
 import { useForm } from '../../hooks/useForm'
 import { format } from 'date-fns'
-import Swal from 'sweetalert2'
 
 import '../../style.css'
 import { postNewDate } from '../../actions/dates'
+import { swallError } from '../../helpers/SwalNotifications'
 
 export const ModalNewDates = ({ uidService, idModal }) => {
     const [dateDay, setDateDay] = useState(format(new Date(), 'yyyy-MM-dd'))
@@ -26,34 +26,13 @@ export const ModalNewDates = ({ uidService, idModal }) => {
 
     const isFormValid = () => {
         if (dateDay.trim().length === 0) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha establecido la fecha',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
+            swallError('No se ha introducido una fecha')
             return false
         } else if (initHour.trim().length === 0) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha establecido la hora de inicio',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
+            swallError('No se ha introducido una hora de inicio')
             return false
         } else if (endHour.trim().length === 0) {
-            Swal.fire({
-                title: 'Error',
-                text: 'No se ha establecido la hora de fin',
-                timer: 2000,
-                showConfirmButton: true,
-                confirmButtonColor: '#414e52',
-                icon: 'error',
-            })
+            swallError('No se ha introducido una hora de finaliazación')
             return false
         }
         return true

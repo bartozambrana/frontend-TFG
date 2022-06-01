@@ -86,17 +86,23 @@ export const ServiceScreen = () => {
                                 height="350"
                                 src={
                                     'http://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566588180814!2d-3.3161796837420376!3d38.06906157970678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6ef1a351173d7f%3A0xb007cd0c804e83c7!2s' +
-                                    postalCode +
+                                    { postalCode } +
                                     '%20' +
-                                    cityName +
+                                    { cityName } +
                                     '%20' +
-                                    street +
+                                    { street } +
                                     '!5e0!3m2!1ses!2ses!4v1652178258048!5m2!1ses!2ses'
                                 }
-                                loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
                             ></iframe>
                         )}
+                        {
+                            <p>
+                                {postalCode}
+                                {cityName}
+                                {street}
+                            </p>
+                        }
                     </div>
                 </div>
 

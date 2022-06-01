@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 import { isMobile } from 'react-device-detect'
 import { useDispatch } from 'react-redux'
-import Swal from 'sweetalert2'
 
 import { putPost } from '../../actions/posts'
+import { swallError } from '../../helpers/SwalNotifications'
 import { useForm } from '../../hooks/useForm'
 
 import '../../style.css'
@@ -35,10 +35,10 @@ export const ModalEditPost = ({ post, idModal }) => {
     //Verificacion de los campos del formulario.
     const isFormValid = () => {
         if (caption.trim().length === 0) {
-            Swal.fire('Error', 'No ha introducido un título', 'error')
+            swallError('No se ha introducido un título')
             return false
         } else if (description.trim().length === 0) {
-            Swal.fire('Error', 'Descripción del trabajo no añadida', 'error')
+            swallError('No se ha introducido una descripción')
             return false
         }
 

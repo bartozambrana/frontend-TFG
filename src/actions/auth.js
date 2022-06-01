@@ -1,5 +1,9 @@
-import Swal from 'sweetalert2'
-import { loadingClose, loadingOpen } from '../helpers/SwalNotifications'
+import {
+    loadingClose,
+    loadingOpen,
+    swallError,
+    swallSuccess,
+} from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 //const baseUrl = process.env.REACT_APP_API_URL;
 const baseUrl = process.env.REACT_APP_API_URL_DEV
@@ -33,7 +37,7 @@ export const startLogin = (email, password) => {
                 })
             )
         } else {
-            Swal.fire('Error', body.msg, 'error')
+            swallError(body.msg)
         }
     }
 }
@@ -53,13 +57,12 @@ export const startRegister = (email, password, userName, type) => {
 
         const body = await resp.json()
         if (body.success) {
-            Swal.fire(
-                'Exísto',
-                'Puede iniciar sesión cuando lo desee',
-                'success'
-            )
+            swallSuccess('Puede iniciar sesión cuando lo desee.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -108,19 +111,8 @@ const logout = () => ({ type: types.logout })
 export const putUser = (email, password, type, userName = '') => {
     return async (dispatch) => {
         //Notificación de que se está enviando la información al servidor.
-        Swal.fire({
-            title: 'Actualizando...',
-            didOpen() {
-                Swal.showLoading()
-            },
-            didClose() {
-                Swal.hideLoading()
-            },
-            allowEnterKey: false,
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showConfirmButton: false,
-        })
+        loadingOpen('Actualizando ...')
+
         let objectToJson = {}
         if (userName !== '') objectToJson = { userName }
 
@@ -143,7 +135,7 @@ export const putUser = (email, password, type, userName = '') => {
         })
 
         // Cerramos la notificación.
-        Swal.close()
+        loadingClose()
 
         //Obtenemos el cuerpo de la peteción.
         const body = await response.json()
@@ -155,15 +147,17 @@ export const putUser = (email, password, type, userName = '') => {
             // realizar de nuevo una petición al servidor para obtener sus datos.
 
             dispatch(puttingUser(body.user))
-            Swal.fire('Éxito', 'Datos actualizados', 'success')
+            swallSuccess('Datos actualizados correctamente.')
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             // O el token introducido es inválido o es vacío => caducó la sesión.
 
             dispatch(startLogout()) //Limpiamos todos los reducers
-            Swal.fire('Error', 'La sesión caducó', 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
             //Informamos del error que ha ocurrido al usuario.
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -175,7 +169,7 @@ const puttingUser = (user) => {
     }
 }
 
-export const confirmDelUser = (email, password, uidUser) => {
+export const confirmDel = (email, password, service = false) => {
     return async (dispatch) => {
         const response = await fetch(baseUrl + '/auth/login', {
             method: 'POST',
@@ -193,9 +187,9 @@ export const confirmDelUser = (email, password, uidUser) => {
             localStorage.setItem('token-init-date', new Date().getTime())
 
             //Eliminación del usuario
-            dispatch(delUser(email, password, uidUser))
+            if (!service) dispatch(delUser())
         } else {
-            Swal.fire('Error', 'Confirmación fallida', 'error')
+            swallError('Confirmación fallida')
         }
     }
 }
@@ -215,17 +209,19 @@ const delUser = () => {
 
         const body = await response.json()
         if (body.success) {
-            Swal.fire('Éxito', 'Usuario eliminado', 'success')
+            swallSuccess('Usuario eliminado correctamente.')
             //Cerramos sesión
             dispatch(startLogout())
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             // O el token introducido es inválido o es vacío => caducó la sesión.
 
             dispatch(startLogout()) //Limpiamos todos los reducers
-            Swal.fire('Error', 'La sesión caducó', 'error')
+            swallError('La sesión ha caducado')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
             //Informamos del error que ha ocurrido al usuario.
-            Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -259,10 +255,12 @@ export const getHomeContent = (servedPosts, servedWorks) => {
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             // O el token introducido es inválido o es vacío => caducó la sesión.
             dispatch(startLogout()) //Limpiamos todos los reducers
-            Swal.fire('Error', 'La sesión caducó', 'error')
+            swallError('Su sesión ha caducado')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
             //Informamos del error que ha ocurrido al usuario.
-            Swal.fire('Error', body.msg, 'error')
+            swallError(body.errors[0].msg)
         }
     }
 }

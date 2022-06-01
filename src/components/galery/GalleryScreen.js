@@ -28,7 +28,7 @@ export const GalleryScreen = () => {
                     <h1 className="text-center mt-1">Ese servicio no existe</h1>
                 )}
 
-                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                <div className="row row-cols-1 row-cols-lg-2">
                     {works.uidWorkService === idService &&
                         works.worksLastService.map((work) => {
                             return (

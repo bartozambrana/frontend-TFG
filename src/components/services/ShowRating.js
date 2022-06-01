@@ -33,7 +33,7 @@ export const ShowRating = ({ idService }) => {
             <div className="d-flex justify-content-center shadow mt-2">
                 <div style={style.dot} className="row align-items-center">
                     <p className="text-center" style={style.points}>
-                        {rating}/5
+                        {rating.toFixed(1)}/5
                     </p>
                 </div>
             </div>

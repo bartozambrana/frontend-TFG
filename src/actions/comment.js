@@ -1,9 +1,9 @@
-import Swal from 'sweetalert2'
 import {
     loadingClose,
     loadingOpen,
     swalInfoTimer,
     swallError,
+    swallSuccess,
 } from '../helpers/SwalNotifications'
 import { types } from '../types/types'
 import { startLogout } from './auth'
@@ -28,16 +28,14 @@ export const getCommentsUser = () => {
 
         if (body.success) {
             dispatch(getttingCommentsUser(body.comments))
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout())
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
         } else {
-            // Notificación del error establecido
-            if (body.errors) Swal.fire('Error', body.errors[0].msg, 'error')
-            else if (
-                body.msg === 'token empty' ||
-                body.msg === 'token invalid'
-            ) {
-                dispatch(startLogout())
-                Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-            } else Swal.fire('Error', body.msg, 'error')
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
         }
     }
 }
@@ -67,8 +65,13 @@ export const updateCommentUser = (text, uid, reply) => {
             else dispatch(updatingReply(body.comment))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -100,12 +103,17 @@ export const deleteComment = (uid, reply) => {
         if (body.success) {
             if (!reply) {
                 dispatch(deletingComment(uid))
-                Swal.fire('Exito', 'Comentario eliminado', 'success')
+                swallSuccess('Comentario eliminado.')
             } else dispatch(deletingReply(uid))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -142,8 +150,13 @@ export const getCommentsService = (uidService) => {
             dispatch(setServiceComments(body.comments))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 
@@ -172,8 +185,13 @@ export const postReplyComment = (idComment, text) => {
             dispatch(setReply(body.reply, idComment))
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
-            Swal.fire('Error', 'Sesión caducada, inicie sesión', 'error')
-        } else Swal.fire('Error', body.errors[0].msg, 'error')
+            swallError('Su sesión ha caducado.')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
     }
 }
 

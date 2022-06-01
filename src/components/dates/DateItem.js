@@ -58,7 +58,7 @@ export const DateItem = ({ appointment }) => {
                 */}
                 <div className="d-flex justify-content-end ">
                     {compareAsc(new Date(date), new Date()) === 1 ||
-                        (true && (
+                        (!appointment.valoration && (
                             <>
                                 <button
                                     className="btn"
