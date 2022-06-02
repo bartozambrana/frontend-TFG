@@ -6,6 +6,7 @@ export const types = {
     putUser: '[auth] put user',
     getHomeContent: '[auth] getHomeContent',
     getMoreHomeContent: '[auth] getMoreHomeContent',
+    getRecommendation: '[auth] getRecommendation',
 
     //Comments
     getCommentsUser: '[Comment] getCommentsUser',

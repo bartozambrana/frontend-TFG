@@ -3,6 +3,7 @@ import { PostsWorksHome } from './PostsWorksHome'
 import { isMobile } from 'react-device-detect'
 
 import '../../style.css'
+import { Recommendations } from './Recommendations'
 
 export const HomeScreen = () => {
     return (
@@ -33,6 +34,7 @@ export const HomeScreen = () => {
                 </h1>
             </div>
             <div className="container">
+                <Recommendations />
                 <div className="row justify-content-center">
                     <div className="col-lg-8 mt-3 mb-3">
                         <PostsWorksHome />

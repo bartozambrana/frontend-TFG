@@ -114,3 +114,25 @@ body {
 .rating i:hover~i {
     color: #c7c7c7;
 }
+
+/*Sppinner*/
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    animation: spinner 1.4s linear infinite;
+    color: #fff;
+    transform-origin: center center;
+    border: 5px solid grey;
+    border-top: 5px solid #32919e;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    
+}

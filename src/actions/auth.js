@@ -277,3 +277,37 @@ const setHomeContent = (homeContent, moreContent) => {
         payload: homeContent,
     }
 }
+
+//Método encargado de obtener las recomendaciones para el usuario.
+export const getRecommendations = (nRecommendations) => {
+    return async (dispatch) => {
+        const response = await fetch(
+            baseUrl + '/users/recommendations/' + nRecommendations,
+            {
+                method: 'GET',
+                headers: { token: localStorage.getItem('token') },
+            }
+        )
+
+        const body = await response.json()
+        if (body.success) {
+            dispatch(setRecommendation(body.recommendation))
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            // O el token introducido es inválido o es vacío => caducó la sesión.
+            dispatch(startLogout()) //Limpiamos todos los reducers
+            swallError('Su sesión ha caducado')
+        } else if (body.msg) {
+            swallError(body.msg)
+        } else {
+            //Informamos del error que ha ocurrido al usuario.
+            swallError(body.errors[0].msg)
+        }
+    }
+}
+
+const setRecommendation = (recommendation) => {
+    return {
+        type: types.getRecommendation,
+        payload: recommendation,
+    }
+}

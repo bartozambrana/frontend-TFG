@@ -2,6 +2,7 @@ import { types } from '../types/types'
 
 const initialState = {
     checking: true,
+    recommendations: [],
 }
 export const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -71,6 +72,11 @@ export const authReducer = (state = initialState, action) => {
                 },
             }
 
+        case types.getRecommendation:
+            return {
+                ...state,
+                recommendations: action.payload,
+            }
         default:
             return state
     }
