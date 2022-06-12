@@ -69,14 +69,14 @@ export const startRegister = (email, password, userName, type) => {
 
 export const startChecking = () => {
     return async (dispatch) => {
-        const url = baseUrl + '/users'
+        const url = baseUrl + '/users/'
 
         //Obtengo el token del localStrorage
         const token = localStorage.getItem('token') || ''
 
         const resp = await fetch(url, {
             method: 'GET',
-            headers: { token: token },
+            headers: { token },
         })
 
         const body = await resp.json()

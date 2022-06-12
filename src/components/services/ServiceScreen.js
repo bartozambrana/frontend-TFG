@@ -9,6 +9,7 @@ import { PostsList } from '../posts/PostsList'
 import { isMobile } from 'react-device-detect'
 import { Comments } from './../comments/CommentsService'
 import { ShowRating } from './ShowRating'
+import { MyMap } from './MyMap'
 
 export const ServiceScreen = () => {
     //Identificador del servicio de la url
@@ -46,8 +47,8 @@ export const ServiceScreen = () => {
         service = visitedServices.find((s) => s.uid === idService)
         if (service === undefined)
             service = userServices.find((s) => s.uid === idService)
-        cityName = encodeURIComponent(service.localization.cityName)
-        street = encodeURIComponent(service.localization.street)
+        cityName = service.localization.cityName
+        street = service.localization.street
         postalCode = service.localization.postalCode
     }
 
@@ -79,28 +80,28 @@ export const ServiceScreen = () => {
                     <div className="col-lg-2 col-md-4 col-12 justify-content-around d-flex flex-column">
                         <ActionsService service={service} />
                     </div>
-                    <div className="col-lg-6 col-md-8 col-12 mt-1 ">
+                    <div
+                        className="col-lg-6 col-md-8 col-12 mt-1 "
+                        style={{ height: '250px' }}
+                    >
                         {loaded && (
-                            <iframe
-                                className="w-100"
-                                height="350"
-                                src={
-                                    'http://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3141.0566588180814!2d-3.3161796837420376!3d38.06906157970678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6ef1a351173d7f%3A0xb007cd0c804e83c7!2s' +
-                                    { postalCode } +
-                                    '%20' +
-                                    { cityName } +
-                                    '%20' +
-                                    { street } +
-                                    '!5e0!3m2!1ses!2ses!4v1652178258048!5m2!1ses!2ses'
+                            <MyMap
+                                address={
+                                    street +
+                                    ' ' +
+                                    cityName +
+                                    ' ' +
+                                    postalCode.toString()
                                 }
-                                referrerPolicy="no-referrer-when-downgrade"
-                            ></iframe>
+                            />
                         )}
                         {
-                            <p>
-                                {postalCode}
-                                {cityName}
-                                {street}
+                            <p className="text-center">
+                                {street +
+                                    ' ' +
+                                    cityName +
+                                    ' ' +
+                                    postalCode.toString()}
                             </p>
                         }
                     </div>
