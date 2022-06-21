@@ -2,6 +2,7 @@ import { compareAsc, format } from 'date-fns'
 import { Link } from 'react-router-dom'
 
 import '../../style.css'
+import { AsignatedValoration } from './AsignatedValoration'
 import { ModalCancelDateUser } from './ModalCancelDateUser'
 import { ModalEditDateUser } from './ModalEditDateUser'
 import { Valoration } from './Valoration'
@@ -21,6 +22,7 @@ export const DateItem = ({ appointment }) => {
         date,
     } = appointment
 
+    console.log(appointment)
     return (
         <>
             <div className="d-flex justify-content-between">
@@ -94,7 +96,11 @@ export const DateItem = ({ appointment }) => {
                         ))}
                 </div>
             </div>
-            {!appointment.valoration && <Valoration uidDate={uidDate} />}
+            {!appointment.valoration ? (
+                <Valoration uidDate={uidDate} />
+            ) : (
+                <AsignatedValoration points={appointment.valoration} />
+            )}
         </>
     )
 }

@@ -121,7 +121,11 @@ export const SearchScreen = () => {
                 )}
                 <h1
                     className="caption"
-                    style={{ color: 'white', fontSize: '3rem' }}
+                    style={{
+                        color: 'white',
+                        fontSize: '3rem',
+                        textShadow: '2px 2px black',
+                    }}
                 >
                     Busca nuevos servicios.
                 </h1>

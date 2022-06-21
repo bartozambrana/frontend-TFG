@@ -21,11 +21,13 @@ export const postReducer = (state = initialState, action) => {
                     post.uid === action.payload.uid ? action.payload : post
                 ),
             }
+
         case types.postPost:
             return {
                 ...state,
                 postsLastService: [action.payload, ...state.postsLastService],
             }
+
         case types.delPost:
             return {
                 ...state,
@@ -33,6 +35,10 @@ export const postReducer = (state = initialState, action) => {
                     (post) => post.uid !== action.payload
                 ),
             }
+
+        case types.delService:
+            return initialState
+
         case types.logout:
             return initialState
 

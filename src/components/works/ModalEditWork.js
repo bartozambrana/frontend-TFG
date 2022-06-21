@@ -33,7 +33,7 @@ export const ModalEditWork = ({ uidWork }) => {
     const [photosDeleted, setPhotosDeleted] = useState(initialState.current)
 
     //Establecemos los campos del formulario;
-    const [formValues, handleInputChange] = useForm({
+    const [formValues, handleInputChange, reset] = useForm({
         fileUploads: [],
         description: work.current.description,
         photos: work.current.photos,
@@ -110,6 +110,7 @@ export const ModalEditWork = ({ uidWork }) => {
                             className="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
+                            onClick={() => reset()}
                         ></button>
                     </div>
                     <div className="modal-body">
@@ -192,6 +193,7 @@ export const ModalEditWork = ({ uidWork }) => {
                             type="button"
                             className="btn btn-secondary"
                             data-bs-dismiss="modal"
+                            onClick={() => reset()}
                         >
                             Cancelar
                         </button>

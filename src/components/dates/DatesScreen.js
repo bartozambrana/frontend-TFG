@@ -40,7 +40,14 @@ export const DatesScreen = () => {
                         className="w-100"
                     />
                 )}
-                <h1 className="caption" style={{ color: 'white' }}>
+                <h1
+                    className="caption"
+                    style={{
+                        color: 'white',
+                        fontSize: '3rem',
+                        textShadow: '2px 2px black',
+                    }}
+                >
                     Tus citas
                 </h1>
             </div>

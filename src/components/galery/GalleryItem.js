@@ -74,33 +74,37 @@ export const GalleryItem = ({ images, description, uid, idService }) => {
                         )
                     })}
                 </div>
-                <button
-                    className="carousel-control-prev"
-                    type="button"
-                    data-bs-target={targetCarousel}
-                    data-bs-slide="prev"
-                >
-                    <span
-                        className="carousel-control-prev-icon"
-                        aria-hidden="true"
-                    ></span>
-                    <span className="visually-hidden">Previous</span>
-                </button>
-                <button
-                    className="carousel-control-next"
-                    type="button"
-                    data-bs-target={targetCarousel}
-                    data-bs-slide="next"
-                >
-                    <span
-                        className="carousel-control-next-icon"
-                        aria-hidden="true"
-                    ></span>
-                    <span className="visually-hidden">Next</span>
-                </button>
+                {images.length > 1 && (
+                    <>
+                        <button
+                            className="carousel-control-prev"
+                            type="button"
+                            data-bs-target={targetCarousel}
+                            data-bs-slide="prev"
+                        >
+                            <span
+                                className="carousel-control-prev-icon"
+                                aria-hidden="true"
+                            ></span>
+                            <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button
+                            className="carousel-control-next"
+                            type="button"
+                            data-bs-target={targetCarousel}
+                            data-bs-slide="next"
+                        >
+                            <span
+                                className="carousel-control-next-icon"
+                                aria-hidden="true"
+                            ></span>
+                            <span className="visually-hidden">Next</span>
+                        </button>
+                    </>
+                )}
             </div>
             <div className="shadow p-3 mb-5 bg-body rounded">
-                {description}
+                {<p style={{ whiteSpace: 'pre-wrap' }}>{description}</p>}
                 {userServices &&
                     userServices.filter((s) => s.uid === idService).length ===
                         1 &&

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { useParams } from 'react-router-dom'
 
-export const MyMap = ({address}) => {
+export const MyMap = ({ address }) => {
     const { idService } = useParams()
     const [position, setPosition] = useState([
         40.42042338472101, -3.704257600806946,
     ])
     const [loading, setLoading] = useState(false)
-    
+
     useEffect(() => {
         const geocoder = async () => {
             const response = await fetch(
@@ -23,10 +23,11 @@ export const MyMap = ({address}) => {
             )
 
             const body = await response.json()
+            if (body.length > 0) {
+                setPosition([parseFloat(body[0].lat), parseFloat(body[0].lon)])
 
-            setPosition([parseFloat(body[0].lat), parseFloat(body[0].lon)])
-
-            setLoading(true)
+                setLoading(true)
+            }
         }
 
         geocoder()

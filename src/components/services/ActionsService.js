@@ -12,6 +12,7 @@ import { ModalCancelDateOwner } from '../dates/ModalCancelDateOwner'
 import { ModalDelDateOwner } from '../dates/ModalDelDateOwner'
 import { ModalSelectDate } from '../dates/ModalSelectDate'
 import { followUnfollow } from '../../actions/services'
+import { ModalPDF } from '../dates/ModalPDF'
 
 export const ActionsService = ({ service }) => {
     const { user } = useSelector((state) => state.auth)
@@ -73,6 +74,16 @@ export const ActionsService = ({ service }) => {
                                     className="link-no-decoration-black"
                                 >
                                     Eliminar una cita
+                                </a>
+                            </li>
+                            <li className="dropdown-item border-bottom">
+                                <a
+                                    href={'#getPDF' + service.uid}
+                                    data-bs-toggle="modal"
+                                    data-bs-target={'#getPDF' + service.uid}
+                                    className="link-no-decoration-black"
+                                >
+                                    Citas Asignadas.
                                 </a>
                             </li>
                         </ul>
@@ -183,6 +194,11 @@ export const ActionsService = ({ service }) => {
             <ModalDelDateOwner
                 uidService={service.uid}
                 idModal={'DelDate' + service.uid}
+            />
+
+            <ModalPDF
+                idService={service.uid}
+                idModal={'getPDF' + service.uid}
             />
         </>
     )

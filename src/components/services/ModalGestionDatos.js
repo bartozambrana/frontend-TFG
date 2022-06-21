@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useForm } from '../../hooks/useForm'
 import { getValidCategories, putService } from '../../actions/services'
 import { swallError } from '../../helpers/SwalNotifications'
+import { ModalDelService } from './ModalDelService'
 
 export const ModalGestionDatos = ({ idService, idModal }) => {
     const dispatch = useDispatch()
@@ -24,6 +25,7 @@ export const ModalGestionDatos = ({ idService, idModal }) => {
         (s) => s.idUser === user.uid && s.uid === idService
     )
     const [formValues, handleInputChange] = useForm({
+        serviceName: service.serviceName,
         serviceCategory: service.serviceCategory,
         serviceInfo: service.serviceInfo,
         cityName: service.localization.cityName,
@@ -32,8 +34,14 @@ export const ModalGestionDatos = ({ idService, idModal }) => {
     })
 
     //Establecemos los campos del formulario
-    const { serviceCategory, serviceInfo, cityName, postalCode, street } =
-        formValues
+    const {
+        serviceCategory,
+        serviceInfo,
+        cityName,
+        postalCode,
+        street,
+        serviceName,
+    } = formValues
 
     //Verificacion de los campos del formulario.
     const isFormValid = () => {
@@ -49,6 +57,9 @@ export const ModalGestionDatos = ({ idService, idModal }) => {
         } else if (street.trim().length === 0) {
             swallError('Dirección vacía')
             return false
+        } else if (serviceName.trim().length === 0) {
+            swallError('Nombre del servicio vacío')
+            return false
         } else if (postalCode.toString().length !== 5) {
             swallError('El código postal debe tener 5 dígitos')
             return false
@@ -58,6 +69,9 @@ export const ModalGestionDatos = ({ idService, idModal }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        //En el caso de que no haya variado el nombre de la empresa, no manda.
+        let newName = serviceName
+        if (service.serviceName === serviceName) newName = ''
         if (isFormValid())
             dispatch(
                 putService(
@@ -66,125 +80,158 @@ export const ModalGestionDatos = ({ idService, idModal }) => {
                     cityName,
                     street,
                     postalCode,
-                    service.uid
+                    service.uid,
+                    newName
                 )
             )
     }
 
     return (
-        <div
-            className="modal fade"
-            id={idModal}
-            role="dialog"
-            tabIndex="-1"
-            aria-labelledby={idModal}
-            aria-hidden="true"
-        >
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id={idModal}>
-                            Modificación de datos del servicio.
-                        </h5>
-                        <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                        ></button>
-                    </div>
-                    <div className="modal-body">
-                        <form className="form-group" onSubmit={handleSubmit}>
-                            <label
-                                className="form-control w-100 mt-3"
-                                style={{ color: '#6c757d' }}
+        <>
+            <div
+                className="modal fade"
+                id={idModal}
+                role="dialog"
+                tabIndex="-1"
+                aria-labelledby={idModal}
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id={idModal}>
+                                Modificación de datos del servicio.
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <form
+                                className="form-group"
+                                onSubmit={handleSubmit}
                             >
-                                Categoría del servicio:
-                                <select
-                                    className="form-select"
-                                    style={{ border: '0' }}
-                                    name="serviceCategory"
-                                    value={serviceCategory}
-                                    onChange={handleInputChange}
-                                >
-                                    {validCategories.map((category) => (
-                                        <option value={category} key={category}>
-                                            {category}
-                                        </option>
-                                    ))}
-                                </select>
-                            </label>
-
-                            <textarea
-                                type="text"
-                                placeholder="Información del servicio"
-                                name="serviceInfo"
-                                autoComplete="off"
-                                className="form-control w-100 mt-2"
-                                value={serviceInfo}
-                                onChange={handleInputChange}
-                            />
-
-                            <label
-                                className="form-control w-100 mt-3"
-                                style={{ color: '#6c757d' }}
-                            >
-                                Código postal
                                 <input
-                                    type="number"
-                                    name="postalCode"
-                                    placeholder="codigo postal"
-                                    className="w-100"
-                                    style={{
-                                        border: 0,
-                                        borderTop: '1px solid 6c757d',
-                                    }}
-                                    value={postalCode}
+                                    type="text"
+                                    placeholder="Nombre del servicio"
+                                    name="serviceName"
+                                    autoComplete="off"
+                                    className="form-control w-100 mt-2"
+                                    value={serviceName}
                                     onChange={handleInputChange}
                                 />
-                            </label>
 
-                            <input
-                                type="text"
-                                placeholder="Direción"
-                                name="street"
-                                autoComplete="off"
-                                className="form-control w-100 mt-2"
-                                value={street}
-                                onChange={handleInputChange}
-                            />
+                                <label
+                                    className="form-control w-100 mt-3"
+                                    style={{ color: '#6c757d' }}
+                                >
+                                    Categoría del servicio:
+                                    <select
+                                        className="form-select"
+                                        style={{ border: '0' }}
+                                        name="serviceCategory"
+                                        value={serviceCategory}
+                                        onChange={handleInputChange}
+                                    >
+                                        {validCategories.map((category) => (
+                                            <option
+                                                value={category}
+                                                key={category}
+                                            >
+                                                {category}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
 
-                            <input
-                                type="text"
-                                placeholder="Ciudad"
-                                name="cityName"
-                                autoComplete="off"
-                                className="form-control w-100 mt-2"
-                                value={cityName}
-                                onChange={handleInputChange}
-                            />
+                                <textarea
+                                    type="text"
+                                    placeholder="Información del servicio"
+                                    name="serviceInfo"
+                                    autoComplete="off"
+                                    className="form-control w-100 mt-2"
+                                    value={serviceInfo}
+                                    onChange={handleInputChange}
+                                />
 
+                                <label
+                                    className="form-control w-100 mt-3"
+                                    style={{ color: '#6c757d' }}
+                                >
+                                    Código postal
+                                    <input
+                                        type="number"
+                                        name="postalCode"
+                                        placeholder="codigo postal"
+                                        className="w-100"
+                                        style={{
+                                            border: 0,
+                                            borderTop: '1px solid 6c757d',
+                                        }}
+                                        value={postalCode}
+                                        onChange={handleInputChange}
+                                    />
+                                </label>
+
+                                <input
+                                    type="text"
+                                    placeholder="Direción"
+                                    name="street"
+                                    autoComplete="off"
+                                    className="form-control w-100 mt-2"
+                                    value={street}
+                                    onChange={handleInputChange}
+                                />
+
+                                <input
+                                    type="text"
+                                    placeholder="Ciudad"
+                                    name="cityName"
+                                    autoComplete="off"
+                                    className="form-control w-100 mt-2"
+                                    value={cityName}
+                                    onChange={handleInputChange}
+                                />
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-outline-primary mt-3"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Actualizar servicio
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary ms-3 mt-3"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cancelar
+                                </button>
+                            </form>
+                        </div>
+
+                        <div className="modal-footer">
                             <button
-                                type="submit"
-                                className="btn btn-outline-primary mt-3"
-                                data-bs-dismiss="modal"
+                                type="button"
+                                className="btn btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target={'#DelService' + service.uid}
                             >
-                                Actualizar servicio
+                                <i className="fa fa-ban" aria-hidden="true"></i>
+                                &nbsp;Baja del servicio
                             </button>
-                        </form>
-                    </div>
-
-                    <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                        >
-                            Cancelar
-                        </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <ModalDelService
+                idModal={'DelService' + service.uid}
+                service={service}
+            />
+        </>
     )
 }

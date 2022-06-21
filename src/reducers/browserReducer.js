@@ -25,6 +25,14 @@ export const browserReducer = (state = initialState, action) => {
         case types.logout:
             return initialState
 
+        case types.delService:
+            return {
+                ...state,
+                servicesList: state.servicesList.filter(
+                    (s) => s.uid !== action.payload
+                ),
+            }
+
         default:
             return state
     }

@@ -151,11 +151,8 @@ export const getCommentsService = (uidService) => {
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout())
             swallError('Su sesión ha caducado.')
-        } else if (body.msg) {
-            swallError(body.msg)
         } else {
-            //Informamos del error que ha ocurrido al usuario.
-            swallError(body.errors[0].msg)
+            dispatch({ type: types.setServiceError, payload: false })
         }
     }
 }

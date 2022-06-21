@@ -16,14 +16,24 @@ export const RegisterScreen = () => {
         confirmPassword: '',
         type: false,
         email: '',
+        postNotification: true,
     })
 
-    const { userName, password, confirmPassword, email, type } = formValues
+    const {
+        userName,
+        password,
+        confirmPassword,
+        email,
+        type,
+        postNotification,
+    } = formValues
 
     const handleRegister = (e) => {
         e.preventDefault()
         if (isFormValid()) {
-            dispatch(startRegister(email, password, userName, type))
+            dispatch(
+                startRegister(email, password, userName, type, postNotification)
+            )
         }
     }
 
@@ -87,16 +97,31 @@ export const RegisterScreen = () => {
                 />
 
                 <div className="form-check form-switch mt-3">
-                    <label htmlFor="flexSwitchCheckDefault">
+                    <label htmlFor="flexSwitchCheckDefault1">
                         <input
                             className="form-check-input"
-                            id="flexSwitchCheckDefault"
+                            id="flexSwitchCheckDefault1"
                             type="checkbox"
                             name="type"
                             checked={type}
                             onChange={handleInputChange}
                         />
                         Cliente / Empresario
+                    </label>
+                </div>
+
+                <div className="form-check form-switch mt-3">
+                    <label htmlFor="flexSwitchCheckDefault2">
+                        <input
+                            className="form-check-input"
+                            id="flexSwitchCheckDefault2"
+                            type="checkbox"
+                            name="postNotification"
+                            checked={postNotification}
+                            onChange={handleInputChange}
+                        />
+                        Deseo recibir notificaciones de posts de los servicio
+                        que sigo.
                     </label>
                 </div>
 

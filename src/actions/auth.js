@@ -42,7 +42,13 @@ export const startLogin = (email, password) => {
     }
 }
 
-export const startRegister = (email, password, userName, type) => {
+export const startRegister = (
+    email,
+    password,
+    userName,
+    type,
+    postNotifications = true
+) => {
     return async () => {
         //Aclaración, si es empresario hay que dar de alta también el servicio añadido.
         const url = baseUrl + '/users'
@@ -52,7 +58,13 @@ export const startRegister = (email, password, userName, type) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userName, email, password, type }),
+            body: JSON.stringify({
+                userName,
+                email,
+                password,
+                type,
+                postNotifications,
+            }),
         })
 
         const body = await resp.json()
@@ -108,12 +120,18 @@ export const startLogout = () => {
 
 const logout = () => ({ type: types.logout })
 
-export const putUser = (email, password, type, userName = '') => {
+export const putUser = (
+    email,
+    password,
+    type,
+    userName = '',
+    postNotifications = true
+) => {
     return async (dispatch) => {
         //Notificación de que se está enviando la información al servidor.
         loadingOpen('Actualizando ...')
 
-        let objectToJson = {}
+        let objectToJson = { postNotifications }
         if (userName !== '') objectToJson = { userName }
 
         if (email !== '' && password !== '')

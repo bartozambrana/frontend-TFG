@@ -93,7 +93,7 @@ const setNewService = (service) => {
 
 export const getServicesUser = () => {
     return async (dispatch) => {
-        const response = await fetch(url + 'userServices/', {
+        const response = await fetch(url + 'userServices/?status=true', {
             method: 'GET',
             headers: {
                 token: localStorage.getItem('token'),
@@ -125,7 +125,7 @@ const setServicesUser = (services) => {
 
 export const getServiceById = (id) => {
     return async (dispatch) => {
-        const response = await fetch(url + id, {
+        const response = await fetch(url + id + '?status=true', {
             method: 'GET',
             headers: {
                 token: localStorage.getItem('token'),
@@ -140,11 +140,8 @@ export const getServiceById = (id) => {
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
             swallError('Su sesión ha caducado.')
-        } else if (body.msg) {
-            swallError(body.msg)
         } else {
-            //Informamos del error que ha ocurrido al usuario.
-            swallError(body.errors[0].msg)
+            dispatch({ type: types.setServiceError, payload: true })
         }
     }
 }
@@ -162,22 +159,35 @@ export const putService = (
     cityName,
     street,
     postalCode,
-    uid
+    uid,
+    serviceName
 ) => {
     return async (dispatch) => {
+        let bodyJSON = null
+        if (serviceName !== '')
+            bodyJSON = JSON.stringify({
+                serviceCategory,
+                serviceInfo,
+                cityName,
+                street,
+                postalCode,
+                serviceName,
+            })
+        else
+            bodyJSON = JSON.stringify({
+                serviceCategory,
+                serviceInfo,
+                cityName,
+                street,
+                postalCode,
+            })
         const response = await fetch(url + uid, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 token: localStorage.getItem('token'),
             },
-            body: JSON.stringify({
-                serviceCategory,
-                serviceInfo,
-                cityName,
-                street,
-                postalCode,
-            }),
+            body: bodyJSON,
         })
 
         const body = await response.json()
@@ -280,5 +290,37 @@ const setFollowUnfollow = (follow, service) => {
     return {
         type: types.unfollowService,
         payload: service.uid,
+    }
+}
+
+export const confirmDelService = (idService) => {
+    return async (dispatch) => {
+        loadingOpen('Eliminando servicio ...')
+        const response = await fetch(url + idService, {
+            method: 'DELETE',
+            headers: {
+                token: localStorage.getItem('token'),
+            },
+        })
+        loadingClose()
+        const body = await response.json()
+        console.log(body)
+        if (body.success) {
+            //Eliminamos el servicio
+            dispatch(deleteService(idService))
+            swallSuccess('Servicio eliminado correctamente.')
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout)
+            swallError('Su sesión ha caducado.')
+        } else {
+            swallError('Contacte con el administrador.')
+        }
+    }
+}
+
+const deleteService = (idService) => {
+    return {
+        type: types.delService,
+        payload: idService,
     }
 }

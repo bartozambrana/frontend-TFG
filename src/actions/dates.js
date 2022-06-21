@@ -377,11 +377,46 @@ export const getRating = (uidDate, handleRating) => {
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
             swallError('Sesión caducada, inicie sesión')
-        } else if (body.msg) {
-            swallError(body.msg)
-        } else if (body.errors) {
-            //Podemos encontrar estos dos tipos de errores en las citas. body.errors o body.msg
-            swallError(body.errors[0].msg)
+        } else {
+            dispatch({ type: types.setServiceError, payload: false })
+        }
+    }
+}
+
+export const getPDF = (idService, initDate, endDate) => {
+    return async (dispatch) => {
+        loadingOpen('Generando PDF ...')
+        const response = await fetch(
+            url +
+                'pdf/' +
+                idService +
+                '?initDate=' +
+                initDate +
+                '&endDate=' +
+                endDate,
+            {
+                method: 'GET',
+                headers: {
+                    token: localStorage.getItem('token'),
+                },
+            }
+        )
+
+        const body = await response.json()
+
+        loadingClose()
+        if (body.success) {
+            if (body.msg === 'No dates found')
+                swallError('No hay citas para ese rango de fechas.')
+            else
+                swalInfoTimer(
+                    'PDF generado con éxito. Enviado a su correo electrónico.'
+                )
+        } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
+            dispatch(startLogout())
+            swallError('Sesión caducada, inicie sesión')
+        } else {
+            swallError('Comuniquese con el administrador del sistema.')
         }
     }
 }

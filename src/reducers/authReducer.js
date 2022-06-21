@@ -20,6 +20,7 @@ export const authReducer = (state = initialState, action) => {
         case types.logout:
             return {
                 checking: false,
+                recommendations: [],
             }
 
         case types.putUser:
@@ -76,6 +77,33 @@ export const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 recommendations: action.payload,
+            }
+
+        case types.delService:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    followServices: state.user.followServices.filter(
+                        (s) => s._id !== action.payload
+                    ),
+                },
+            }
+        //Si el usuario es propietario y sigue a su propio servicio hay que modificarlo.
+        case types.putService:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    followServices: state.user.followServices.map((s) => {
+                        if (s._id === action.payload.uid)
+                            return {
+                                _id: action.payload.uid,
+                                serviceName: action.payload.serviceName,
+                            }
+                        return s
+                    }),
+                },
             }
         default:
             return state

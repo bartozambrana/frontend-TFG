@@ -59,6 +59,17 @@ export const serviceReducer = (state = initialState, action) => {
         case types.logout:
             return initialState
 
+        case types.delService:
+            return {
+                ...state,
+                userServices: state.userServices.filter(
+                    (s) => s.uid !== action.payload
+                ),
+                visitedServices: state.visitedServices.filter(
+                    (s) => s.uid !== action.payload
+                ),
+            }
+
         default:
             return state
     }

@@ -41,6 +41,10 @@ export const workReducer = (state = initialState, action) => {
         case types.logout:
             return initialState
 
+        case types.delService:
+            if (state.uidWorkService === action.payload) return initialState
+            return state
+
         default:
             return state
     }

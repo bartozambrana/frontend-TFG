@@ -21,10 +21,19 @@ export const ModalEditUser = ({ idModal }) => {
         password2: '',
         type: user.type,
         userName: user.userName,
+        postNotification: user.postNotifications,
     })
 
     // Desestructuración de campos.
-    const { email, email2, password, password2, type, userName } = formValues
+    const {
+        email,
+        email2,
+        password,
+        password2,
+        type,
+        userName,
+        postNotification,
+    } = formValues
 
     //Validación de campos.
     const isFormValid = () => {
@@ -184,6 +193,21 @@ export const ModalEditUser = ({ idModal }) => {
                                         </label>
                                     </div>
                                 )}
+
+                                <div className="form-check form-switch mt-3">
+                                    <label htmlFor="flexSwitchCheckDefault2">
+                                        <input
+                                            className="form-check-input"
+                                            id="flexSwitchCheckDefault2"
+                                            type="checkbox"
+                                            name="postNotification"
+                                            checked={postNotification}
+                                            onChange={handleInputChange}
+                                        />
+                                        Deseo recibir notificaciones de posts de
+                                        los servicio que sigo.
+                                    </label>
+                                </div>
 
                                 <button
                                     type="submit"

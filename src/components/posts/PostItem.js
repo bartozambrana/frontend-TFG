@@ -14,12 +14,12 @@ export const PostItem = ({ post }) => {
         <div className="rounded-bottom mb-3">
             <img className="img-resize" src={post.photo} alt="PostPicture" />
             <div className="shadow bg-body rounded ">
-                <p
+                <h5
                     className="text-center rounded-bottom"
                     style={{ color: 'white', backgroundColor: '#27A2B2' }}
                 >
                     {post.caption}
-                </p>
+                </h5>
                 <p className="ms-2">{post.description}</p>
                 {userServices &&
                     userServices.filter((s) => s.uid === post.idService)

@@ -20,8 +20,8 @@ export const Recommendations = () => {
 
     //Mientras se está obteniendo la respuesta del servidor mostramos una animación de spiner.
     return (
-        <div className="recommendation-container container">
-            <h1 className="recommendation-title text-center">
+        <div className="recommendation-container container mt-2">
+            <h1 className="recommendation-title text-center mt-3 p-3">
                 Nuestras recomendaciones
             </h1>
             {recommendations.length === 0 ? (

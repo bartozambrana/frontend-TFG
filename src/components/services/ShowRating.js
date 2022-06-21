@@ -29,11 +29,20 @@ export const ShowRating = ({ idService }) => {
     }, [])
     return (
         <div className="mt-5">
-            <h1 className="h1__home text-center">Valoración media</h1>
+            <h1 className="h1__home text-center">Valoración sobre 5</h1>
             <div className="d-flex justify-content-center shadow mt-2">
                 <div style={style.dot} className="row align-items-center">
                     <p className="text-center" style={style.points}>
-                        {rating.toFixed(1)}/5
+                        {rating === 0 || rating === null || rating === 'NS' ? (
+                            <span
+                                className="alert alert-info"
+                                style={{ fontSize: '15px' }}
+                            >
+                                No ha sido valorado.
+                            </span>
+                        ) : (
+                            rating.toFixed(1)
+                        )}
                     </p>
                 </div>
             </div>
