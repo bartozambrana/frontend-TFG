@@ -12,16 +12,14 @@ export const CommentItem = ({ comment }) => {
     return (
         <>
             <div className="d-flex justify-content-between mt-1">
-                <div className="d-flex justify-content-inline-block">
-                    <Link
-                        style={{ textDecoration: 'none', color: '#38ABBA' }}
-                        to={'/service/' + comment.idService._id}
-                    >
-                        <i className="fa fa-briefcase" aria-hidden="true"></i>{' '}
-                        {comment.idService.serviceName}
-                    </Link>
-                    <p className="ms-5"> {comment.text} </p>
-                </div>
+                <Link
+                    style={{ textDecoration: 'none', color: '#38ABBA' }}
+                    to={'/service/' + comment.idService._id}
+                >
+                    <i className="fa fa-briefcase" aria-hidden="true"></i>{' '}
+                    {comment.idService.serviceName}
+                </Link>
+
                 {
                     //Se permite borrarlo o editarlo si no posee
                     //ninguna respuesta.
@@ -62,6 +60,9 @@ export const CommentItem = ({ comment }) => {
                         </div>
                     )
                 }
+            </div>
+            <div>
+                <p className="ms-5"> {comment.text} </p>
             </div>
         </>
     )

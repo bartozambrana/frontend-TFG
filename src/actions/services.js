@@ -125,7 +125,7 @@ const setServicesUser = (services) => {
 
 export const getServiceById = (id) => {
     return async (dispatch) => {
-        const response = await fetch(url + id + '?status=true', {
+        const response = await fetch(url + id, {
             method: 'GET',
             headers: {
                 token: localStorage.getItem('token'),
@@ -135,12 +135,16 @@ export const getServiceById = (id) => {
         const body = await response.json()
 
         if (body.success) {
-            dispatch(setServiceById(body.service))
-            dispatch({ type: types.setServiceError, payload: false })
+            if (body.status) {
+                dispatch(setServiceById(body.service))
+                dispatch({ type: types.setServiceError, payload: false })
+            } else dispatch({ type: types.setServiceError, payload: true }) //El servicio que ha solicitado ha sido borrado.
         } else if (body.msg === 'token empty' || body.msg === 'token invalid') {
             dispatch(startLogout()) //Cerramos sesión y limpiamos los datos de contexto almacenados.
             swallError('Su sesión ha caducado.')
         } else {
+            //Informamos del error que ha ocurrido al usuario el cual es que el identificador
+            // o no es válido o el servicio no existe.
             dispatch({ type: types.setServiceError, payload: true })
         }
     }

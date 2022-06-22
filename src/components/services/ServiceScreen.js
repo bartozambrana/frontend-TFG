@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import './service.css'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,16 +12,16 @@ import { ShowRating } from './ShowRating'
 import { MyMap } from './MyMap'
 
 export const ServiceScreen = () => {
-    //Identificador del servicio de la url
-    const { idService } = useParams()
-
-    //Lanzador de acciones.
-    const dispatch = useDispatch()
     //Variables a utilizar.
     const { visitedServices, userServices, loaded, serviceErrorServer } =
         useSelector((state) => state.services)
 
     //Descripción del servicio.
+    //Identificador del servicio de la url
+    const { idService } = useParams()
+
+    //Lanzador de acciones.
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (
@@ -30,15 +30,6 @@ export const ServiceScreen = () => {
         )
             dispatch(getServiceById(idService))
     }, [idService])
-
-    //Comprobamos si el servicio existe.
-    if (
-        serviceErrorServer &&
-        visitedServices.filter((s) => s.uid === idService).length === 0 &&
-        userServices.filter((s) => s.uid === idService).length === 0
-    ) {
-        return <h1 className="error">El servicio buscado no existe.</h1>
-    }
 
     const handleSetService = () => {
         if (
@@ -63,6 +54,46 @@ export const ServiceScreen = () => {
 
     let classVar = 'ms-2 me-2 mt-3'
     if (!isMobile) classVar = 'container mt-3'
+
+    //Comprobamos si el servicio existe.
+    if (
+        serviceErrorServer &&
+        visitedServices.filter((s) => s.uid === idService).length === 0 &&
+        userServices.filter((s) => s.uid === idService).length === 0
+    ) {
+        return (
+            <main>
+                <div className="container">
+                    <h1 className="error alert alert-danger text-center container mt-5">
+                        El servicio buscado no existe.
+                    </h1>
+                    <div className="d-flex justify-content-center">
+                        <p
+                            style={{ fontSize: '1.5rem' }}
+                            className="mt-3 text-center"
+                        >
+                            Vuelva al inicio si lo desea.
+                        </p>
+
+                        <button
+                            className="btn btn-success ms-5 mt-3"
+                            style={{ height: '50%' }}
+                        >
+                            <Link
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'white',
+                                }}
+                                to="/"
+                            >
+                                Inicio
+                            </Link>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        )
+    }
 
     return (
         <main>
