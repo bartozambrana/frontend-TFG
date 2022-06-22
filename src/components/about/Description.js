@@ -1,4 +1,5 @@
 import { isMobile } from 'react-device-detect'
+import { Link } from 'react-router-dom'
 
 export const Description = () => {
     return (
@@ -46,23 +47,6 @@ export const Description = () => {
 
                 <div className="row mt-5">
                     <div className="col-12 col-md-7">
-                        <h1 className="text-muted">¿Qué es este sitio web?</h1>
-                        <p>
-                            Este sitio web recoge todo un Trabajo Fin de Grado,
-                            el cual es accesible mediante el siguiente enlace.
-                        </p>
-                        <button className="btn btn-dark mt-1">
-                            <h6>
-                                <a
-                                    href="#"
-                                    className="link-light"
-                                    style={{ textDecoration: 'none' }}
-                                >
-                                    DevCommerce
-                                </a>
-                            </h6>
-                        </button>
-
                         <h1 className="text-muted mt-5">¿Qué ofrecemos?</h1>
 
                         <ul className="list-group list-group-flush">
@@ -96,13 +80,21 @@ export const Description = () => {
                                 alt="LogoTipo"
                             />
                             <button
-                                className="btn mt-5 mb-5"
+                                className="btn mt-5 btn-dark"
                                 style={{
                                     backgroundColor: '#414E52',
                                     color: 'white',
                                 }}
                             >
-                                <h5>ÚNETE</h5>
+                                <Link
+                                    to={'/auth/register'}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'white',
+                                    }}
+                                >
+                                    UNETE
+                                </Link>
                             </button>
                         </div>
                     </div>

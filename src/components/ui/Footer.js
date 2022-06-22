@@ -8,18 +8,7 @@ export const Footer = () => {
         <footer className={classVar}>
             <div className="container mt-3 p-4 ">
                 <div className="row d-flex justify-content-center text-center">
-                    <div className="col-12 col-md-4">
-                        <h5>
-                            <u>Mapa virtual</u>
-                        </h5>
-                        <ul className="list-none-style">
-                            <li>a</li>
-                            <li>b</li>
-                            <li>c</li>
-                            <li>d</li>
-                        </ul>
-                    </div>
-                    <div className="col-12 col-md-4 ">
+                    <div className="col-12 col-md-6 ">
                         <h5>
                             <u>Nuestras Políticas</u>
                         </h5>
@@ -29,7 +18,7 @@ export const Footer = () => {
                             <li>Aviso legal</li>
                         </ul>
                     </div>
-                    <div className="col-12 col-md-4 text-center">
+                    <div className="col-12 col-md-6 text-center">
                         <h5>
                             <u>Síguenos</u>
                         </h5>

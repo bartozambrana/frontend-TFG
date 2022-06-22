@@ -16,11 +16,11 @@ const reducer = combineReducers({
     works: workReducer,
     posts: postReducer,
     browser: browserReducer,
-    appointments: dateReducer
+    appointments: dateReducer,
 })
 
 //const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 export const store = configureStore({
     reducer,
-    devTools: true,
+    devTools: false,
 })
