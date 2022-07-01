@@ -5,8 +5,8 @@ import {
     swallSuccess,
 } from '../helpers/SwalNotifications'
 import { types } from '../types/types'
-//const baseUrl = process.env.REACT_APP_API_URL;
-const baseUrl = process.env.REACT_APP_API_URL
+//const baseUrl = process.env.REACT_APP_API_URL__DEV;
+const baseUrl = process.env.REACT_APP_API_URL_DEV
 
 export const startLogin = (email, password) => {
     return async (dispatch) => {

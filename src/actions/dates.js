@@ -8,7 +8,7 @@ import { types } from '../types/types'
 
 import { startLogout } from './auth'
 
-const url = process.env.REACT_APP_API_URL + '/dates/'
+const url = process.env.REACT_APP_API_URL_DEV + '/dates/'
 
 /*****************************************************************************************
  ******************* ACCIONES DEL PUNTO DEL VISTA DEL EMPRESARIO *************************

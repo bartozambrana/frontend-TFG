@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { ModalDeleteWork } from '../works/ModalDeleteWork'
 import { ModalEditWork } from '../works/ModalEditWork'
 
@@ -9,7 +9,13 @@ const styleBtn = {
     boxShadow: 'none',
 }
 
-export const GalleryItem = ({ images, description, uid, idService }) => {
+export const GalleryItem = ({
+    images,
+    description,
+    uid,
+    idService,
+    serviceName = '',
+}) => {
     const location = useLocation()
     const idCarousel = 'idCarousel' + uid
     const targetCarousel = '#' + idCarousel
@@ -18,6 +24,23 @@ export const GalleryItem = ({ images, description, uid, idService }) => {
 
     return (
         <div className="col mt-3">
+            {location.pathname === '/' && (
+                <Link
+                    to={'service/' + idService}
+                    style={{ textDecoration: 'none' }}
+                >
+                    <div
+                        className="d-flex justify-content-start ps-2 pt-2 rounded-top"
+                        style={{ backgroundColor: '#414e52', color: 'white' }}
+                    >
+                        <i
+                            className="fa fa-briefcase mt-1 me-1"
+                            aria-hidden="true"
+                        ></i>{' '}
+                        <p>{serviceName}</p>
+                    </div>
+                </Link>
+            )}
             <div
                 id={idCarousel}
                 className="carousel slide"

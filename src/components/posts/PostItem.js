@@ -4,14 +4,32 @@ import { ModalEditPost } from './ModalEditPost'
 import { ModalDeletePost } from './ModalDeletePost'
 
 import '../../style.css'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export const PostItem = ({ post }) => {
     const { userServices } = useSelector((state) => state.services)
     const location = useLocation()
 
     return (
-        <div className="rounded-bottom mb-3">
+        <div className="rounded-bottom mb-5">
+            {location.pathname === '/' && (
+                <Link
+                    to={'service/' + post.idService}
+                    style={{ textDecoration: 'none' }}
+                >
+                    <div
+                        className="d-flex justify-content-start ps-2 pt-2 rounded-top"
+                        style={{ backgroundColor: '#414e52', color: 'white' }}
+                    >
+                        <i
+                            className="fa fa-briefcase mt-1 me-1"
+                            aria-hidden="true"
+                        ></i>{' '}
+                        <p>{post.serviceName}</p>
+                    </div>
+                </Link>
+            )}
+
             <img className="img-resize" src={post.photo} alt="PostPicture" />
             <div className="shadow bg-body rounded ">
                 <h5

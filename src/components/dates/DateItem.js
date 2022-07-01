@@ -1,4 +1,4 @@
-import { compareAsc, format } from 'date-fns'
+import { format } from 'date-fns'
 import { Link } from 'react-router-dom'
 
 import '../../style.css'
@@ -22,7 +22,15 @@ export const DateItem = ({ appointment }) => {
         date,
     } = appointment
 
-    console.log(appointment)
+    const appointmentDate = new Date(date).setHours(
+        Number(initHour.slice(0, 2)),
+        Number(initHour.slice(3, 5))
+    )
+
+    const currenthy = new Date()
+
+    console.log(currenthy < appointmentDate)
+
     return (
         <>
             <div className="d-flex justify-content-between">
@@ -59,47 +67,54 @@ export const DateItem = ({ appointment }) => {
                     de una cta.
                 */}
                 <div className="d-flex justify-content-end ">
-                    {compareAsc(new Date(date), new Date()) === 1 ||
-                        (!appointment.valoration && (
-                            <>
-                                <button
-                                    className="btn"
-                                    style={styleBtn}
-                                    data-bs-toggle="modal"
-                                    data-bs-target={'#EditDateUser' + uidDate}
-                                >
-                                    <i
-                                        className="fa fa-pencil-square-o"
-                                        aria-hidden="true"
-                                    ></i>
-                                </button>
-                                <ModalEditDateUser
-                                    idModal={'EditDateUser' + uidDate}
-                                    appointment={appointment}
-                                />
-                                <button
-                                    className="btn "
-                                    style={styleBtn}
-                                    data-bs-toggle="modal"
-                                    data-bs-target={'#CancelDateUser' + uidDate}
-                                >
-                                    <i
-                                        className="fa fa-trash ms-3"
-                                        aria-hidden="true"
-                                    ></i>
-                                </button>
-                                <ModalCancelDateUser
-                                    idModal={'CancelDateUser' + uidDate}
-                                    appointment={appointment}
-                                />
-                            </>
-                        ))}
+                    {currenthy < appointmentDate && (
+                        <>
+                            <button
+                                className="btn"
+                                style={styleBtn}
+                                data-bs-toggle="modal"
+                                data-bs-target={'#EditDateUser' + uidDate}
+                            >
+                                <i
+                                    className="fa fa-pencil-square-o"
+                                    aria-hidden="true"
+                                ></i>
+                            </button>
+                            <ModalEditDateUser
+                                idModal={'EditDateUser' + uidDate}
+                                appointment={appointment}
+                            />
+                            <button
+                                className="btn "
+                                style={styleBtn}
+                                data-bs-toggle="modal"
+                                data-bs-target={'#CancelDateUser' + uidDate}
+                            >
+                                <i
+                                    className="fa fa-trash ms-3"
+                                    aria-hidden="true"
+                                ></i>
+                            </button>
+                            <ModalCancelDateUser
+                                idModal={'CancelDateUser' + uidDate}
+                                appointment={appointment}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
-            {!appointment.valoration ? (
+            {!appointment.valoration && currenthy > appointmentDate && (
                 <Valoration uidDate={uidDate} />
-            ) : (
+            )}
+
+            {appointment.valoration && (
                 <AsignatedValoration points={appointment.valoration} />
+            )}
+
+            {currenthy < appointmentDate && (
+                <p className="alert alert-info">
+                    No puede valorarla, no ha tenido la cita aún.
+                </p>
             )}
         </>
     )

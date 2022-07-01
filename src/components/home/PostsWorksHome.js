@@ -60,6 +60,7 @@ export const PostsWorksHome = () => {
                             description={element.description}
                             uid={element.uid}
                             idService={element.idService}
+                            serviceName={element.serviceName}
                         />
                     )
                 })}

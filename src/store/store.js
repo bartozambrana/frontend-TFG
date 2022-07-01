@@ -22,5 +22,5 @@ const reducer = combineReducers({
 //const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 export const store = configureStore({
     reducer,
-    devTools: false,
+    devTools: true,
 })

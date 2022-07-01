@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { useForm } from '../../hooks/useForm'
 import { format } from 'date-fns'
 
-
 import '../../style.css'
 import { getDatesDay, putDateService } from '../../actions/dates'
 import { swallError } from '../../helpers/SwalNotifications'
@@ -30,20 +29,22 @@ export const ModalEditDateOwner = ({ uidService, idModal }) => {
 
     const isFormValid = () => {
         if (dateDay.trim().length === 0) {
-            swallError('No ha seleccionado una fecha');
+            swallError('No ha seleccionado una fecha')
             return false
         } else if (uidDate === 'Selecciona una cita' || uidDate === '') {
-            swallError('No ha seleccionado una cita.');
-            return false;
+            swallError('No ha seleccionado una cita.')
+            return false
         } else if (initHour.trim().length === 0) {
-            swallError('No ha introducido hora de cominezo');
+            swallError('No ha introducido hora de cominezo')
             return false
         } else if (endHour.trim().length === 0) {
-            swallError('No ha introducido hora de finalización');
+            swallError('No ha introducido hora de finalización')
             return false
-        } else if( hourToInt(initHour) >= hourToInt(endHour) ) {
-            swallError('La hora de comienzo no puede ser mayor o igual a la finalización')
-            return false;
+        } else if (hourToInt(initHour) >= hourToInt(endHour)) {
+            swallError(
+                'La hora de comienzo no puede ser mayor o igual a la finalización'
+            )
+            return false
         }
         return true
     }
@@ -52,7 +53,10 @@ export const ModalEditDateOwner = ({ uidService, idModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (isFormValid()) {
-            dispatch(putDateService(uidDate,initHour,endHour));
+            dispatch(putDateService(uidDate, initHour, endHour))
+            reset()
+            setDateDay('')
+            setDateList('')
         }
     }
 
@@ -82,7 +86,8 @@ export const ModalEditDateOwner = ({ uidService, idModal }) => {
     //Efecto secundario de seleccionar una fecha.
     useEffect(() => {
         if (
-            uidDate !== 'Selecciona una cita' && uidDate !== '' &&
+            uidDate !== 'Selecciona una cita' &&
+            uidDate !== '' &&
             dateList.length !== 0
         ) {
             //Obtenemos la cita que es.
@@ -197,6 +202,7 @@ export const ModalEditDateOwner = ({ uidService, idModal }) => {
                                     <button
                                         type="submit"
                                         className="btn btn-outline-primary mt-3"
+                                        data-bs-dismiss="modal"
                                     >
                                         Modificar cita.
                                     </button>

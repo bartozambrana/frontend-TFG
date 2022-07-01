@@ -156,7 +156,7 @@ export const ModalEditDateUser = ({ idModal, appointment }) => {
                                     {appointmentList.map((date) => (
                                         <option
                                             style={{ color: '#6c757d' }}
-                                            key={date.uid}
+                                            key={service + date.uid}
                                             value={date.uid}
                                         >
                                             {date.initHour} - {date.endHour}
@@ -175,13 +175,10 @@ export const ModalEditDateUser = ({ idModal, appointment }) => {
                                         {appointmentList.map((date) => {
                                             if (date.uid === uidDate)
                                                 return (
-                                                    <>
-                                                        <p
-                                                            key={
-                                                                'paragraph' +
-                                                                date.uid
-                                                            }
-                                                        >
+                                                    <div
+                                                        key={service + date.uid}
+                                                    >
+                                                        <p>
                                                             Va a cambiar la cita
                                                             por una cita para el
                                                             día{' '}
@@ -196,25 +193,13 @@ export const ModalEditDateUser = ({ idModal, appointment }) => {
                                                             de {date.initHour} a{' '}
                                                             {date.endHour}
                                                         </p>
-                                                        <hr
-                                                            key={
-                                                                'paragraph' +
-                                                                date.uid +
-                                                                '2'
-                                                            }
-                                                        />
-                                                        <p
-                                                            key={
-                                                                'paragraph' +
-                                                                date.uid +
-                                                                '3'
-                                                            }
-                                                        >
+                                                        <hr />
+                                                        <p>
                                                             <strong>
                                                                 ¿Está seguro?
                                                             </strong>
                                                         </p>
-                                                    </>
+                                                    </div>
                                                 )
                                         })}
                                     </div>

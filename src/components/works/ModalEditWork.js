@@ -114,6 +114,12 @@ export const ModalEditWork = ({ uidWork }) => {
                         ></button>
                     </div>
                     <div className="modal-body">
+                        <div className="alert alert-info mt-3 mb-3">
+                            <p>
+                                Pulse sobre la imagen en el caso de que desee{' '}
+                                <strong>eliminarla</strong>
+                            </p>
+                        </div>
                         <form className="form-group" onSubmit={handleSubmit}>
                             <div className="container">
                                 {photosDeleted.map((photoItem, index) => {

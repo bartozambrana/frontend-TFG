@@ -8,7 +8,7 @@ import {
 import { types } from '../types/types'
 import { startLogout } from './auth'
 
-const url = process.env.REACT_APP_API_URL + '/services/'
+const url = process.env.REACT_APP_API_URL_DEV + '/services/'
 
 export const getValidCategories = () => {
     return async (dispatch) => {

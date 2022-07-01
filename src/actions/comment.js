@@ -8,7 +8,7 @@ import {
 import { types } from '../types/types'
 import { startLogout } from './auth'
 
-const url = process.env.REACT_APP_API_URL + '/comments/'
+const url = process.env.REACT_APP_API_URL_DEV + '/comments/'
 
 export const getCommentsUser = () => {
     return async (dispatch) => {
