@@ -29,8 +29,6 @@ export const DateItem = ({ appointment }) => {
 
     const currenthy = new Date()
 
-    console.log(currenthy < appointmentDate)
-
     return (
         <>
             <div className="d-flex justify-content-between">

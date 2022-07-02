@@ -16,9 +16,8 @@ export const ModalNewService = ({ idModal }) => {
         dispatch(getValidCategories())
     }, [dispatch])
 
-    // const dispatch = useDispatch();
     const [formValues, handleInputChange] = useForm({
-        serviceCategory: '',
+        serviceCategory: 'Selecciona una categoría',
         serviceInfo: '',
         serviceName: '',
         cityName: '',
@@ -36,8 +35,8 @@ export const ModalNewService = ({ idModal }) => {
     } = formValues
 
     const isFormValid = () => {
-        if (serviceCategory.trim().length === 0) {
-            swallError('Categoría del servicio vacía')
+        if (serviceCategory === 'Selecciona una categoría') {
+            swallError('Selecciona una categoría')
             return false
         } else if (serviceInfo.trim().length === 0) {
             swallError('Información del servicio vacía')
@@ -109,6 +108,12 @@ export const ModalNewService = ({ idModal }) => {
                                     value={serviceCategory}
                                     onChange={handleInputChange}
                                 >
+                                    <option
+                                        key="DefaultNewService"
+                                        value="Selecciona una categoría"
+                                    >
+                                        Selecciona una categoría
+                                    </option>
                                     {validCategories.map((category) => (
                                         <option value={category} key={category}>
                                             {category}

@@ -28,11 +28,7 @@ export const startLogin = (email, password) => {
             dispatch(
                 login({
                     user: {
-                        uid: body.user.uid,
-                        type: body.user.type,
-                        email: body.user.email,
-                        followServices: body.user.followServices,
-                        userName: body.user.userName,
+                        ...body.user,
                     },
                 })
             )
@@ -120,13 +116,13 @@ export const startLogout = () => {
 
 const logout = () => ({ type: types.logout })
 
-export const putUser = (
+export const putUser = ({
     email,
     password,
     type,
     userName = '',
-    postNotifications = true
-) => {
+    postNotifications = true,
+}) => {
     return async (dispatch) => {
         //Notificación de que se está enviando la información al servidor.
         loadingOpen('Actualizando ...')

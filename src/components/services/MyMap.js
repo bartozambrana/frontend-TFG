@@ -11,6 +11,7 @@ export const MyMap = ({ address }) => {
 
     useEffect(() => {
         const geocoder = async () => {
+            setLoading(false)
             const response = await fetch(
                 'https://nominatim.openstreetmap.org/search?' +
                     'q=' +

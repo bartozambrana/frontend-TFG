@@ -308,7 +308,6 @@ export const confirmDelService = (idService) => {
         })
         loadingClose()
         const body = await response.json()
-        console.log(body)
         if (body.success) {
             //Eliminamos el servicio
             dispatch(deleteService(idService))

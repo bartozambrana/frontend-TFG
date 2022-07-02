@@ -21,7 +21,7 @@ export const ModalEditUser = ({ idModal }) => {
         password2: '',
         type: user.type,
         userName: user.userName,
-        postNotification: user.postNotifications,
+        postNotifications: user.postNotifications,
     })
 
     // Desestructuración de campos.
@@ -32,7 +32,7 @@ export const ModalEditUser = ({ idModal }) => {
         password2,
         type,
         userName,
-        postNotification,
+        postNotifications,
     } = formValues
 
     //Validación de campos.
@@ -58,8 +58,17 @@ export const ModalEditUser = ({ idModal }) => {
         e.preventDefault()
         if (isFormValid()) {
             if (user.userName === userName)
-                dispatch(putUser(email, password, type))
-            else dispatch(putUser(email, password, type, userName))
+                dispatch(putUser({ email, password, type, postNotifications }))
+            else
+                dispatch(
+                    putUser({
+                        email,
+                        password,
+                        type,
+                        userName,
+                        postNotifications,
+                    })
+                )
         }
     }
 
@@ -200,8 +209,8 @@ export const ModalEditUser = ({ idModal }) => {
                                             className="form-check-input"
                                             id="flexSwitchCheckDefault2"
                                             type="checkbox"
-                                            name="postNotification"
-                                            checked={postNotification}
+                                            name="postNotifications"
+                                            checked={postNotifications}
                                             onChange={handleInputChange}
                                         />
                                         Deseo recibir notificaciones de posts de

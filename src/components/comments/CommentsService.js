@@ -58,6 +58,10 @@ export const Comments = () => {
                     />
                 </div>
             </div>
+
+            <div className="alert alert-info">
+                <p>Solo podrás adjuntar un comentario por cita obtenida.</p>
+            </div>
         </>
     )
 }
